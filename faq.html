@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ | Brandt Wood Finishing — Custom Millwork &amp; Woodwork | Winter Garden, FL</title>
+<meta name="description" content="Frequently asked questions about Brandt Wood Finishing — custom millwork, cabinetry, antique furniture restoration, and fine upholstery in Central Florida.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="FAQ | Brandt Wood Finishing">
+<meta property="og:description" content="Common questions about our custom millwork and woodworking services in Central Florida.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.brandtwf.com/faq.html">
+<link rel="canonical" href="https://www.brandtwf.com/faq.html">
+<meta name="theme-color" content="#0a0a0a">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+:root{
+  --black:#0a0a0a;
+  --black-2:#111;
+  --black-3:#1a1a1a;
+  --black-4:#222;
+  --gold:#c9a84c;
+  --gold-l:#e2c47a;
+  --gold-d:#9a7a2e;
+  --white:#f5f0e8;
+  --white-2:#e8e0d0;
+  --gray:#888880;
+  --gray-l:#aaa9a0;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Montserrat',system-ui,sans-serif;
+}
+body{background:var(--black);color:var(--white);font-family:var(--sans);font-weight:300;line-height:1.7;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+
+/* ── NAVBAR ── */
+#nav{
+  position:fixed;top:0;width:100%;z-index:1000;
+  padding:1.5rem 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,10,10,.96);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(201,168,76,.1);
+}
+.nav-logo-text{
+  font-family:var(--serif);font-size:1.1rem;font-weight:400;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--white);
+  transition:color .3s;
+}
+.nav-logo-text:hover{color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:2.5rem;list-style:none}
+.nav-links a{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--white-2);transition:color .3s;font-weight:400}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{background:var(--gold)!important;color:var(--black)!important;padding:.65rem 1.5rem;font-weight:500!important;transition:background .3s!important}
+.nav-cta:hover{background:var(--gold-l)!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:26px;height:1px;background:var(--white);transition:.4s}
+
+/* ── MOBILE NAV OVERLAY ── */
+#nav-overlay{
+  position:fixed;inset:0;z-index:999;
+  background:rgba(10,10,10,.97);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+  opacity:0;visibility:hidden;transition:.4s;
+}
+#nav-overlay.open{opacity:1;visibility:visible}
+#nav-overlay a{font-family:var(--serif);font-size:1.8rem;color:var(--white-2);letter-spacing:.1em;transition:color .3s}
+#nav-overlay a:hover{color:var(--gold)}
+
+/* ── FAQ PAGE ── */
+.faq-page{
+  padding-top:120px;
+  padding-bottom:8rem;
+  min-height:100vh;
+}
+.faq-inner{max-width:860px;margin:0 auto;padding:0 5%}
+
+.faq-eyebrow{
+  font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--gold);font-weight:400;margin-bottom:1rem;
+}
+.rule{
+  width:40px;height:1px;
+  background:linear-gradient(to right,var(--gold),transparent);
+  margin:0 auto 1.6rem;
+}
+.faq-title{
+  font-family:var(--serif);font-size:clamp(2rem,5vw,3.2rem);font-weight:400;
+  line-height:1.15;color:var(--white);text-align:center;margin-bottom:.5rem;
+}
+.faq-title em{font-style:italic;color:var(--gold-l)}
+.faq-intro{
+  text-align:center;font-size:.82rem;color:var(--gray-l);
+  line-height:1.9;max-width:600px;margin:.5rem auto 4rem;
+}
+
+.faq-item{border-top:1px solid rgba(255,255,255,.07);padding:2.2rem 0}
+.faq-item:last-child{border-bottom:1px solid rgba(255,255,255,.07)}
+.faq-q{
+  font-family:var(--serif);font-size:1.25rem;font-weight:400;
+  color:var(--white);margin-bottom:.85rem;line-height:1.3;
+}
+.faq-a{
+  font-size:.8rem;color:var(--gray-l);line-height:1.95;
+}
+
+/* back link */
+.back-link{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gray);transition:color .3s;margin-bottom:3rem;
+}
+.back-link:hover{color:var(--gold)}
+.back-link svg{transition:transform .3s}
+.back-link:hover svg{transform:translateX(-3px)}
+
+/* ── FOOTER ── */
+#footer{background:#070707;padding:5rem 5% 2.5rem}
+.fo-top{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem}
+.fo-brand{display:flex;flex-direction:column;gap:1.2rem}
+.fo-tag{font-size:.68rem;color:var(--gray);line-height:1.85;max-width:300px}
+.fo-socials{display:flex;gap:1rem;margin-top:.5rem}
+.fo-soc{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid rgba(201,168,76,.2);transition:.3s}
+.fo-soc:hover{border-color:var(--gold)}
+.fo-col-title{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-weight:400}
+.fo-links{list-style:none;display:flex;flex-direction:column;gap:.75rem}
+.fo-links a{font-size:.75rem;color:var(--gray);transition:color .3s}
+.fo-links a:hover{color:var(--white)}
+.fo-rule{border:none;border-top:1px solid rgba(255,255,255,.05)}
+.fo-copy{max-width:1200px;margin:0 auto;padding-top:2rem;text-align:center;font-size:.63rem;color:var(--gray);letter-spacing:.08em}
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.9rem 2rem;font-family:var(--sans);font-size:.65rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;transition:.35s;cursor:pointer;border:none}
+.btn-gold{background:var(--gold);color:var(--black)}
+.btn-gold:hover{background:var(--gold-l)}
+
+@media(max-width:900px){
+  .fo-top{grid-template-columns:1fr 1fr;gap:2rem}
+}
+@media(max-width:640px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .fo-top{grid-template-columns:1fr}
+}
+</style>
+
+<!-- Schema.org FAQ JSON-LD -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What areas does Brandt Wood Finishing serve?","acceptedAnswer":{"@type":"Answer","text":"Brandt Wood Finishing serves all of Florida, with primary focus on Central Florida — including Winter Garden, Orlando, Ocoee, Windermere, Clermont, Kissimmee, and the greater Orlando metro area. We also serve the Orlando-to-Miami corridor for larger residential millwork projects."}},{"@type":"Question","name":"What services does Brandt Wood Finishing offer?","acceptedAnswer":{"@type":"Answer","text":"We specialize in custom millwork and fine woodworking, including custom cabinetry and built-ins, library walls, custom staircases, wall paneling, mantels and fireplace surrounds, antique furniture restoration, and fine residential and commercial upholstery."}},{"@type":"Question","name":"How long has Brandt Wood Finishing been in business?","acceptedAnswer":{"@type":"Answer","text":"Brandt Wood Finishing was founded in 1985. With over 40 years of experience in residential custom millwork and woodworking, we are one of Central Florida's most established fine woodworking companies."}},{"@type":"Question","name":"Does Brandt Wood Finishing do commercial millwork?","acceptedAnswer":{"@type":"Answer","text":"Yes. In addition to our residential work, we also take on commercial millwork projects, including medical offices, corporate environments, and retail spaces throughout Central Florida."}},{"@type":"Question","name":"How do I request a quote?","acceptedAnswer":{"@type":"Answer","text":"You can reach us by phone at (689) 250-1209, fill out the contact form on our website at brandtwf.com, or send a message via WhatsApp. We serve clients throughout Florida and typically respond within 24 hours."}},{"@type":"Question","name":"Does Brandt Wood Finishing restore antique furniture?","acceptedAnswer":{"@type":"Answer","text":"Yes. Antique furniture restoration is one of our core specialties. We handle structural repair, refinishing, stripping, staining, and color matching for heirloom and antique pieces."}}]}
+</script>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo"><span class="nav-logo-text">BRANDT WOOD FINISHING</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#portfolio">Portfolio</a></li>
+    <li><a href="index.html#why">About</a></li>
+    <li><a href="index.html#testimonials">Reviews</a></li>
+    <li><a href="index.html#area">Service Area</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <button class="hamburger" id="hbtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile nav overlay -->
+<div id="nav-overlay" role="dialog" aria-modal="true">
+  <a href="index.html#services" class="nav-ov-link">Services</a>
+  <a href="index.html#portfolio" class="nav-ov-link">Portfolio</a>
+  <a href="index.html#why" class="nav-ov-link">About</a>
+  <a href="index.html#testimonials" class="nav-ov-link">Reviews</a>
+  <a href="index.html#area" class="nav-ov-link">Service Area</a>
+  <a href="index.html#contact" class="nav-ov-link" style="color:var(--gold)">Get a Quote</a>
+</div>
+
+<!-- ═══ FAQ PAGE ═══ -->
+<main class="faq-page">
+  <div class="faq-inner">
+
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to main site
+    </a>
+
+    <div style="text-align:center;margin-bottom:4.5rem">
+      <p class="faq-eyebrow">Common Questions</p>
+      <div class="rule"></div>
+      <h1 class="faq-title">Frequently Asked <em>Questions</em></h1>
+      <p class="faq-intro">Everything you need to know about our custom millwork, cabinetry, restoration, and upholstery services across Central Florida.</p>
+    </div>
+
+    <div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">
+
+      <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <h2 class="faq-q" itemprop="name">What areas does Brandt Wood Finishing serve?</h2>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p class="faq-a" itemprop="text">
+            Brandt Wood Finishing serves all of Florida, with primary focus on Central Florida — including Winter Garden, Orlando, Ocoee, Windermere, Clermont, Kissimmee, and the greater Orlando metro area. We also serve the Orlando-to-Miami corridor for larger residential millwork projects.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <h2 class="faq-q" itemprop="name">What services does Brandt Wood Finishing offer?</h2>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p class="faq-a" itemprop="text">
+            We specialize in custom millwork and fine woodworking, including custom cabinetry and built-ins, library walls, custom staircases, wall paneling, mantels and fireplace surrounds, antique furniture restoration, and fine residential and commercial upholstery. Every project is handcrafted to specification — no production lines, no shortcuts.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <h2 class="faq-q" itemprop="name">How long has Brandt Wood Finishing been in business?</h2>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p class="faq-a" itemprop="text">
+            Brandt Wood Finishing was founded in 1985. With over 40 years of experience in residential custom millwork and woodworking, we are one of Central Florida's most established fine woodworking companies. We are family-owned and operated, headquartered in Winter Garden, FL.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <h2 class="faq-q" itemprop="name">Does Brandt Wood Finishing do commercial millwork?</h2>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p class="faq-a" itemprop="text">
+            Yes. In addition to our residential work, we also take on commercial millwork projects, including medical offices, corporate environments, and retail spaces throughout Central Florida. We work directly with general contractors and building owners.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <h2 class="faq-q" itemprop="name">How do I request a quote?</h2>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p class="faq-a" itemprop="text">
+            You can reach us by phone at (689) 250-1209 (English — Asaph Brandt) or (754) 215-0045 (Português — Lucas Brandt), fill out the contact form on our website at brandtwf.com, or send a message via WhatsApp. We serve clients throughout Florida and typically respond within 24 hours.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <h2 class="faq-q" itemprop="name">Does Brandt Wood Finishing restore antique furniture?</h2>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p class="faq-a" itemprop="text">
+            Yes. Antique furniture restoration is one of our core specialties. We handle structural repair, refinishing, stripping, staining, and color matching for heirloom and antique pieces. Our craftsmen have decades of experience restoring fine furniture to its original condition.
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /faq-list -->
+
+    <div style="text-align:center;margin-top:5rem">
+      <a href="index.html#contact" class="btn btn-gold">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.63a16 16 0 006.29 6.29l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="1.5"/></svg>
+        Request a Free Quote
+      </a>
+    </div>
+
+  </div>
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="footer">
+  <div class="fo-top">
+    <div class="fo-brand">
+      <p style="font-family:var(--serif);font-size:1.1rem;letter-spacing:.15em;text-transform:uppercase;color:var(--white)">Brandt Wood Finishing</p>
+      <p class="fo-tag">Creating unique and personalized woodwork for discerning homeowners, designers, and contractors across Central Florida. Excellence since 1985.</p>
+      <div class="fo-socials">
+        <a href="https://www.instagram.com/brandtwoodfinishing" target="_blank" rel="noopener" class="fo-soc" aria-label="Instagram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#c9a84c" stroke-width="1.3"/><circle cx="12" cy="12" r="5" stroke="#c9a84c" stroke-width="1.3"/><circle cx="17.5" cy="6.5" r="1" fill="#c9a84c"/></svg>
+        </a>
+        <a href="https://www.facebook.com/share/1Amw7J9aYL/" target="_blank" rel="noopener" class="fo-soc" aria-label="Facebook">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" stroke="#c9a84c" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="https://www.brandtwf.com" class="fo-soc" aria-label="Website">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c9a84c" stroke-width="1.3"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="#c9a84c" stroke-width="1.3"/></svg>
+        </a>
+        <a href="faq.html" class="fo-soc" aria-label="Frequently Asked Questions" title="FAQ">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c9a84c" stroke-width="1.3"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" stroke="#c9a84c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="17" r=".5" fill="#c9a84c" stroke="#c9a84c" stroke-width="1"/></svg>
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="fo-col-title">Services</div>
+      <ul class="fo-links">
+        <li><a href="index.html#services">Custom Millwork</a></li>
+        <li><a href="index.html#services">Custom Cabinetry &amp; Built-ins</a></li>
+        <li><a href="index.html#services">Antique Restoration</a></li>
+        <li><a href="index.html#services">Fine Upholstery</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fo-col-title">Company</div>
+      <ul class="fo-links">
+        <li><a href="index.html#why">About BWF</a></li>
+        <li><a href="index.html#portfolio">Portfolio</a></li>
+        <li><a href="index.html#testimonials">Client Reviews</a></li>
+        <li><a href="index.html#area">Service Area</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fo-col-title">Contact</div>
+      <ul class="fo-links">
+        <li><a href="tel:+16892501209">(689) 250-1209</a></li>
+        <li><a href="tel:+17542150045">(754) 215-0045</a></li>
+        <li><a href="mailto:brandtwoodfinishing@gmail.com">brandtwoodfinishing@gmail.com</a></li>
+        <li><a href="https://maps.google.com/?q=Winter+Garden+FL+34787" target="_blank" rel="noopener" style="color:var(--gray);transition:color .3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gray)'">Winter Garden, FL 34787 ↗</a></li>
+      </ul>
+    </div>
+  </div>
+  <div style="text-align:center;padding:2.5rem 0 0;">
+    <a href="index.html#contact" class="btn btn-gold" style="display:inline-flex;align-items:center;gap:.5rem;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.63a16 16 0 006.29 6.29l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="1.5"/></svg>
+      <span>Request a Free Quote</span>
+    </a>
+  </div>
+  <div class="fo-rule" style="margin-top:2.5rem;"></div>
+  <div class="fo-copy" style="display:flex;align-items:center;justify-content:center;gap:1.4rem;flex-wrap:wrap;">
+    <span>&copy; 2026 Brandt Wood Finishing. All rights reserved. &nbsp;&middot;&nbsp; Winter Garden, FL</span>
+  </div>
+</footer>
+
+<script>
+// Mobile nav
+var hbtn = document.getElementById('hbtn');
+var overlay = document.getElementById('nav-overlay');
+var open = false;
+hbtn.addEventListener('click', function() {
+  open = !open;
+  overlay.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+  var spans = hbtn.querySelectorAll('span');
+  if (open) {
+    spans[0].style.transform = 'rotate(45deg) translate(4px,4px)';
+    spans[1].style.opacity = '0';
+    spans[2].style.transform = 'rotate(-45deg) translate(4px,-4px)';
+  } else {
+    spans[0].style.transform = '';
+    spans[1].style.opacity = '';
+    spans[2].style.transform = '';
+  }
+});
+overlay.querySelectorAll('a').forEach(function(a) {
+  a.addEventListener('click', function() {
+    open = false;
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    hbtn.querySelectorAll('span').forEach(function(s){ s.style.transform='';s.style.opacity=''; });
+  });
+});
+</script>
+</body>
+</html>
