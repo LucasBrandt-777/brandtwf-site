@@ -1,5 +1,7 @@
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1512,46 +1514,294 @@ window.addEventListener('load', function() {
 
 
   // ── LIGHTBOX ──
-  var CDN = 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612252/5jQck5FxQnVDEd3zqjBp6U/';
+  var BASE = 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main';
 
-    var PORTFOLIO = {
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  var PORTFOLIO = {
     millwork: {
       title: 'Custom <em>Millwork</em>',
-      slides: [
-        { src: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1920&q=90&fit=crop&auto=format',   caption: 'Wall Paneling · Custom Millwork' },
-        { src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=90&fit=crop&auto=format',   caption: 'Custom Staircases · Architectural Millwork' },
-        { src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&q=90&fit=crop&auto=format', caption: 'Library Walls · Custom Built-ins' },
-        { src: 'https://images.unsplash.com/photo-1519710164239-da1758c53cb9?w=1920&q=90&fit=crop&auto=format',  caption: 'Mantels & Fireplaces · Custom Millwork' },
-      ]
+      slides: shuffle([
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Escadas1.webp', caption: 'Custom staircase with black steel balusters and white painted stringers — residential millwork by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Escadas2.webp', caption: 'Traditional wood staircase with white turned balusters and carpeted treads — custom millwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Escadas3.webp', caption: 'Exterior hardwood deck stairs with rich mahogany finish — custom outdoor woodwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Escadas4.webp', caption: 'Grand two-story staircase with wood handrail and wrought iron balusters — luxury residential millwork by Brandt Wood Finishing, Orlando FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Escadas5.webp', caption: 'Custom dark wood staircase with white balusters — staircase remodel by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Escadas6.webp', caption: 'Modern dark hardwood staircase with gray painted railing and iron balusters — custom millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Escadas7.webp', caption: 'Floating dark oak staircase with glass railing and custom wall paneling — contemporary millwork by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Escadas8.webp', caption: 'Staircase renovation before and after — curved wood stair replaced with modern millwork by Brandt Wood Finishing, Orlando FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Lareira1.webp', caption: 'Custom white painted wood fireplace mantel with brick surround — architectural millwork by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Lareira2.webp', caption: 'Reclaimed dark wood fireplace mantel shelf over natural stone surround — custom woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Lareira3.webp', caption: 'Floor-to-ceiling stone fireplace with custom walnut wall paneling and built-in shelving — luxury millwork by Brandt Wood Finishing, Orlando FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork1.webp', caption: 'Custom oak and white lacquer credenza with glass top — bespoke millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork2.webp', caption: 'Floor-to-ceiling walnut wood wall paneling in luxury bedroom — architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork3.webp', caption: 'Custom laundry room cabinetry in greige with brass hardware — built-in millwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork4.webp', caption: 'Custom wood slat wall paneling with integrated LED lighting — architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork5.webp', caption: 'Custom built-in black bookcase with LED shelving and wood slat accent wall — home office millwork by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork6.webp', caption: 'Custom wood slat entertainment wall with diamond wine rack and wet bar — luxury millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork7.webp', caption: 'Custom dark navy wet bar with black sliding barn door and marble countertop — architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork8.webp', caption: 'Full room custom wood slat wall paneling with integrated lighting — luxury residential millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork9.webp', caption: 'Luxury living room with custom walnut wood slat walls and floating TV unit — architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork10.webp', caption: 'Custom black built-in cabinet with wood slat accent wall in home gym — residential millwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork11.webp', caption: 'Custom oak built-in bar cabinet with sunburst carved door panel and backlit onyx stone — signature millwork by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork12.webp', caption: 'Floor-to-ceiling custom wood slat wall with backlit onyx stone columns — luxury architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork13.webp', caption: 'Custom wood wall paneling with marble inset and white lacquer sideboard — architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork14.webp', caption: 'Custom walnut bedside table with glass top and leather drawer fronts — bespoke bedroom millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork15.webp', caption: 'Custom oak entertainment wall with slat paneling and stone fireplace surround — luxury millwork by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork16.webp', caption: 'Custom circular wood porthole feature wall with floating shelves and LED slat paneling — bespoke millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork17.webp', caption: 'Custom oak and white lacquer credenza with glass top — bespoke millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork18.webp', caption: 'Floor-to-ceiling walnut wood wall paneling in luxury bedroom — architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork19.webp', caption: 'Custom laundry room cabinetry in greige with brass hardware — built-in millwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork20.webp', caption: 'Custom wood slat wall paneling with integrated LED lighting — architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork21.webp', caption: 'Custom built-in black bookcase with LED shelving and wood slat accent wall — home office millwork by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork22.webp', caption: 'Custom wood slat entertainment wall with diamond wine rack and wet bar — luxury millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork23.webp', caption: 'Custom dark navy wet bar with black sliding barn door and marble countertop — architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork24.webp', caption: 'Full room custom wood slat wall paneling with integrated lighting — luxury residential millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork25.webp', caption: 'Luxury living room with custom walnut wood slat walls and floating TV unit — architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork26.webp', caption: 'Custom black built-in cabinet with wood slat accent wall in home gym — residential millwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork27.webp', caption: 'Custom oak built-in bar cabinet with sunburst carved door panel and backlit onyx stone — signature millwork by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork28.webp', caption: 'Floor-to-ceiling custom wood slat wall with backlit onyx stone columns — luxury architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork29.webp', caption: 'Custom wood wall paneling with marble inset and white lacquer sideboard — architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork30.webp', caption: 'Custom walnut bedside table with glass top and leather drawer fronts — bespoke bedroom millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork31.webp', caption: 'Custom oak entertainment wall with slat paneling and stone fireplace surround — luxury millwork by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/camas1.webp', caption: 'Custom built-in bed frame and bedroom millwork — luxury residential woodwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/camas2.webp', caption: 'Custom built-in bed frame and bedroom millwork — luxury residential woodwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/camas3.webp', caption: 'Custom built-in bed frame and bedroom millwork — luxury residential woodwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/camas4.webp', caption: 'Custom built-in bed frame and bedroom millwork — luxury residential woodwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/camas5.webp', caption: 'Custom built-in bed frame and bedroom millwork — luxury residential woodwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Portas1.webp', caption: 'Custom dark walnut stained interior doors with arched panels — door millwork by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Portas2.webp', caption: 'Custom mahogany double entry door with circular carved design and stained glass inserts — luxury door millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Portas3.webp', caption: 'Custom dark wood double entry door with hand-carved floral detail — architectural door millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Portas4.webp', caption: 'Custom matte black double interior door with raised panel design — contemporary door millwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Portas5.webp', caption: 'Custom mahogany six-panel front door with decorative glass sidelights — residential door millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Portas6.webp', caption: 'Custom dark mahogany double entry door with circular frosted glass — luxury door millwork by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Portas7.webp', caption: 'Custom dark wood double French door with full glass panels — exterior door millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Portas8.webp', caption: 'Custom white six-panel double front door with black hardware — residential door installation by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Portas9.webp', caption: 'Custom black six-panel exterior front door with brass hardware on brick facade — door refinishing by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Portas10.webp', caption: 'Custom mahogany raised-panel garage doors on Mediterranean-style Florida home — exterior wood millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/WallUnit1.webp', caption: 'Custom dark gray display cabinet with glass doors and brass hardware — built-in wall unit by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/WallUnit2.webp', caption: 'Custom floor-to-ceiling black and walnut entertainment wall unit with LED shelving — luxury built-in millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/WallUnit3.webp', caption: 'Custom matte black built-in entertainment center with electric fireplace and LED backlit shelves — residential millwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/WallUnit6.webp', caption: 'Custom black and oak wall unit with integrated TV niche and LED open shelving — built-in millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/WallUnit7.webp', caption: 'Custom walnut floor-to-ceiling built-in bookcase with black floating shelves — architectural millwork by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/WallUnit8.webp', caption: 'Custom light oak TV wall panel with integrated LED strip lighting and floating shelves — contemporary built-in millwork by Brandt Wood Finishing, Winter Garden FL' }
+      ])
     },
     cabinetry: {
       title: 'Custom Cabinetry <em>&amp; Built-ins</em>',
-      slides: [
-        { src: 'https://d2xsxph8kpxj0f.cloudfront.net/310419663028612252/5jQck5FxQnVDEd3zqjBp6U/bwf_hero_v2-euz2GTcnVh3eFp7a9GiSFn.webp',  caption: 'Kitchen Cabinets · Custom Cabinetry' },
-        { src: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1920&q=90&fit=crop&auto=format',   caption: 'Bathroom Vanities · Custom Cabinetry' },
-        { src: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&q=90&fit=crop&auto=format', caption: 'Built-ins · Entertainment & Storage' },
-        { src: 'https://images.unsplash.com/photo-1558997519-83ea9252edf8?w=1920&q=90&fit=crop&auto=format',   caption: 'Walk-in Closets · Custom Cabinetry' },
-      ]
+      slides: shuffle([
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Banheiros1.webp', caption: 'Custom bathroom vanity with marble countertop and integrated lighting — built-in cabinetry by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Banheiros2.webp', caption: 'Luxury master bathroom vanity with double sinks and custom wood cabinetry — Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Banheiros3.webp', caption: 'Custom bathroom built-ins with frameless cabinets and brushed gold hardware — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Banheiros4.webp', caption: 'Floor-to-ceiling bathroom storage cabinet with integrated mirror — custom cabinetry by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Banheiros5.webp', caption: 'Custom floating bathroom vanity with quartz top and wood grain finish — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Banheiros6.webp', caption: 'Spa-style bathroom with custom wood cabinetry and stone countertop — Brandt Wood Finishing, Orlando FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Banheiros7.webp', caption: 'Custom his-and-hers bathroom vanity with soft-close drawers — luxury cabinetry by Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Banheiros8.webp', caption: 'Bathroom niche and built-in shelving with custom wood detailing — Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Closet1.webp', caption: 'Custom walk-in closet with island and floor-to-ceiling built-ins — luxury cabinetry by Brandt Wood Finishing, Winter Garden FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Closet2.webp', caption: 'Custom his-and-hers walk-in closet with LED lighting and velvet-lined drawers — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Closet3.webp', caption: 'Luxury walk-in closet with custom wood shelving and integrated mirror — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Closet4.webp', caption: 'Custom closet built-ins with glass-front display cabinets — Brandt Wood Finishing, Orlando FL' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas1.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas2.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas3.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas4.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas5.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas6.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas7.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas8.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas9.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas10.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas11.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas12.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas13.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas14.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas15.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas16.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas17.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas18.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas19.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas20.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas21.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas22.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas23.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas24.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas25.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas26.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas27.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas28.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Cozinhas29.webp', caption: 'Custom kitchen cabinetry with premium hardware and finishes — Brandt Wood Finishing, Central Florida' }
+      ])
     },
     restoration: {
       title: 'Antique Furniture <em>Restoration</em>',
-      slides: [
-        { src: 'https://images.unsplash.com/photo-1617042375876-a13e36732a04?w=1920&q=90&fit=crop&auto=format', caption: 'Refinishing · Surface Restoration' },
-        { src: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1920&q=90&fit=crop&auto=format',  caption: 'Antique Restoration · Period Furniture' },
-        { src: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1920&q=90&fit=crop&auto=format',  caption: 'Structural Repairs · Expert Restoration' },
-        { src: 'https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1920&q=90&fit=crop&auto=format',   caption: 'Antique Pieces · Heritage Collection' },
-      ]
+      slides: shuffle([
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture1.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture2.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture3.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture4.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture5.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture6.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture7.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture8.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture9.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture10.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture11.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture12.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture13.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture14.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture15.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture16.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture17.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture18.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture19.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture20.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture21.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture22.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture23.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture24.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture25.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture26.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture27.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture28.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture29.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture30.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture31.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture32.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture33.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture34.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture35.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture36.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture37.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture38.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture39.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture40.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture41.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture42.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture43.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture44.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture45.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture46.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture47.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture48.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture49.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture50.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture51.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture52.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture53.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture54.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture55.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture56.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture57.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture58.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture59.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture60.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture61.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture62.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture63.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture64.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture65.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture66.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture67.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture68.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture69.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture70.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture71.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture72.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture73.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture74.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture75.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture76.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture77.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture78.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/Furniture79.webp', caption: 'Antique furniture restoration and refinishing — expert woodwork by Brandt Wood Finishing, Central Florida' }
+      ])
     },
     upholstery: {
       title: 'Fine <em>Upholstery</em>',
-      slides: [
-        { src: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1920&q=90&fit=crop&auto=format',   caption: 'Furniture · Bespoke Upholstery' },
-        { src: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1920&q=90&fit=crop&auto=format',   caption: 'Headboards · Luxury Bedroom' },
-        { src: 'https://images.unsplash.com/photo-1540638349517-3a5d57898164?w=1920&q=90&fit=crop&auto=format',      caption: 'Custom Pieces · Fine Upholstery' },
-        { src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&q=90&fit=crop&auto=format',  caption: 'Commercial Upholstery · Hospitality' },
-      ]
+      slides: shuffle([
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery1.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery2.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery3.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery4.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery5.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery6.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery7.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery8.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery9.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery10.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery11.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery12.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery13.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery14.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery15.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery16.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery17.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery18.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery19.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery20.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery21.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery22.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery23.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery24.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery25.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery26.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery27.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery28.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery29.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' },
+        { src: 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/FineUpholstery30.webp', caption: 'Custom fine upholstery with premium fabrics — Brandt Wood Finishing, Florida' }
+      ])
     }
   };
+
+  // ── POPULATE OPENING GRID with random real photos ──
+  function populateGrid() {
+    var catLabels = {
+      millwork:    'Custom Millwork',
+      cabinetry:   'Custom Cabinetry',
+      restoration: 'Antique Restoration',
+      upholstery:  'Fine Upholstery'
+    };
+
+    // Build flat pool tagging each slide with its category
+    var pool = [];
+    Object.keys(PORTFOLIO).forEach(function(cat) {
+      PORTFOLIO[cat].slides.forEach(function(slide) {
+        pool.push({ src: slide.src, caption: slide.caption, category: cat });
+      });
+    });
+
+    // Shuffle and pick 5
+    shuffle(pool);
+    var picks = pool.slice(0, 5);
+
+    // Inject into grid items
+    var items = document.querySelectorAll('#pfGrid .pf-item');
+    picks.forEach(function(pick, i) {
+      if (!items[i]) return;
+      var img   = items[i].querySelector('img');
+      var label = items[i].querySelector('.pf-label');
+      var sub   = items[i].querySelector('.pf-sub');
+
+      // Short label: text before the em dash in the caption
+      var shortLabel = (pick.caption.split(' \u2014 ')[0] || pick.caption);
+      if (shortLabel.length > 52) shortLabel = shortLabel.substring(0, 49) + '\u2026';
+
+      img.src = pick.src;
+      img.alt = pick.caption;
+      img.removeAttribute('crossorigin');
+      img.removeAttribute('referrerpolicy');
+      if (label) label.textContent = shortLabel;
+      if (sub)   sub.textContent   = catLabels[pick.category] + ' \u00B7 Brandt Wood Finishing';
+    });
+  }
+  populateGrid();
 
   var lbState = { category: null, current: 0, slides: [] };
 
