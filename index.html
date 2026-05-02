@@ -2,6 +2,8 @@
 
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -504,28 +506,6 @@ a{text-decoration:none;color:inherit}
 .why-feat-title{font-family:var(--serif);font-size:1.1rem;color:var(--white);margin-bottom:.2rem;font-weight:500}
 .why-feat-desc{font-size:.77rem;color:var(--gray-l);line-height:1.85}
 
-/* ── TESTIMONIALS ── */
-#testimonials{padding:8rem 5%;background:var(--black-2)}
-.ts-inner{max-width:1200px;margin:0 auto}
-.ts-header{text-align:center;margin-bottom:4.5rem}
-.ts-header .rule{margin:0 auto 1.6rem}
-.ts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-.ts-card{background:var(--black-3);padding:2.8rem;transition:background .3s}
-.ts-card:hover{background:var(--black-4)}
-.ts-stars{color:var(--gold);font-size:.75rem;letter-spacing:.08em;margin-bottom:1.3rem}
-.ts-quote{
-  font-family:var(--serif);font-size:1rem;font-weight:300;
-  font-style:italic;color:var(--white-2);line-height:1.8;margin-bottom:1.8rem;
-}
-.ts-author{display:flex;align-items:center;gap:1rem}
-.ts-avatar{
-  width:42px;height:42px;border-radius:50%;
-  background:var(--gold-d);display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-size:1.1rem;color:var(--black);flex-shrink:0;
-}
-.ts-name{font-size:.78rem;font-weight:500;color:var(--white);display:block}
-.ts-role{font-size:.63rem;letter-spacing:.1em;color:var(--gray)}
-
 /* ── AREA ── */
 #area{padding:8rem 5%;background:var(--black)}
 .area-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:7rem;align-items:center}
@@ -698,7 +678,7 @@ a{text-decoration:none;color:inherit}
   <a href="#services" onclick="closeMob()">Services</a>
   <a href="#portfolio" onclick="closeMob()">Portfolio</a>
   <a href="#why" onclick="closeMob()">About</a>
-  <a href="#testimonials" onclick="closeMob()">Reviews</a>
+
   <a href="#area" onclick="closeMob()">Service Area</a>
   <a href="#contact" onclick="closeMob()" style="color:var(--gold)">Get a Quote</a>
 </div>
@@ -710,7 +690,7 @@ a{text-decoration:none;color:inherit}
     <li><a href="#services">Services</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
     <li><a href="#why">About</a></li>
-    <li><a href="#testimonials">Reviews</a></li>
+
     <li><a href="#area">Service Area</a></li>
     <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
   </ul>
@@ -900,33 +880,6 @@ a{text-decoration:none;color:inherit}
 </section>
 
 <!-- ═══ TESTIMONIALS ═══ -->
-<section id="testimonials">
-  <div class="ts-inner">
-    <div class="ts-header reveal">
-      <p class="eyebrow">Client Stories</p>
-      <div class="rule"></div>
-      <h2 class="sec-title">What Our Clients <em>Say</em></h2>
-    </div>
-    <div class="ts-grid stagger-group">
-      <article class="ts-card stagger-item">
-        <div class="ts-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <blockquote class="ts-quote">&ldquo;BWF built a complete library wall and fireplace mantel for our home in Windermere. Lucas was meticulous from the first sketch to the final coat. The result exceeded everything we imagined.&rdquo;</blockquote>
-        <div class="ts-author"><div class="ts-avatar">R</div><div><span class="ts-name">Robert &amp; Claire H.</span><span class="ts-role">Homeowners &middot; Windermere, FL</span></div></div>
-      </article>
-      <article class="ts-card stagger-item">
-        <div class="ts-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <blockquote class="ts-quote">&ldquo;I specify BWF on every high-end residential project in the Dr. Phillips area. Their ability to execute complex architectural millwork on schedule — without compromise — makes them my first call every time.&rdquo;</blockquote>
-        <div class="ts-author"><div class="ts-avatar">A</div><div><span class="ts-name">Amanda S.</span><span class="ts-role">Interior Designer &middot; Dr. Phillips, FL</span></div></div>
-      </article>
-      <article class="ts-card stagger-item">
-        <div class="ts-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <blockquote class="ts-quote">&ldquo;We brought in BWF to restore a set of Victorian dining chairs that had been in my family for three generations. The restoration was so precise that even our antique dealer was impressed.&rdquo;</blockquote>
-        <div class="ts-author"><div class="ts-avatar">T</div><div><span class="ts-name">Thomas W.</span><span class="ts-role">Collector &middot; Celebration, FL</span></div></div>
-      </article>
-    </div>
-  </div>
-</section>
-
 <!-- ═══ SERVICE AREA ═══ -->
 <section id="area">
   <div style="max-width:1200px;margin:0 auto;padding:0 5%;">
@@ -1258,6 +1211,9 @@ a{text-decoration:none;color:inherit}
         <a aria-label='Frequently Asked Questions' class='fo-soc' href='/faq' title='FAQ'>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c9a84c" stroke-width="1.3"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" stroke="#c9a84c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="17" r=".5" fill="#c9a84c" stroke="#c9a84c" stroke-width="1"/></svg>
         </a>
+        <a aria-label='Client Reviews' class='fo-soc' href='/reviews' title='Client Reviews'>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="#c9a84c" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </a>
       </div>
     </div>
     <div>
@@ -1274,7 +1230,7 @@ a{text-decoration:none;color:inherit}
       <ul class="fo-links">
         <li><a href="#why">About BWF</a></li>
         <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#testimonials">Client Reviews</a></li>
+        <li><a href="/reviews">Client Reviews</a></li>
         <li><a href="#area">Service Area</a></li>
       </ul>
     </div>
