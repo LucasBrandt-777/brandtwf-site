@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XZQ389ZLRW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XZQ389ZLRW');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Reviews | Brandt Wood Finishing | Winter Garden, FL</title>
+<meta name="description" content="Read what homeowners, designers and contractors say about Brandt Wood Finishing. Custom millwork and woodwork in Central Florida since 1985.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.brandtwf.com/reviews">
+<meta property="og:title" content="Client Reviews | Brandt Wood Finishing">
+<meta property="og:description" content="What homeowners and designers say about BWF custom millwork in Central Florida.">
+<meta property="og:url" content="https://www.brandtwf.com/reviews">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0a0a0a">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0a0a0a;--black-2:#0f0f0f;--black-3:#141414;--black-4:#1a1a1a;
+  --gold:#c9a84c;--gold-d:#a8893e;--white:#f5f0e8;--white-2:#e0d8cc;
+  --gray:#8a8278;--gray-l:#a09890;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Montserrat',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+#nav{
+  position:fixed;top:0;left:0;width:100%;z-index:900;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.4rem 5%;background:rgba(10,10,10,.92);
+  backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,.08);
+}
+.nav-logo{
+  font-family:var(--serif);font-size:1.1rem;font-weight:600;
+  letter-spacing:.06em;color:var(--white);text-decoration:none;
+  display:flex;flex-direction:column;line-height:1.15;
+}
+.nav-logo span{font-size:.55rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-top:.15rem}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links a{font-size:.65rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gray-l);text-decoration:none;transition:color .25s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{
+  font-size:.62rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(201,168,76,.4);padding:.55rem 1.2rem;
+  text-decoration:none;transition:background .25s,border-color .25s;
+}
+.nav-cta:hover{background:rgba(201,168,76,.08);border-color:var(--gold)}
+
+/* ── HERO STRIP ── */
+.rv-hero{
+  padding:10rem 5% 5rem;background:var(--black-2);
+  border-bottom:1px solid rgba(201,168,76,.08);
+}
+.rv-hero-inner{max-width:900px}
+.eyebrow{
+  font-size:.62rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.2rem;display:block;
+}
+.rv-hero h1{
+  font-family:var(--serif);font-size:clamp(2.2rem,5vw,3.8rem);
+  font-weight:400;line-height:1.15;color:var(--white);margin-bottom:1.4rem;
+}
+.rv-hero h1 em{font-style:italic;color:var(--gold)}
+.rv-hero p{font-size:.82rem;color:var(--gray-l);line-height:2;max-width:580px}
+
+/* ── GOOGLE CTA ── */
+.gmb-band{
+  background:var(--black-3);padding:4rem 5%;
+  border-bottom:1px solid rgba(201,168,76,.08);
+}
+.gmb-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.gmb-text h2{font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--white);margin-bottom:.5rem}
+.gmb-text p{font-size:.78rem;color:var(--gray-l);line-height:1.85;max-width:480px}
+.btn-gold{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--gold);color:var(--black);
+  font-size:.62rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  padding:.85rem 2rem;text-decoration:none;transition:background .25s,transform .2s;flex-shrink:0;
+}
+.btn-gold:hover{background:var(--gold-d);transform:translateY(-1px)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:.6rem;
+  border:1px solid rgba(201,168,76,.4);color:var(--gold);
+  font-size:.62rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  padding:.85rem 2rem;text-decoration:none;transition:background .25s,border-color .25s;
+}
+.btn-ghost:hover{background:rgba(201,168,76,.06);border-color:var(--gold)}
+
+/* ── TESTIMONIALS ── */
+#testimonials{padding:7rem 5%;background:var(--black-2)}
+.ts-inner{max-width:1200px;margin:0 auto}
+.ts-header{text-align:center;margin-bottom:4.5rem}
+.ts-header .rule{
+  width:32px;height:1px;background:var(--gold);margin:.8rem auto 1.6rem;display:block;
+}
+.ts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.ts-card{background:var(--black-3);padding:2.8rem;transition:background .3s}
+.ts-card:hover{background:var(--black-4)}
+.ts-stars{color:var(--gold);font-size:.75rem;letter-spacing:.08em;margin-bottom:1.3rem}
+.ts-quote{
+  font-family:var(--serif);font-size:1rem;font-weight:300;
+  font-style:italic;color:var(--white-2);line-height:1.8;margin-bottom:1.8rem;
+}
+.ts-author{display:flex;align-items:center;gap:1rem}
+.ts-avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--gold-d);display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:1.1rem;color:var(--black);flex-shrink:0;
+}
+.ts-name{font-size:.78rem;font-weight:500;color:var(--white);display:block}
+.ts-role{font-size:.63rem;letter-spacing:.1em;color:var(--gray)}
+
+/* ── SECOND CTA ── */
+.rv-cta{
+  padding:6rem 5%;background:var(--black);text-align:center;
+  border-top:1px solid rgba(201,168,76,.08);
+}
+.rv-cta h2{font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--white);margin-bottom:.8rem}
+.rv-cta p{font-size:.78rem;color:var(--gray-l);margin-bottom:2.2rem}
+.rv-cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* ── FOOTER (strip) ── */
+#footer-strip{
+  background:#070707;padding:2rem 5%;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+  border-top:1px solid rgba(201,168,76,.08);
+}
+.fo-copy{font-size:.6rem;letter-spacing:.08em;color:var(--gray)}
+.fo-back{
+  font-size:.62rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:.5rem;
+  transition:opacity .25s;
+}
+.fo-back:hover{opacity:.75}
+
+/* ── RESPONSIVE ── */
+@media(max-width:800px){
+  .ts-grid{grid-template-columns:1fr}
+  .gmb-inner{flex-direction:column;align-items:flex-start}
+  .nav-links,.nav-cta{display:none}
+  .rv-cta-btns{flex-direction:column;align-items:center}
+}
+@media(max-width:600px){
+  .rv-hero{padding:8rem 5% 3.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <a href="/" class="nav-logo">Brandt Wood Finishing<span>Custom Millwork &amp; Woodwork</span></a>
+  <ul class="nav-links">
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/#portfolio">Portfolio</a></li>
+    <li><a href="/#why">About</a></li>
+    <li><a href="/#area">Service Area</a></li>
+  </ul>
+  <a href="/#contact" class="nav-cta">Get a Quote</a>
+</nav>
+
+<!-- ═══ HERO STRIP ═══ -->
+<div class="rv-hero">
+  <div class="rv-hero-inner">
+    <span class="eyebrow">Client Stories</span>
+    <h1>What Our Clients <em>Say</em></h1>
+    <p>Over four decades crafting custom millwork across Central Florida. These are the people we had the privilege of working with.</p>
+  </div>
+</div>
+
+<!-- ═══ GOOGLE REVIEWS CTA ═══ -->
+<div class="gmb-band">
+  <div class="gmb-inner">
+    <div class="gmb-text">
+      <h2>Working with us? Leave a review.</h2>
+      <p>Your feedback helps other homeowners and designers make confident decisions. If BWF delivered for you, a Google review means everything to us.</p>
+    </div>
+    <a href="https://g.page/r/YOUR_GMB_REVIEW_LINK/review" target="_blank" rel="noopener" class="btn-gold">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="currentColor"/></svg>
+      Review on Google
+    </a>
+  </div>
+</div>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="testimonials">
+  <div class="ts-inner">
+    <div class="ts-header">
+      <p class="eyebrow">From Our Clients</p>
+      <span class="rule"></span>
+      <h2 style="font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:400;color:var(--white)">Selected <em style="font-style:italic;color:var(--gold)">Testimonials</em></h2>
+    </div>
+    <div class="ts-grid">
+      <article class="ts-card">
+        <div class="ts-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote class="ts-quote">&ldquo;BWF built a complete library wall and fireplace mantel for our home in Windermere. Lucas was meticulous from the first sketch to the final coat. The result exceeded everything we imagined.&rdquo;</blockquote>
+        <div class="ts-author"><div class="ts-avatar">R</div><div><span class="ts-name">Robert &amp; Claire H.</span><span class="ts-role">Homeowners &middot; Windermere, FL</span></div></div>
+      </article>
+      <article class="ts-card">
+        <div class="ts-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote class="ts-quote">&ldquo;I specify BWF on every high-end residential project in the Dr. Phillips area. Their ability to execute complex architectural millwork on schedule — without compromise — makes them my first call every time.&rdquo;</blockquote>
+        <div class="ts-author"><div class="ts-avatar">A</div><div><span class="ts-name">Amanda S.</span><span class="ts-role">Interior Designer &middot; Dr. Phillips, FL</span></div></div>
+      </article>
+      <article class="ts-card">
+        <div class="ts-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote class="ts-quote">&ldquo;We brought in BWF to restore a set of Victorian dining chairs that had been in my family for three generations. The restoration was so precise that even our antique dealer was impressed.&rdquo;</blockquote>
+        <div class="ts-author"><div class="ts-avatar">T</div><div><span class="ts-name">Thomas W.</span><span class="ts-role">Collector &middot; Celebration, FL</span></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECOND CTA ═══ -->
+<div class="rv-cta">
+  <h2>Ready to start your project?</h2>
+  <p>Custom millwork, cabinetry, restoration and upholstery across Florida since 1985.</p>
+  <div class="rv-cta-btns">
+    <a href="/#contact" class="btn-gold">Request a Free Quote</a>
+    <a href="/#portfolio" class="btn-ghost">View Our Portfolio</a>
+  </div>
+</div>
+
+<!-- ═══ FOOTER STRIP ═══ -->
+<div id="footer-strip">
+  <span class="fo-copy">&copy; 2026 Brandt Wood Finishing &nbsp;&middot;&nbsp; Winter Garden, FL &nbsp;&middot;&nbsp; Excellence since 1985</span>
+  <a href="/" class="fo-back">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to Main Site
+  </a>
+</div>
+
+</body>
+</html>
