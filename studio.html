@@ -6,7 +6,7 @@
 <title>BWF Content Studio</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--gold:#c9a84c;--blue:#4a7fa5;--fb:#1877f2;--bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#242424;--border:#2a2a2a;--text:#e8e0d4;--text2:#9a9288;--text3:#5a5450;--r:8px;--rl:12px}
+:root{--gold:#c9a84c;--fb:#1877f2;--bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#242424;--border:#2a2a2a;--text:#e8e0d4;--text2:#9a9288;--text3:#5a5450;--r:8px;--rl:12px}
 body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;min-height:100vh}
 #setup{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;padding:24px}
 .sc{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:32px;width:100%;max-width:420px}
@@ -33,12 +33,12 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .tab{flex:1;padding:9px;font-size:13px;background:transparent;border:none;cursor:pointer;color:var(--text2);border-right:0.5px solid var(--border)}
 .tab:last-child{border-right:none}
 .tab.on{background:var(--bg2);color:var(--text);font-weight:500}
-.platform-row{display:flex;gap:0;border:0.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
-.plat-btn{flex:1;padding:8px;font-size:12px;font-weight:500;background:transparent;border:none;cursor:pointer;color:var(--text2);border-right:0.5px solid var(--border);transition:background 0.15s}
-.plat-btn:last-child{border-right:none}
-.plat-btn.on-ig{background:rgba(201,168,76,0.12);color:var(--gold)}
-.plat-btn.on-fb{background:rgba(24,119,242,0.12);color:#6aa3e8}
-.plat-btn.on-both{background:var(--bg2);color:var(--text)}
+.platform-row{display:flex;border:0.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.pb2{flex:1;padding:8px;font-size:12px;font-weight:500;background:transparent;border:none;cursor:pointer;color:var(--text2);border-right:0.5px solid var(--border)}
+.pb2:last-child{border-right:none}
+.pb2.on-ig{background:rgba(201,168,76,0.12);color:var(--gold)}
+.pb2.on-fb{background:rgba(24,119,242,0.12);color:#6aa3e8}
+.pb2.on-both{background:var(--bg2);color:var(--text)}
 .pb{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--r);font-size:12px;font-weight:500;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border);margin-bottom:14px}
 .pdot{width:6px;height:6px;border-radius:50%}
 .pf{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:20px;margin-bottom:12px;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
@@ -56,12 +56,12 @@ input[type=checkbox]{accent-color:var(--gold);cursor:pointer}
 .gbtn.dim{font-weight:400;opacity:0.55;font-size:12px}
 .gbtn.gold{border-color:var(--gold);color:var(--gold)}
 .gbtn.gold:hover{background:rgba(201,168,76,0.08)}
-.plat-section{margin-bottom:16px}
-.plat-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid var(--border)}
-.plat-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
-.plat-icon.ig{background:rgba(201,168,76,0.15)}
-.plat-icon.fb{background:rgba(24,119,242,0.15)}
-.plat-header-label{font-size:12px;font-weight:500;color:var(--text2)}
+.plat-sec{margin-bottom:16px}
+.plat-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid var(--border)}
+.plat-ico{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.plat-ico.ig{background:rgba(201,168,76,0.15)}
+.plat-ico.fb{background:rgba(24,119,242,0.15)}
+.plat-hdr-lbl{font-size:12px;font-weight:500;color:var(--text2)}
 .cc{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:13px 15px;margin-bottom:10px}
 .cl{font-size:11px;font-weight:500;letter-spacing:0.05em;color:var(--text2);text-transform:uppercase;margin-bottom:7px}
 .ct{font-size:13px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;min-height:50px;outline:none;border-bottom:0.5px solid var(--border);padding-bottom:6px}
@@ -80,10 +80,9 @@ input[type=checkbox]{accent-color:var(--gold);cursor:pointer}
 .qm{flex:1;min-width:0}
 .qn{font-size:13px;font-weight:500}
 .qc{font-size:12px;color:var(--text2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.plat-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:500;margin-left:6px}
+.plat-pill{display:inline-flex;align-items:center;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:500;margin-left:6px}
 .plat-pill.ig{background:rgba(201,168,76,0.15);color:var(--gold)}
 .plat-pill.fb{background:rgba(24,119,242,0.12);color:#6aa3e8}
-.plat-pill.both{background:var(--bg3);color:var(--text2)}
 .exb{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:10px}
 .exc{font-family:monospace;font-size:11px;line-height:1.5;color:var(--text2);white-space:pre-wrap;word-break:break-all;max-height:220px;overflow-y:auto}
 .empty{padding:28px;text-align:center;color:var(--text2);font-size:13px}
@@ -96,18 +95,16 @@ input[type=checkbox]{accent-color:var(--gold);cursor:pointer}
 </style>
 </head>
 <body>
-
 <div id="setup">
   <div class="sc">
     <div class="sc-logo"><div class="gold-dot"></div><span class="sc-title">BWF Content Studio</span></div>
-    <p class="sc-sub">Enter your Anthropic API key to activate the caption engine. Stored only in your browser — never shared.</p>
+    <p class="sc-sub">Enter your Anthropic API key to activate the caption engine. Stored only in your browser.</p>
     <label class="sc-lbl" for="api-in">Anthropic API Key</label>
     <input id="api-in" class="sc-in" type="password" placeholder="sk-ant-..." autocomplete="off">
     <button class="sc-btn" onclick="startApp()">Start Studio</button>
     <p class="sc-note">Get your key at console.anthropic.com &rarr; API Keys. Saved in localStorage on this device only.</p>
   </div>
 </div>
-
 <div id="app">
   <div class="hdr">
     <div class="gold-dot"></div>
@@ -115,25 +112,22 @@ input[type=checkbox]{accent-color:var(--gold);cursor:pointer}
     <span class="hdr-sub" id="hdr-sub">Loading...</span>
     <button class="hdr-cfg" onclick="resetKey()" title="Change API key">&#9881;</button>
   </div>
-
   <div class="stats">
-    <div class="st"><div class="st-n" id="s-tot">183</div><div class="st-l">total photos</div></div>
+    <div class="st"><div class="st-n" id="s-tot">214</div><div class="st-l">total photos</div></div>
     <div class="st"><div class="st-n" id="s-used">0</div><div class="st-l">used</div></div>
     <div class="st"><div class="st-n" id="s-q">0</div><div class="st-l">approved</div></div>
-    <div class="st"><div class="st-n" id="s-rem">183</div><div class="st-l">remaining</div></div>
+    <div class="st"><div class="st-n" id="s-rem">214</div><div class="st-l">remaining</div></div>
   </div>
-
   <div class="tabs">
     <button class="tab on" onclick="sw('generate')">Generate</button>
     <button class="tab" onclick="sw('queue')">Queue</button>
     <button class="tab" onclick="sw('export')">Export</button>
   </div>
-
   <div id="t-gen">
     <div class="platform-row">
-      <button class="plat-btn on-ig" id="pb-ig" onclick="setPlatform('instagram')">&#x1F4F7; Instagram</button>
-      <button class="plat-btn" id="pb-fb" onclick="setPlatform('facebook')">&#x1F4C4; Facebook</button>
-      <button class="plat-btn" id="pb-both" onclick="setPlatform('both')">&#x2699; Both</button>
+      <button class="pb2 on-ig" id="pb-ig" onclick="setPlatform('instagram')">&#x1F4F7; Instagram</button>
+      <button class="pb2" id="pb-fb" onclick="setPlatform('facebook')">&#x1F4C4; Facebook</button>
+      <button class="pb2" id="pb-both" onclick="setPlatform('both')">&#x2699; Both</button>
     </div>
     <div class="pb"><span class="pdot" id="pdot" style="background:#c9a84c"></span><span id="plabel">Loading...</span></div>
     <div class="pf" id="pf"><div class="dots"><div class="d"></div><div class="d"></div><div class="d"></div></div></div>
@@ -142,13 +136,10 @@ input[type=checkbox]{accent-color:var(--gold);cursor:pointer}
     <button class="gbtn dim" onclick="skip()">Skip &mdash; pick another photo</button>
     <div id="cout"></div>
   </div>
-
   <div id="t-queue" style="display:none"><div id="qlist"></div></div>
   <div id="t-export" style="display:none"><div id="econtent"></div></div>
 </div>
-
 <div id="toast"></div>
-
 <script>
 const CAT={
   restoration:[
@@ -220,8 +211,36 @@ const CAT={
     {id:'1Fbj1rFgdOKNLj4Lwm5OlQK0F6LAAkNet',n:'WallUnit1.jpg'},{id:'1zF7Otr44HDmh_HqtGB4jQ_VwZu8raz0V',n:'WallUnit2.jpg'},
     {id:'1n3LQJQHWXXPd-FYgrDUH8Ttv41HKs0Eb',n:'WallUnit3.jpg'},{id:'1eN-Mt3RO8hyGuODwakuRq0nVmJkumedb',n:'WallUnit6.jpg'},
     {id:'1H5iiLhh7tbFeL-P9toytyxk2j6mDeNqp',n:'WallUnit7.jpg'},{id:'17HKJwstagw2eQj-OBHRCT91JGlnG0LTT',n:'WallUnit8.jpg'},
-    {id:'1mQfyzEm8otQzlerQDic29lA4Mpj0Im31',n:'Portas1.jpg'},{id:'135z9R1i-gNSp91oT5UH-fPU2vpvjIBnD',n:'Portas4.jpg'},
-    {id:'17C5Wj_GvtC_tE-JIdWe7pt3DBYGPvHKV',n:'Portas9.jpg'},{id:'1STQbl67SPetStwF3jaHXWmyOfzWudRmw',n:'Portas10.jpg'}
+    {id:'1mQfyzEm8otQzlerQDic29lA4Mpj0Im31',n:'Portas1.jpg'},{id:'1yL4EbD2QoRkZnu39Dcx56MGyXKNke7wE',n:'Portas2.jpg'},
+    {id:'1YDqK9dsaLAkTa05gvnQjgr6ZEv4vzf8D',n:'Portas3.jpg'},{id:'135z9R1i-gNSp91oT5UH-fPU2vpvjIBnD',n:'Portas4.jpg'},
+    {id:'1NcYQsCVSYo5RwkGSbPi_NSS3vcaxyENa',n:'Portas5.jpg'},{id:'1Z6hlvqF7rBoq_ObxUkfqzp_UxAhmCA0-',n:'Portas6.jpg'},
+    {id:'1v-SkaQaMCWzGEoejYyXkhIzNI2BN-fKQ',n:'Portas7.jpg'},{id:'1boMsmWdofIB9mYO8fUgQfv8jvk7vZ3i_',n:'Portas8.jpg'},
+    {id:'17C5Wj_GvtC_tE-JIdWe7pt3DBYGPvHKV',n:'Portas9.jpg'},{id:'1STQbl67SPetStwF3jaHXWmyOfzWudRmw',n:'Portas10.jpg'},
+    {id:'1Qk5baMeifbNXFmbUZGjWKScI1jn6GJt9',n:'MillWork1.jpg'},{id:'10xWvt2DvR8SSOCQhMU8UTm1U4pmTzN0N',n:'MillWork2.jpg'},
+    {id:'1FjSihFi9kNEX5WnZ_vw5zzWVRVKSVtaM',n:'MillWork4.jpg'},{id:'1W5sTnfMC6U9mRdyYRGlpeVJrCPwoJvt6',n:'MillWork5.jpg'},
+    {id:'1XVS92AZVhWVKMRQBXsQQUIrP3t4Ez3PA',n:'MillWork6.jpg'},{id:'1q1SRDVAhUw4g8HCd7V4xvmOvxbaC-yfP',n:'MillWork7.jpg'},
+    {id:'1KzIVAfxzgaPbsnHm2RSD-jg0RaYfhDoI',n:'MillWork8.jpg'},{id:'1GeYNzPGfGy6cf4kq7K7g1yV4Ek6hMatI',n:'MillWork9.jpg'},
+    {id:'1xTr9PBHgrkhL84QjQ_GBcPMorvl_qQ2H',n:'MillWork10.jpg'},{id:'1IOYPDImDayYvfcvbxlQ9N6F1r-AzqCx7',n:'MillWork11.jpg'},
+    {id:'1QMZsIgx7C8Z0q-jed8d3k1xC5wgBj2d8',n:'MillWork12.jpg'},{id:'1qZKqLmHc1XTxMBrKxv8RCgE5jI37nn7A',n:'MillWork13.jpg'},
+    {id:'1qbQkANPEp-y1zZwIeaaaaAJQjbJTXSyT',n:'MillWork14.jpg'},{id:'1TIFfexlPgJalSzoxNtwht176Uqnq3KNz',n:'MillWork15.jpg'},
+    {id:'1ppQ2-4ZJL_UJDtF9rRzw5klYCwpRogDz',n:'MillWork16.jpg'},{id:'1WS85ajxBuAn_lK_eM-pRv9iHad4XYBwx',n:'MillWork17.jpg'},
+    {id:'1XfbECmXiUuH0_XRg6306ZdBK_YgcJD8m',n:'MillWork18.jpg'},{id:'1Y1rgACxC4TrVkE5tn0NB0RhuFwJe7ZlS',n:'MillWork19.jpg'},
+    {id:'1C7WHO-Ijayha8Wz-bHWejW_2b7JLZRQq',n:'MillWork20.jpg'},{id:'1aiKJKt2-9WwxDsctzgj9vqpec44Emgeo',n:'MillWork21.jpg'},
+    {id:'1kTvUhTYt4wzNsfu7VN7peO7QHwo1mClU',n:'MillWork22.jpg'},{id:'1fCpcVbiV2fStnZc3RSL9Enk1Rw8h3ZoH',n:'MillWork23.jpg'},
+    {id:'11lBRB86IXdFDduWRJN4XtCGaYCNVTizu',n:'MillWork24.jpg'},{id:'1CpoyrSPXR81QaPTYR7REVe8P8mah-uO6',n:'MillWork25.jpg'},
+    {id:'1PwwkDXsGm8SjDFLXhR0JEOIdJjDTkj5S',n:'MillWork26.jpg'},{id:'10UFnyPY_jqZ6_4mKxoHOqYxZ113R9mxV',n:'MillWork27.jpg'},
+    {id:'1B6M-B8U9h9w5PL8pk4DtNpQxkSg9BHlx',n:'MillWork28.jpg'},{id:'1KExdpvNb2Q3nObmXguqWAPCdzej4H8hp',n:'MillWork29.jpg'},
+    {id:'1AhdT3khovcHIOBrfeponPdt74f4Lw8y_',n:'MillWork30.jpg'},{id:'1Ahk44G79LxgJIdK2Vk5hJsfcCYsSN602',n:'MillWork31.jpg'},
+    {id:'1qNE-RzKupSmweDQFmvEAYYnPsrFb3UeX',n:'MillWork32.jpg'},{id:'1_ASIve1ninzvtUieuSAdakoaJJRTbySN',n:'MillWork33.jpg'},
+    {id:'1H3bEF9J3oK54yN-0nTqbOaJYzVAsihoJ',n:'Lareira1.jpg'},{id:'1A0_N355C-cXswfH2_Gi6j6upNEzO31Pl',n:'Lareira2.jpg'},
+    {id:'1F9QYlnOCWBEw3dGw4Zw23BKq0Fgeicqf',n:'Lareira3.jpg'},
+    {id:'1qkAo2Ixsn9LgYPljoAYxeoDhmPR3C5ia',n:'Escadas1.jpg'},{id:'1lM7scd_FnbUa8qKMR4YNvyRMeM2kEGbi',n:'Escadas2.jpg'},
+    {id:'1xLIAci_xOFbntSwQLw737AqY-IgvfgG6',n:'Escadas3.jpg'},{id:'1UsMz6eTv3nWyCcrD2IVdyCmzrLtAnewz',n:'Escadas4.jpg'},
+    {id:'1IYbYXhf077NsztjVQci1afifVqlytbx1',n:'Escadas5.jpg'},{id:'1VXZz77Lcf2Dsjjg31fPE-ZB-v08hCfXe',n:'Escadas6.jpg'},
+    {id:'1OvnVLUg-uleD7yyWXcZqXS9N5Tg6loUI',n:'Escadas7.jpg'},{id:'1YrNeTLcgqraZM7NFIAA9uXLDH2kFuzCf',n:'Escadas8.jpg'},
+    {id:'10DxtrAJSeMWGn5teh6GRd-zPiZ54Fh4U',n:'camas1.jpg'},{id:'1dMYMjYHPMiUqU2sbvOa3whesSrYQYSN5',n:'camas2.jpg'},
+    {id:'16SngUIaNzE7gn3wD60ON-PLgrHVGHEHQ',n:'camas3.jpg'},{id:'1fNA7oUr55j97QleBf_Kc5KMEghnaz6fu',n:'camas4.jpg'},
+    {id:'145e6-ArB_errdm4-Ywdd3Jwedc4TfkUJ',n:'camas5.jpg'}
   ],
   upholstery:[
     {id:'1jILYRTyCs8dPQYqANKJCAtjuUeLDaUsK',n:'FineUpholstery1.jpg'},{id:'1FDEdWzqFkep9OFMOnX_uhvA62Cgkn-h7',n:'FineUpholstery2.jpg'},
@@ -258,98 +277,9 @@ const PR=[
   {p:'process',cats:['cabinetry','restoration'],lbl:'The Process',col:'#5a8a7a'},
   {p:'transformation',cats:['restoration'],lbl:'The Transformation',col:'#8a6a47'}
 ];
-
-const SYS_IG=`You are the Instagram content writer for Brandt Wood Finishing (BWF). Founded 1985, Winter Garden FL. Custom millwork, cabinetry, antique furniture restoration, fine upholstery. Serving Orlando to Miami.
-
-VOICE — pick register:
-1. ARTISAN (default): Confident, precise, no ostentation. Work speaks.
-2. GUARDIAN: Antique restoration. Slow, contemplative, honors original maker.
-3. BUILDER: Millwork/cabinetry. Technical, functional, specific.
-
-NEVER use: passionate, quality you can trust, dream home, transform your space, stunning, beautiful, amazing, world-class, take pride, we offer, we are, we provide, dedication
-Caption NEVER starts with: "We", "Brandt", "BWF", or company name.
-
-STRUCTURE:
-HOOK (line 1): Max 10 words. ONE concrete specific detail. No rhetorical questions.
-SUBSTANCE (2-4 lines): Goes beyond what photo shows — material, technique, decision, time.
-PAYOFF (last line): Subtle CTA: "Inquiries via link in bio." or "Serving Orlando to Miami." or "Falamos português."
-[blank line]
-HASHTAGS: 8-12 tags. Always include #brandtwoodfinishing. Mix category + geographic.
-
-Output exactly two:
---- VARIATION A ---
-[caption]
-
-[hashtags]
-
---- VARIATION B ---
-[caption]
-
-[hashtags]`;
-
-const SYS_FB=`You are the Facebook content writer for Brandt Wood Finishing (BWF). Founded 1985, Winter Garden FL. Custom millwork, cabinetry, antique furniture restoration, fine upholstery. Serving Orlando to Miami.
-
-Facebook audience: homeowners 35-65, Brazilian community in FL, people who research before calling. They READ. They share when something resonates.
-
-VOICE — pick register:
-1. ARTISAN (default): Tells the craft story. Reader learns something real without feeling lectured.
-2. GUARDIAN: Antique restoration. Slower, more narrative. The piece has history and dignity.
-3. BUILDER: Millwork/cabinetry. Technical specifics, functional description.
-
-NEVER use: passionate, quality you can trust, dream home, transform your space, stunning, beautiful, amazing, world-class, take pride, we offer, we are, we provide, dedication
-Post NEVER starts with: "We", "Brandt", "BWF", or company name.
-
-STRUCTURE:
-HOOK (1-2 sentences): Opens strong. More space than Instagram — can be up to 15 words.
-STORY (2-4 paragraphs, 1-3 lines each): Tell the project story. Include ONE specific technical or historical detail the reader cannot guess from the photo.
-CTA (last line): Can be more direct than Instagram: "Send us a message." or "Inquiries via link below." or "Serving all of Florida." or "Falamos português — entre em contato."
-HASHTAGS: Maximum 2. Prefer zero. Only use #brandtwoodfinishing if using any.
-
-Output exactly two:
---- VARIATION A ---
-[post body]
-
-[0-2 hashtags or none]
-
---- VARIATION B ---
-[post body]
-
-[0-2 hashtags or none]`;
-
-const SYS_BOTH=`You are the social media content writer for Brandt Wood Finishing (BWF). Founded 1985, Winter Garden FL. Custom millwork, cabinetry, antique furniture restoration, fine upholstery. Serving Orlando to Miami.
-
-BRAND RULES (apply to both platforms):
-- NEVER use: passionate, quality you can trust, dream home, transform your space, stunning, beautiful, amazing, world-class, take pride, we offer, we provide, dedication
-- Content NEVER starts with: "We", "Brandt", "BWF", or company name
-- Three voice registers: ARTISAN (default) / GUARDIAN (restoration) / BUILDER (millwork/cabinetry)
-
-Generate content for BOTH Instagram and Facebook. Use === markers exactly as shown.
-
-=== INSTAGRAM ===
-Short and visual. Hook max 10 words. 2-4 lines body. 8-12 hashtags.
-
---- VARIATION A ---
-[caption]
-
-[hashtags]
-
---- VARIATION B ---
-[caption]
-
-[hashtags]
-
-=== FACEBOOK ===
-Narrative and story-driven. Hook up to 15 words. 2-4 paragraphs. Direct CTA. Max 2 hashtags (prefer none).
-
---- VARIATION A ---
-[post]
-
-[0-2 hashtags]
-
---- VARIATION B ---
-[post]
-
-[0-2 hashtags]`;
+const SYS_IG=`You are the Instagram content writer for Brandt Wood Finishing (BWF). Founded 1985, Winter Garden FL. Custom millwork, cabinetry, antique furniture restoration, fine upholstery. Serving Orlando to Miami.\n\nVOICE — pick register:\n1. ARTISAN (default): Confident, precise, no ostentation. Work speaks.\n2. GUARDIAN: Antique restoration. Slow, contemplative, honors original maker.\n3. BUILDER: Millwork/cabinetry. Technical, functional, specific.\n\nNEVER use: passionate, quality you can trust, dream home, transform your space, stunning, beautiful, amazing, world-class, take pride, we offer, we are, we provide, dedication\nCaption NEVER starts with: "We", "Brandt", "BWF", or company name.\n\nSTRUCTURE:\nHOOK (line 1): Max 10 words. ONE concrete specific detail. No rhetorical questions.\nSUBSTANCE (2-4 lines): Goes beyond what photo shows — material, technique, decision, time.\nPAYOFF (last line): Subtle CTA: "Inquiries via link in bio." or "Serving Orlando to Miami." or "Falamos português."\n[blank line]\nHASHTAGS: 8-12 tags. Always include #brandtwoodfinishing. Mix category + geographic.\n\nOutput exactly two:\n--- VARIATION A ---\n[caption]\n\n[hashtags]\n\n--- VARIATION B ---\n[caption]\n\n[hashtags]`;
+const SYS_FB=`You are the Facebook content writer for Brandt Wood Finishing (BWF). Founded 1985, Winter Garden FL. Custom millwork, cabinetry, antique furniture restoration, fine upholstery. Serving Orlando to Miami.\n\nFacebook audience: homeowners 35-65, Brazilian community in FL, people who research before calling. They READ.\n\nVOICE — pick register:\n1. ARTISAN (default): Tells the craft story. Reader learns something real without feeling lectured.\n2. GUARDIAN: Antique restoration. Slower, more narrative. The piece has history and dignity.\n3. BUILDER: Millwork/cabinetry. Technical specifics, functional description.\n\nNEVER use: passionate, quality you can trust, dream home, transform your space, stunning, beautiful, amazing, world-class, take pride, we offer, we are, we provide, dedication\nPost NEVER starts with: "We", "Brandt", "BWF", or company name.\n\nSTRUCTURE:\nHOOK (1-2 sentences): Opens strong. Up to 15 words.\nSTORY (2-4 paragraphs): Tell the project story. Include ONE specific technical or historical detail.\nCTA (last line): Direct: "Send us a message." or "Inquiries via link below." or "Serving all of Florida." or "Falamos português."\nHASHTAGS: Maximum 2. Prefer zero.\n\nOutput exactly two:\n--- VARIATION A ---\n[post]\n\n[0-2 hashtags]\n\n--- VARIATION B ---\n[post]\n\n[0-2 hashtags]`;
+const SYS_BOTH=`You are the social media content writer for Brandt Wood Finishing (BWF). Founded 1985, Winter Garden FL. Custom millwork, cabinetry, antique furniture restoration, fine upholstery. Serving Orlando to Miami.\n\nBRAND RULES (both platforms):\n- NEVER use: passionate, quality you can trust, dream home, transform your space, stunning, beautiful, amazing, world-class, take pride, we offer, we provide, dedication\n- Content NEVER starts with: "We", "Brandt", "BWF", or company name\n- Three voice registers: ARTISAN (default) / GUARDIAN (restoration) / BUILDER (millwork/cabinetry)\n\n=== INSTAGRAM ===\nShort and visual. Hook max 10 words. 2-4 lines body. 8-12 hashtags.\n\n--- VARIATION A ---\n[caption]\n\n[hashtags]\n\n--- VARIATION B ---\n[caption]\n\n[hashtags]\n\n=== FACEBOOK ===\nNarrative and story-driven. Hook up to 15 words. 2-4 paragraphs. Direct CTA. Max 2 hashtags.\n\n--- VARIATION A ---\n[post]\n\n[0-2 hashtags]\n\n--- VARIATION B ---\n[post]\n\n[0-2 hashtags]`;
 
 let apiKey='',used=new Set(),queue=[],pi=0,cur=null,vars=null,platform='instagram';
 
@@ -362,18 +292,14 @@ function startApp(){
   loadS();
 }
 function resetKey(){localStorage.removeItem('bwf_key');apiKey='';document.getElementById('setup').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('api-in').value='';}
-
 function setPlatform(p){
   platform=p;
-  ['ig','fb','both'].forEach(x=>{document.getElementById('pb-'+x).className='plat-btn';});
-  const cls=p==='instagram'?'on-ig':p==='facebook'?'on-fb':'on-both';
-  document.getElementById('pb-'+(p==='instagram'?'ig':p==='facebook'?'fb':'both')).className='plat-btn '+cls;
-  document.getElementById('cout').innerHTML='';
-  vars=null;
-  const btn=document.getElementById('gbtn');
-  btn.textContent=p==='both'?'Generate for Instagram + Facebook':'Generate content for this photo';
+  document.getElementById('pb-ig').className='pb2'+(p==='instagram'?' on-ig':'');
+  document.getElementById('pb-fb').className='pb2'+(p==='facebook'?' on-fb':'');
+  document.getElementById('pb-both').className='pb2'+(p==='both'?' on-both':'');
+  document.getElementById('cout').innerHTML='';vars=null;
+  document.getElementById('gbtn').textContent=p==='both'?'Generate for Instagram + Facebook':'Generate content for this photo';
 }
-
 function loadS(){
   try{const v=localStorage.getItem('bwf_used');if(v)used=new Set(JSON.parse(v))}catch(e){}
   try{const v=localStorage.getItem('bwf_queue');if(v)queue=JSON.parse(v)}catch(e){}
@@ -412,7 +338,6 @@ function renderPF(){
     <a href="${view}" class="dlink" target="_blank">View in Drive &rarr;</a>`;
 }
 function skip(){pick();}
-
 async function gen(){
   if(!cur||!apiKey)return;
   const btn=document.getElementById('gbtn');btn.disabled=true;
@@ -420,19 +345,18 @@ async function gen(){
   const pilar=PR[pi%PR.length];const bil=document.getElementById('bil').checked;
   const sys=platform==='instagram'?SYS_IG:platform==='facebook'?SYS_FB:SYS_BOTH;
   const label=platform==='instagram'?'Instagram':platform==='facebook'?'Facebook':'Instagram + Facebook';
-  document.getElementById('cout').innerHTML=`<div style="padding:24px;text-align:center;color:var(--text2);font-size:13px"><div class="dots" style="justify-content:center;margin-bottom:8px"><div class="d"></div><div class="d"></div><div class="d"></div></div>Writing ${label} content with BWF voice...</div>`;
-  const msg=`Photo: ${cur.n}\nCategory: ${CATMETA[cur.cat].label}\nEditorial pilar: ${pilar.lbl}\n${bil?'\nAlso add a Portuguese adaptation after each variation (not literal translation — adapt naturally for the platform).':''}`;
+  document.getElementById('cout').innerHTML=`<div style="padding:24px;text-align:center;color:var(--text2);font-size:13px"><div class="dots" style="justify-content:center;margin-bottom:8px"><div class="d"></div><div class="d"></div><div class="d"></div></div>Writing ${label} content...</div>`;
+  const msg=`Photo: ${cur.n}\nCategory: ${CATMETA[cur.cat].label}\nEditorial pilar: ${pilar.lbl}\n${bil?'\nAlso add a Portuguese adaptation after each variation.':''}`;
   try{
     const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:platform==='both'?2000:1000,system:sys,messages:[{role:'user',content:msg}]})});
     const data=await resp.json();
-    if(data.error){toast('API error: '+data.error.message);btn.disabled=false;btn.textContent=platform==='both'?'Generate for Instagram + Facebook':'Try again';return;}
+    if(data.error){toast('API error: '+data.error.message);btn.disabled=false;btn.textContent='Try again';return;}
     const raw=data.content?.find(b=>b.type==='text')?.text||'';
     if(platform==='both')renderBoth(raw);
     else{vars=parseV(raw);renderC(vars,platform);}
-    btn.disabled=false;btn.textContent=platform==='both'?'Generate new variations':'Generate new variations';
-  }catch(e){toast('Connection error. Check your internet.');btn.disabled=false;btn.textContent='Try again';document.getElementById('cout').innerHTML='';}
+    btn.disabled=false;btn.textContent='Generate new variations';
+  }catch(e){toast('Connection error.');btn.disabled=false;btn.textContent='Try again';document.getElementById('cout').innerHTML='';}
 }
-
 function parseV(raw){
   const parts=raw.split(/---\s*VARIATION [AB]\s*---/).filter(s=>s.trim());
   return parts.map(p=>{
@@ -443,73 +367,54 @@ function parseV(raw){
   });
 }
 function parseBoth(raw){
-  const igMatch=raw.match(/===\s*INSTAGRAM\s*===([\s\S]*?)(?===\s*FACEBOOK\s*===|$)/i);
-  const fbMatch=raw.match(/===\s*FACEBOOK\s*===([\s\S]*?)$/i);
-  return{ig:igMatch?parseV(igMatch[1]):[],fb:fbMatch?parseV(fbMatch[1]):[]};
+  const igM=raw.match(/===\s*INSTAGRAM\s*===([\s\S]*?)(?===\s*FACEBOOK|$)/i);
+  const fbM=raw.match(/===\s*FACEBOOK\s*===([\s\S]*?)$/i);
+  return{ig:igM?parseV(igM[1]):[],fb:fbM?parseV(fbM[1]):[]};
 }
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-
 function renderC(vs,plat){
   const isIg=plat==='instagram';
   let h=`<div class="sl">Generated captions &mdash; edit directly before approving</div>`;
   vs.forEach((v,i)=>{
     const vid=`ct_${plat}_${i}`;
-    h+=`<div class="cc">
-      <div class="cl">Variation ${i===0?'A':'B'}</div>
+    h+=`<div class="cc"><div class="cl">Variation ${i===0?'A':'B'}</div>
       <div class="ct" id="${vid}" contenteditable="true">${esc(v.body)}</div>
-      ${isIg&&v.tags?`<div class="ht">${esc(v.tags)}</div>`:''}
-      ${!isIg&&v.tags?`<div class="ht" style="color:var(--text3);font-size:11px">${esc(v.tags)}</div>`:''}
-      <div class="ca">
-        <button class="ab" onclick="cp('${vid}','${plat}',${i})">Copy</button>
-        <button class="ab ${isIg?'g':'b'}" onclick="approve('${vid}','${plat}',${i})">Approve &rarr;</button>
-      </div>
+      ${v.tags?`<div class="ht">${esc(v.tags)}</div>`:''}
+      <div class="ca"><button class="ab" onclick="cp('${vid}','${plat}',${i})">Copy</button>
+      <button class="ab ${isIg?'g':'b'}" onclick="approve('${vid}','${plat}',${i})">Approve &rarr;</button></div>
     </div>`;
   });
-  document.getElementById('cout').innerHTML=h;
-  window._vars={[plat]:vs};
+  document.getElementById('cout').innerHTML=h;window._vars={[plat]:vs};
 }
-
 function renderBoth(raw){
-  const parsed=parseBoth(raw);
-  window._vars={instagram:parsed.ig,facebook:parsed.fb};
+  const parsed=parseBoth(raw);window._vars={instagram:parsed.ig,facebook:parsed.fb};
   let h='';
   if(parsed.ig.length){
-    h+=`<div class="plat-section">
-      <div class="plat-header"><div class="plat-icon ig">IG</div><span class="plat-header-label">Instagram</span></div>`;
+    h+=`<div class="plat-sec"><div class="plat-hdr"><div class="plat-ico ig">IG</div><span class="plat-hdr-lbl">Instagram</span></div>`;
     parsed.ig.forEach((v,i)=>{
       const vid=`ct_instagram_${i}`;
-      h+=`<div class="cc">
-        <div class="cl">Variation ${i===0?'A':'B'}</div>
+      h+=`<div class="cc"><div class="cl">Variation ${i===0?'A':'B'}</div>
         <div class="ct" id="${vid}" contenteditable="true">${esc(v.body)}</div>
         ${v.tags?`<div class="ht">${esc(v.tags)}</div>`:''}
-        <div class="ca">
-          <button class="ab" onclick="cp('${vid}','instagram',${i})">Copy</button>
-          <button class="ab g" onclick="approve('${vid}','instagram',${i})">Approve IG &rarr;</button>
-        </div>
+        <div class="ca"><button class="ab" onclick="cp('${vid}','instagram',${i})">Copy</button>
+        <button class="ab g" onclick="approve('${vid}','instagram',${i})">Approve IG &rarr;</button></div>
       </div>`;
-    });
-    h+=`</div>`;
+    });h+=`</div>`;
   }
   if(parsed.fb.length){
-    h+=`<div class="plat-section">
-      <div class="plat-header"><div class="plat-icon fb">FB</div><span class="plat-header-label">Facebook</span></div>`;
+    h+=`<div class="plat-sec"><div class="plat-hdr"><div class="plat-ico fb">FB</div><span class="plat-hdr-lbl">Facebook</span></div>`;
     parsed.fb.forEach((v,i)=>{
       const vid=`ct_facebook_${i}`;
-      h+=`<div class="cc">
-        <div class="cl">Variation ${i===0?'A':'B'}</div>
+      h+=`<div class="cc"><div class="cl">Variation ${i===0?'A':'B'}</div>
         <div class="ct" id="${vid}" contenteditable="true">${esc(v.body)}</div>
         ${v.tags?`<div class="ht" style="font-size:11px;color:var(--text3)">${esc(v.tags)}</div>`:''}
-        <div class="ca">
-          <button class="ab" onclick="cp('${vid}','facebook',${i})">Copy</button>
-          <button class="ab b" onclick="approve('${vid}','facebook',${i})">Approve FB &rarr;</button>
-        </div>
+        <div class="ca"><button class="ab" onclick="cp('${vid}','facebook',${i})">Copy</button>
+        <button class="ab b" onclick="approve('${vid}','facebook',${i})">Approve FB &rarr;</button></div>
       </div>`;
-    });
-    h+=`</div>`;
+    });h+=`</div>`;
   }
   document.getElementById('cout').innerHTML=h||'<div class="empty">No content generated. Try again.</div>';
 }
-
 function cp(vid,plat,i){
   const el=document.getElementById(vid);
   const vs=window._vars?.[plat];
@@ -523,22 +428,20 @@ function approve(vid,plat,i){
   const body=el?.innerText||vs?.[i]?.body||'';
   const tags=vs?.[i]?.tags||'';
   const pilar=PR[pi%PR.length];
-  const isIg=plat==='instagram';
   queue.push({id:Date.now(),photo:cur,pilar:pilar.lbl,pilarCol:pilar.col,caption:body,hashtags:tags,at:new Date().toISOString(),platform:plat,driveUrl:`https://drive.google.com/file/d/${cur.id}/view`});
   if(platform!=='both'){used.add(cur.id);pi++;}
   else{
-    const igDone=queue.filter(q=>q.photo.id===cur.id&&q.platform==='instagram').length>0;
-    const fbDone=queue.filter(q=>q.photo.id===cur.id&&q.platform==='facebook').length>0;
-    if(igDone&&fbDone){used.add(cur.id);pi++;}
+    const igD=queue.filter(q=>q.photo.id===cur.id&&q.platform==='instagram').length>0;
+    const fbD=queue.filter(q=>q.photo.id===cur.id&&q.platform==='facebook').length>0;
+    if(igD&&fbD){used.add(cur.id);pi++;}
   }
   saveS();updS();
-  toast((isIg?'Instagram':'Facebook')+' post added to queue');
+  toast((plat==='instagram'?'Instagram':'Facebook')+' post added to queue');
   if(platform!=='both'){
     document.getElementById('cout').innerHTML=`<div style="padding:18px;text-align:center;border:0.5px solid var(--border);border-radius:12px;margin-top:8px;background:var(--bg2)"><div style="font-size:13px;font-weight:500;margin-bottom:4px">Added to queue</div><div style="font-size:12px;color:var(--text2)">Loading next photo...</div></div>`;
     setTimeout(pick,1500);
   }
 }
-
 function sw(tab){
   ['generate','queue','export'].forEach(t=>{document.getElementById('t-'+t).style.display=t===tab?'block':'none';});
   document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',['generate','queue','export'][i]===tab));
@@ -546,7 +449,7 @@ function sw(tab){
 }
 function renderQ(){
   const el=document.getElementById('qlist');
-  if(!queue.length){el.innerHTML='<div class="empty">No approved posts yet. Generate and approve in the Generate tab.</div>';return;}
+  if(!queue.length){el.innerHTML='<div class="empty">No approved posts yet.</div>';return;}
   let h=`<div class="sl">${queue.length} post${queue.length>1?'s':''} approved</div>`;
   queue.forEach((post,i)=>{
     const d=new Date(post.at).toLocaleDateString('en-US',{month:'short',day:'numeric'});
@@ -565,35 +468,33 @@ function renderQ(){
       <div style="font-size:11px;color:var(--text2);flex-shrink:0">${d}</div>
     </div>`;
   });
-  h+=`<button class="gbtn dim" onclick="clrQ()" style="margin-top:4px">Clear all approved posts</button>`;
+  h+=`<button class="gbtn dim" onclick="clrQ()" style="margin-top:4px">Clear all</button>`;
   el.innerHTML=h;
 }
 function cpPost(i){const p=queue[i];if(!p)return;navigator.clipboard?.writeText(p.caption+'\n\n'+p.hashtags).then(()=>toast('Copied!'));}
 function rmPost(i){queue.splice(i,1);saveS();updS();renderQ();}
 function clrQ(){if(confirm('Clear all approved posts?')){queue=[];saveS();updS();renderQ();}}
-
 function renderE(){
   const el=document.getElementById('econtent');
-  if(!queue.length){el.innerHTML='<div class="empty">No posts to export. Approve posts first.</div>';return;}
-  const igPosts=queue.filter(p=>p.platform==='instagram');
-  const fbPosts=queue.filter(p=>p.platform==='facebook');
-  const payload={instagram:igPosts.map(p=>({photo_name:p.photo.n,photo_drive_id:p.photo.id,photo_drive_url:p.driveUrl,caption:p.caption,hashtags:p.hashtags,full_post:p.caption+'\n\n'+p.hashtags,pilar:p.pilar,category:p.photo.cat,approved_at:p.at})),facebook:fbPosts.map(p=>({photo_name:p.photo.n,photo_drive_id:p.photo.id,photo_drive_url:p.driveUrl,caption:p.caption,full_post:p.caption+(p.hashtags?'\n\n'+p.hashtags:''),pilar:p.pilar,category:p.photo.cat,approved_at:p.at}))};
+  if(!queue.length){el.innerHTML='<div class="empty">No posts to export.</div>';return;}
+  const ig=queue.filter(p=>p.platform==='instagram');
+  const fb=queue.filter(p=>p.platform==='facebook');
+  const payload={instagram:ig.map(p=>({photo_name:p.photo.n,photo_drive_id:p.photo.id,photo_drive_url:p.driveUrl,caption:p.caption,hashtags:p.hashtags,full_post:p.caption+'\n\n'+p.hashtags,pilar:p.pilar,category:p.photo.cat,approved_at:p.at})),facebook:fb.map(p=>({photo_name:p.photo.n,photo_drive_id:p.photo.id,photo_drive_url:p.driveUrl,caption:p.caption,full_post:p.caption+(p.hashtags?'\n\n'+p.hashtags:''),pilar:p.pilar,category:p.photo.cat,approved_at:p.at}))};
   const json=JSON.stringify(payload,null,2);window._ej=json;
   el.innerHTML=`
     <div class="sl">Make.com webhook payload</div>
-    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">${igPosts.length} Instagram + ${fbPosts.length} Facebook posts ready. Structured by platform for separate Make.com scenarios.</p>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">${ig.length} Instagram + ${fb.length} Facebook posts ready.</p>
     <div class="exb"><div class="exc">${esc(json)}</div></div>
     <button class="gbtn gold" onclick="cpE()">Copy JSON for Make.com</button>
     <div class="sl">Optimal posting times (EST)</div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
-      <div class="st"><div style="font-size:12px;font-weight:500">Tue + Thu</div><div class="st-l">Instagram 11am or 7:30pm</div></div>
-      <div class="st"><div style="font-size:12px;font-weight:500">Mon + Wed</div><div class="st-l">Facebook 12pm or 7pm</div></div>
-      <div class="st"><div style="font-size:12px;font-weight:500">Saturday</div><div class="st-l">Both platforms 10am</div></div>
+      <div class="st"><div style="font-size:12px;font-weight:500">Tue + Thu</div><div class="st-l">Instagram 11am / 7:30pm</div></div>
+      <div class="st"><div style="font-size:12px;font-weight:500">Mon + Wed</div><div class="st-l">Facebook 12pm / 7pm</div></div>
+      <div class="st"><div style="font-size:12px;font-weight:500">Saturday</div><div class="st-l">Both 10am</div></div>
     </div>`;
 }
 function cpE(){if(window._ej){navigator.clipboard?.writeText(window._ej).then(()=>toast('Copied!'));}}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2200);}
-
 window.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('setup').style.display!=='none')startApp();});
 const saved=localStorage.getItem('bwf_key');
 if(saved&&(saved.startsWith('sk-ant-')||saved.startsWith('sk-'))){
