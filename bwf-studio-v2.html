@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BWF Content Studio</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#c9a84c;--blue:#4a7fa5;--fb:#1877f2;--bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#242424;--border:#2a2a2a;--text:#e8e0d4;--text2:#9a9288;--text3:#5a5450;--r:8px;--rl:12px}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;min-height:100vh}
+#setup{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;padding:24px}
+.sc{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:32px;width:100%;max-width:420px}
+.gold-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.sc-logo{display:flex;align-items:center;gap:10px;margin-bottom:24px}
+.sc-title{font-size:18px;font-weight:500}
+.sc-sub{font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.6}
+.sc-lbl{font-size:12px;color:var(--text2);margin-bottom:6px;display:block}
+.sc-in{width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);padding:10px 12px;color:var(--text);font-size:13px;font-family:monospace;outline:none}
+.sc-in:focus{border-color:var(--gold)}
+.sc-btn{width:100%;margin-top:16px;padding:11px;background:transparent;border:0.5px solid var(--gold);border-radius:var(--r);color:var(--gold);font-size:13px;font-weight:500;cursor:pointer}
+.sc-btn:hover{background:rgba(201,168,76,0.08)}
+.sc-note{font-size:11px;color:var(--text3);margin-top:12px;line-height:1.5}
+#app{display:none;max-width:720px;margin:0 auto;padding:20px 16px 60px}
+.hdr{display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:0.5px solid var(--border);margin-bottom:14px}
+.hdr-title{font-size:15px;font-weight:500}
+.hdr-sub{font-size:12px;color:var(--text2);margin-left:auto}
+.hdr-cfg{background:transparent;border:none;cursor:pointer;color:var(--text3);font-size:16px;padding:2px 6px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.st{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r);padding:10px;text-align:center}
+.st-n{font-size:20px;font-weight:500}
+.st-l{font-size:11px;color:var(--text2);margin-top:2px}
+.tabs{display:flex;border:0.5px solid var(--border);border-radius:var(--r);margin-bottom:16px;overflow:hidden}
+.tab{flex:1;padding:9px;font-size:13px;background:transparent;border:none;cursor:pointer;color:var(--text2);border-right:0.5px solid var(--border)}
+.tab:last-child{border-right:none}
+.tab.on{background:var(--bg2);color:var(--text);font-weight:500}
+.platform-row{display:flex;gap:0;border:0.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.plat-btn{flex:1;padding:8px;font-size:12px;font-weight:500;background:transparent;border:none;cursor:pointer;color:var(--text2);border-right:0.5px solid var(--border);transition:background 0.15s}
+.plat-btn:last-child{border-right:none}
+.plat-btn.on-ig{background:rgba(201,168,76,0.12);color:var(--gold)}
+.plat-btn.on-fb{background:rgba(24,119,242,0.12);color:#6aa3e8}
+.plat-btn.on-both{background:var(--bg2);color:var(--text)}
+.pb{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--r);font-size:12px;font-weight:500;background:var(--bg2);color:var(--text2);border:0.5px solid var(--border);margin-bottom:14px}
+.pdot{width:6px;height:6px;border-radius:50%}
+.pf{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:20px;margin-bottom:12px;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+.pimg{width:100%;max-height:280px;object-fit:contain;border-radius:var(--r)}
+.pname{font-size:13px;font-weight:500}
+.pcat{font-size:12px;color:var(--text2)}
+.dlink{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;font-size:12px;background:transparent;border:0.5px solid var(--border);border-radius:var(--r);cursor:pointer;color:var(--text2);text-decoration:none}
+.dlink:hover{border-color:var(--text2)}
+.bi{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.bil{font-size:12px;color:var(--text2);cursor:pointer}
+input[type=checkbox]{accent-color:var(--gold);cursor:pointer}
+.gbtn{width:100%;padding:10px;background:transparent;border:0.5px solid var(--border);border-radius:var(--r);cursor:pointer;font-size:13px;color:var(--text);font-weight:500;margin-bottom:8px}
+.gbtn:hover{background:var(--bg2)}
+.gbtn:disabled{opacity:0.4;cursor:not-allowed}
+.gbtn.dim{font-weight:400;opacity:0.55;font-size:12px}
+.gbtn.gold{border-color:var(--gold);color:var(--gold)}
+.gbtn.gold:hover{background:rgba(201,168,76,0.08)}
+.plat-section{margin-bottom:16px}
+.plat-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid var(--border)}
+.plat-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.plat-icon.ig{background:rgba(201,168,76,0.15)}
+.plat-icon.fb{background:rgba(24,119,242,0.15)}
+.plat-header-label{font-size:12px;font-weight:500;color:var(--text2)}
+.cc{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:13px 15px;margin-bottom:10px}
+.cl{font-size:11px;font-weight:500;letter-spacing:0.05em;color:var(--text2);text-transform:uppercase;margin-bottom:7px}
+.ct{font-size:13px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;min-height:50px;outline:none;border-bottom:0.5px solid var(--border);padding-bottom:6px}
+.ct:focus{border-bottom-color:var(--gold)}
+.ht{font-size:12px;color:var(--text3);margin-top:7px;line-height:1.5}
+.ca{display:flex;gap:8px;margin-top:10px}
+.ab{padding:5px 11px;font-size:12px;background:transparent;border:0.5px solid var(--border);border-radius:var(--r);cursor:pointer;color:var(--text2)}
+.ab:hover{background:var(--bg3)}
+.ab.g{border-color:var(--gold);color:var(--gold)}
+.ab.g:hover{background:rgba(201,168,76,0.08)}
+.ab.b{border-color:#4a7fa5;color:#6aa3e8}
+.ab.b:hover{background:rgba(74,127,165,0.08)}
+.sl{font-size:11px;font-weight:500;letter-spacing:0.05em;color:var(--text2);text-transform:uppercase;margin-bottom:8px;margin-top:14px}
+.sl:first-child{margin-top:0}
+.qi{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:11px 14px;margin-bottom:7px;display:flex;align-items:flex-start;gap:10px}
+.qm{flex:1;min-width:0}
+.qn{font-size:13px;font-weight:500}
+.qc{font-size:12px;color:var(--text2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plat-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:500;margin-left:6px}
+.plat-pill.ig{background:rgba(201,168,76,0.15);color:var(--gold)}
+.plat-pill.fb{background:rgba(24,119,242,0.12);color:#6aa3e8}
+.plat-pill.both{background:var(--bg3);color:var(--text2)}
+.exb{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:10px}
+.exc{font-family:monospace;font-size:11px;line-height:1.5;color:var(--text2);white-space:pre-wrap;word-break:break-all;max-height:220px;overflow-y:auto}
+.empty{padding:28px;text-align:center;color:var(--text2);font-size:13px}
+.dots{display:inline-flex;gap:4px;align-items:center}
+.d{width:4px;height:4px;border-radius:50%;background:var(--text2);animation:p 1.2s ease-in-out infinite}
+.d:nth-child(2){animation-delay:.2s}
+.d:nth-child(3){animation-delay:.4s}
+@keyframes p{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r);padding:10px 20px;font-size:13px;color:var(--text);display:none;z-index:200;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div id="setup">
+  <div class="sc">
+    <div class="sc-logo"><div class="gold-dot"></div><span class="sc-title">BWF Content Studio</span></div>
+    <p class="sc-sub">Enter your Anthropic API key to activate the caption engine. Stored only in your browser — never shared.</p>
+    <label class="sc-lbl" for="api-in">Anthropic API Key</label>
+    <input id="api-in" class="sc-in" type="password" placeholder="sk-ant-..." autocomplete="off">
+    <button class="sc-btn" onclick="startApp()">Start Studio</button>
+    <p class="sc-note">Get your key at console.anthropic.com &rarr; API Keys. Saved in localStorage on this device only.</p>
+  </div>
+</div>
+
+<div id="app">
+  <div class="hdr">
+    <div class="gold-dot"></div>
+    <span class="hdr-title">BWF Content Studio</span>
+    <span class="hdr-sub" id="hdr-sub">Loading...</span>
+    <button class="hdr-cfg" onclick="resetKey()" title="Change API key">&#9881;</button>
+  </div>
+
+  <div class="stats">
+    <div class="st"><div class="st-n" id="s-tot">183</div><div class="st-l">total photos</div></div>
+    <div class="st"><div class="st-n" id="s-used">0</div><div class="st-l">used</div></div>
+    <div class="st"><div class="st-n" id="s-q">0</div><div class="st-l">approved</div></div>
+    <div class="st"><div class="st-n" id="s-rem">183</div><div class="st-l">remaining</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="sw('generate')">Generate</button>
+    <button class="tab" onclick="sw('queue')">Queue</button>
+    <button class="tab" onclick="sw('export')">Export</button>
+  </div>
+
+  <div id="t-gen">
+    <div class="platform-row">
+      <button class="plat-btn on-ig" id="pb-ig" onclick="setPlatform('instagram')">&#x1F4F7; Instagram</button>
+      <button class="plat-btn" id="pb-fb" onclick="setPlatform('facebook')">&#x1F4C4; Facebook</button>
+      <button class="plat-btn" id="pb-both" onclick="setPlatform('both')">&#x2699; Both</button>
+    </div>
+    <div class="pb"><span class="pdot" id="pdot" style="background:#c9a84c"></span><span id="plabel">Loading...</span></div>
+    <div class="pf" id="pf"><div class="dots"><div class="d"></div><div class="d"></div><div class="d"></div></div></div>
+    <div class="bi"><input type="checkbox" id="bil"><label class="bil" for="bil">Include Portuguese version</label></div>
+    <button class="gbtn" id="gbtn" onclick="gen()">Generate content for this photo</button>
+    <button class="gbtn dim" onclick="skip()">Skip &mdash; pick another photo</button>
+    <div id="cout"></div>
+  </div>
+
+  <div id="t-queue" style="display:none"><div id="qlist"></div></div>
+  <div id="t-export" style="display:none"><div id="econtent"></div></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const CAT={
+  restoration:[
+    {id:'1KqLJeVNE9w5z_bGhtG9EnJNLtldRVu5_',n:'Furniture1.jpg'},{id:'1yPUOaglk49lS9OVIL_Dh-k9enfCQQd7C',n:'Furniture2.jpg'},
+    {id:'1CpBYz9vBnpjTnZ6fuO5tqxl66pMX3IVl',n:'Furniture3.jpg'},{id:'1Wd9w20R3CKbktZ1a011johX2dDAvOsv4',n:'Furniture4.jpg'},
+    {id:'1h9bfq7X7QtTDxKXsjUeipi-POKVhacYY',n:'Furniture5.jpg'},{id:'1JxkGotfUShezOIymFXhSThzbAOoxoLn3',n:'Furniture6.jpg'},
+    {id:'1gmsFyMSfwd85SJQQ33D8vZHDG8GCpeSi',n:'Furniture7.jpg'},{id:'1x4IZnuo2vaolR2QiaGBdfeeCg_t9pHvr',n:'Furniture8.jpg'},
+    {id:'1-BQBj5NmzEsVNDwRKLH6-99DEr-bxEwD',n:'Furniture9.jpg'},{id:'1-UeFGK_OLFDooiqdi90vYQl2D37nvsLp',n:'Furniture10.jpg'},
+    {id:'15_YUiog47TESaU5T_AzUMyoXivCoOMZP',n:'Furniture11.jpg'},{id:'1w2LWhu4M8WLyCPNPBTx6_meIsHv9t_jk',n:'Furniture12.jpg'},
+    {id:'1zKfFzVguLPsof5-jk3h5ozlLtr6DmXVW',n:'Furniture13.jpg'},{id:'1j_SXu2xl8dv7HfD_SnvNveVenR9c8mQr',n:'Furniture14.jpg'},
+    {id:'1BERoeAOcDRh1J2CStydzsr3LM3yQ1JQm',n:'Furniture15.jpg'},{id:'1emkvvTJUFL-IcuBGwO3D6enuTNdHHPkY',n:'Furniture16.jpg'},
+    {id:'1Q3CJpDxf-MWG6p6YToy55v3RMq3260v1',n:'Furniture17.jpg'},{id:'1ghcZWOYubTuYlt6npGgVJqrr4ny8sTJg',n:'Furniture18.jpg'},
+    {id:'11rwzIrLRIvrd2iE2cQmYszRycIoUjRH5',n:'Furniture19.jpg'},{id:'1Z1JmazrGdV1cQ-Q00hCDH2NiRQBzKoM8',n:'Furniture20.jpg'},
+    {id:'1l7RduulVW73i-Frf2tKobpGvA84k-zyL',n:'Furniture21.jpg'},{id:'1S7c_iU62ELpeo_fY6EkE7qZXeXIHcGrf',n:'Furniture22.jpg'},
+    {id:'1QSTDGi0V-S8EQChYer0ly-ZqHOAQzj5E',n:'Furniture23.jpg'},{id:'1Kua_WaPVuQCPp4FVR3mdVYNxITsy2Nk0',n:'Furniture24.jpg'},
+    {id:'1YXlYr0tab5JLSHvcFfTEz7kdQMGflOqD',n:'Furniture25.jpg'},{id:'1S1U_YY1S5eQEWcSP4AlXm3s-HHSo-FRf',n:'Furniture26.jpg'},
+    {id:'1jcJBd3kGX3PzfWBNkf6f_l6qv6Wyqawx',n:'Furniture27.jpg'},{id:'1eZXQmZgBEzMt-1Y3WBlmgyfto_b8tgkH',n:'Furniture28.jpg'},
+    {id:'1jXSAOzuTiIiPdvx6qMAgbmX83HDSOTsn',n:'Furniture29.jpg'},{id:'1xvgbnoKU7iWpPf0IcA_8Jyz176-J4EXE',n:'Furniture30.jpg'},
+    {id:'1Ghz99Snw5Lh5mwAcI6MEP5wW3NHmkJhZ',n:'Furniture31.jpg'},{id:'1kZgYTDNOSlRXG_amA2_O96nYjTWbCFX2',n:'Furniture32.jpg'},
+    {id:'1XddxylL6Ao9824aPtU3WFFMoHbw7Xwh9',n:'Furniture33.jpg'},{id:'1fpAvwE1ltoMTK_uA2itOguOeC33A4vkg',n:'Furniture34.jpg'},
+    {id:'1_61oW2G5aa_adgon8ZsxPzrjo0zcPWZm',n:'Furniture35.jpg'},{id:'1PIgfPIjhgQCdatOY0xwkL9M4pHc-qIuB',n:'Furniture36.jpg'},
+    {id:'1ko7SRKMninG31neQjW9N30JNiZgbVLar',n:'Furniture37.jpg'},{id:'1UuCqvUjQJOsDTH4w3XEbCQGZF_lmEYek',n:'Furniture38.jpg'},
+    {id:'1jbvwMG80HGZAwT4P717zshje4ZZ2MKap',n:'Furniture39.jpg'},{id:'13KD5o1fqjDyIDZMDydIHqsLJFGM4XDwK',n:'Furniture40.jpg'},
+    {id:'1ocZAXfZT_55MbNdjY0KTaASc0IOvYAdm',n:'Furniture41.jpg'},{id:'1Z6VAJXKbfwKSlQqcNxia6E_cP8ZPYVba',n:'Furniture42.jpg'},
+    {id:'1hPjH6o2sLmE57qJycteggG-Y-7mik-ai',n:'Furniture43.jpg'},{id:'1K3kz9KUbengvX3jp1pgWtuWDeq_7PU4R',n:'Furniture44.jpg'},
+    {id:'1ACnC4IO_UG8NEEG0Xl2LuEQ_qkCnCC0m',n:'Furniture45.jpg'},{id:'1ePG1uXFbwIb-ok_GoyiWvhrhqH86502R',n:'Furniture46.jpg'},
+    {id:'1KVvuj0xOvdmbOoo4_byppXOCvfhCdzPB',n:'Furniture47.jpg'},{id:'1Ahlg63c_RbF-d7HW2UN_CFIoDooypRn8',n:'Furniture48.jpg'},
+    {id:'1tNdrNXEeCghO8NK4WI6RzX2Mzu7nx5-t',n:'Furniture49.jpg'},{id:'1qtQRpINmu82_IDjTd0Gsa1vnfHRF7Xr8',n:'Furniture50.jpg'},
+    {id:'1AL48DvF3Acgz5s2ZMODLEsZPz6nL0peP',n:'Furniture51.jpg'},{id:'1NfwRJFAYuG4dumgbZw5Cu7X3YwgkHz8B',n:'Furniture52.jpg'},
+    {id:'17PaWMDepx6O0OMm3CHOhZNSdaxPngz-J',n:'Furniture53.jpg'},{id:'1mgru1myizIQ6I6Abzu7O0mLRIutdurru',n:'Furniture54.jpg'},
+    {id:'1PN5Mn80e95RweRo8Wla9o-05BYHJ-AtU',n:'Furniture55.jpg'},{id:'1n8bhjoG3ac1syia-A0z0yRmb2cJTvxM1',n:'Furniture56.jpg'},
+    {id:'1ymYJ2hzal7oWOfs1Z4nDzVUa54pX21Zg',n:'Furniture57.jpg'},{id:'19o3cgDVKaAyFNf1YQEbAvHZj-fmn6PT4',n:'Furniture58.jpg'},
+    {id:'10Wp34kxGGMpP-QvkBHwcOeoDAI0ofRJJ',n:'Furniture59.jpg'},{id:'1NXDjK3DgXHF6x-cmI6AEUXKqfABluKF5',n:'Furniture60.jpg'},
+    {id:'1mZzpT8-0my8Qep66DH0zY7V3V6WwR8HZ',n:'Furniture61.jpg'},{id:'1DaSM6yn9CnBhFmDB5wsOOQq0DibkJ2ni',n:'Furniture62.jpg'},
+    {id:'1nRS9jVdYjWW0Gmms9rTwEYv_61lIPgWU',n:'Furniture63.jpg'},{id:'1a-Ai5FFlPKCDGuw4qYx2OFz_0w0OUkGB',n:'Furniture64.jpg'},
+    {id:'1tZFBSgHSVFwrkc-Rfe6eRQjWl-KPdhuK',n:'Furniture65.jpg'},{id:'15GZKEB_OMGT_wDSjJdalZIoLPA3eM3Ld',n:'Furniture66.jpg'},
+    {id:'1cWl-KqMKlmUE19W4HO4yUg3eFwqbKYtp',n:'Furniture67.jpg'},{id:'1SYJven8kubGCcGYrkv_AWTIo5XT85gPh',n:'Furniture68.jpg'},
+    {id:'1zPOQBUTcJv5ERVN6y7CMEqVEjTN34d4K',n:'Furniture69.jpg'},{id:'1U9PPuQPJ5RTkMlzff_Tth23lD8Ih4nnT',n:'Furniture70.jpg'},
+    {id:'16445PKhAO570rdkf6_vO7A8Q2OUqM3iv',n:'Furniture71.jpg'},{id:'1i3r5HO5gLHSUaqQFQYLkaFzAXb49QSnl',n:'Furniture72.jpg'},
+    {id:'1TiYZpxAFrrRliMBwgFz59FktwFXYnFzv',n:'Furniture73.jpg'},{id:'1yf8MWhXo11qGSpMSeNVrNGn4vWrAfukS',n:'Furniture74.jpg'},
+    {id:'14-Wu0Wx9q355-SDrHnRkwJdwi3GRRv71',n:'Furniture75.jpg'},{id:'1Ym0V9SxluofejSgyoK5LPMaXTF5Revsz',n:'Furniture76.jpg'},
+    {id:'1JdfLiLbP3HHRUhFM-lgUkds0D4DIzUfV',n:'Furniture77.jpg'},{id:'18N_g2IhoWJt5E9As1U-QMH-se2dp3-3S',n:'Furniture78.jpg'},
+    {id:'1eAuAr7lMGWKRTxy42miZeSp5ZG1br2gJ',n:'Furniture79.jpg'}
+  ],
+  cabinetry:[
+    {id:'1zgNLHKS-Rv2GjwiVRalCSBtKbBGaq8t1',n:'Banheiros1.jpg'},{id:'11aRcX5ZzTyD2tssXQxd4uCfeub3_nugI',n:'Banheiros2.jpg'},
+    {id:'1OkPKn9GixOfJWQElv2FVCSLo3gvYDFby',n:'Banheiros3.jpg'},{id:'13TPJtaOdxDnMZ8i5VcMphh6Q7W0xjgrL',n:'Banheiros4.jpg'},
+    {id:'1lLahOJUugHZJ6KDjVxiMnRGXEPxgDQwA',n:'Banheiros5.jpg'},{id:'1ckyoE-Fnl_vzP8ZHjqiDqbTbghsuvA97',n:'Banheiros6.jpg'},
+    {id:'1bHTgUV-fiJ_kp3Ewu-09RfdKPAgKGEvI',n:'Banheiros7.jpg'},{id:'1_oZmFepMDUhSNumpFvqusvFBP0S4dEJQ',n:'Banheiros8.jpg'},
+    {id:'12ubDb8NxBvIUG1ulhg-xDrmV6n0-oBAI',n:'Closet1.jpg'},{id:'1694qu4az2ktmevpsoiLAMNQk6CqOotlS',n:'Closet2.jpg'},
+    {id:'11tHb4EOLBFT7qxUyapm-2V3U1oSTdxgJ',n:'Closet3.jpg'},{id:'15fEn70YGfX4RnVkApFmbKz6MBsCv2VOD',n:'Closet4.jpg'},
+    {id:'1jqCDbSQJNsBbWt61139sGUksC0_iLO6Y',n:'Cozinhas1.jpg'},{id:'1bO03ug3oQT7AIpFEE0sXm9_QYYQgXoSB',n:'Cozinhas2.jpg'},
+    {id:'1BTKyC9j-KoYGwpalAqqp1fjw_n6L248r',n:'Cozinhas3.jpg'},{id:'1o6e832zufFP1WQJ1NqKxcgg93cqTGDSL',n:'Cozinhas4.jpg'},
+    {id:'1R9esNnCI39hxQIETIRplkdupJ23MkRQh',n:'Cozinhas5.jpg'},{id:'1i_R8UlNbL6PJLtq5VqxpcLMW1S3A6PhX',n:'Cozinhas6.jpg'},
+    {id:'1eRCFzwmDmqxOzJaSuFux26ngtDDIYXSy',n:'Cozinhas7.jpg'},{id:'1Jka_uNL96l11lQoNtIKf2FCA8Z5aX2kx',n:'Cozinhas8.jpg'},
+    {id:'1iH8zhZHAhZN4J3dn5CvH6kcIYyPQTihm',n:'Cozinhas9.jpg'},{id:'1pp_IMtaqA52vTN9OnOQzrJnBrMmQC7fp',n:'Cozinhas10.jpg'},
+    {id:'198QzZs0VFYB9T04BmGgicUAP01aROXNH',n:'Cozinhas11.jpg'},{id:'1WDKkzynIpwr5ohmhHemEX4D3nqV_KgaY',n:'Cozinhas12.jpg'},
+    {id:'15qSESvbw1ujVnskdEMxYQNl6WneUJ1UD',n:'Cozinhas13.jpg'},{id:'1zC4R_uP0y4ahdHRBl0UZTKmIh2trQCPN',n:'Cozinhas14.jpg'},
+    {id:'171ZIDhxyA7JejlOVLzPtr1am4BLMMqWR',n:'Cozinhas15.jpg'},{id:'1wF4sAHd1Q_-A6zSrbhxKcYxS3_nEaVgh',n:'Cozinhas16.jpg'},
+    {id:'1IDLiFs8lVpR-KNm-n-qqzZ3Ib8g3pQAZ',n:'Cozinhas17.jpg'},{id:'1FwepXNw1gBDiE0RUA2XBdMR9Q_gh_HDu',n:'Cozinhas18.jpg'},
+    {id:'1TxJMKkjachfQyr2Yo7ie68p31LG-wBO7',n:'Cozinhas19.jpg'},{id:'1cLTZALRd1aKS9Z58n7IH8_Ffk9u5aEHL',n:'Cozinhas20.jpg'},
+    {id:'1lpap0VljqFLZZTJU6bCH9-XQ4ib78GR_',n:'Cozinhas21.jpg'},{id:'1ckFEQPk_5ic5uHj-eEf7zrzzK8YdT8B7',n:'Cozinhas22.jpg'},
+    {id:'1vRgZK7IVmMn_wLrjC_vlZDffz-0F0E-T',n:'Cozinhas23.jpg'},{id:'1PDg0uZ9f_5SxfP0gvwyA2VfMkwTahqJ6',n:'Cozinhas24.jpg'},
+    {id:'1NM8v46MZtviFH-LHof5NQw0Ch_Fi9BeH',n:'Cozinhas25.jpg'},{id:'1oYSKMjMmtItB8Q22r0d60xiEn7rerznp',n:'Cozinhas26.jpg'},
+    {id:'1A5cgvbVHYtgpCPm5_FkvODqNJIaIdKkd',n:'Cozinhas27.jpg'},{id:'1vUTeMeTbUadRaCZAgCz0A9UXLBTuh6of',n:'Cozinhas28.jpg'},
+    {id:'1RnOBZ-SDh1MP6y1VnNb-WfBzfsM0mP7W',n:'Cozinhas29.jpg'}
+  ],
+  millwork:[
+    {id:'1Fbj1rFgdOKNLj4Lwm5OlQK0F6LAAkNet',n:'WallUnit1.jpg'},{id:'1zF7Otr44HDmh_HqtGB4jQ_VwZu8raz0V',n:'WallUnit2.jpg'},
+    {id:'1n3LQJQHWXXPd-FYgrDUH8Ttv41HKs0Eb',n:'WallUnit3.jpg'},{id:'1eN-Mt3RO8hyGuODwakuRq0nVmJkumedb',n:'WallUnit6.jpg'},
+    {id:'1H5iiLhh7tbFeL-P9toytyxk2j6mDeNqp',n:'WallUnit7.jpg'},{id:'17HKJwstagw2eQj-OBHRCT91JGlnG0LTT',n:'WallUnit8.jpg'},
+    {id:'1mQfyzEm8otQzlerQDic29lA4Mpj0Im31',n:'Portas1.jpg'},{id:'135z9R1i-gNSp91oT5UH-fPU2vpvjIBnD',n:'Portas4.jpg'},
+    {id:'17C5Wj_GvtC_tE-JIdWe7pt3DBYGPvHKV',n:'Portas9.jpg'},{id:'1STQbl67SPetStwF3jaHXWmyOfzWudRmw',n:'Portas10.jpg'}
+  ],
+  upholstery:[
+    {id:'1jILYRTyCs8dPQYqANKJCAtjuUeLDaUsK',n:'FineUpholstery1.jpg'},{id:'1FDEdWzqFkep9OFMOnX_uhvA62Cgkn-h7',n:'FineUpholstery2.jpg'},
+    {id:'1U-je0J0v1WmNrW2x_nOK_MrweGZx6NkP',n:'FineUpholstery3.jpg'},{id:'1ryT_RrUSuQPlx3mNI5Tjb1-VadLI7b2-',n:'FineUpholstery4.jpg'},
+    {id:'1puPwXO725Nptd2W_fxx_lKUBwAuLsddB',n:'FineUpholstery5.jpg'},{id:'1VHZu19f4pw_zLM9UNsUpZk0_C4EfRrDC',n:'FineUpholstery6.jpg'},
+    {id:'1VktnPfwU1TDFqN6AVXuEpY_F1oZZ9nJ7',n:'FineUpholstery7.jpg'},{id:'1fhidSsfCHXQ-4RSU53Bn1be2d1WbpV24',n:'FineUpholstery8.jpg'},
+    {id:'1qA_exlIdZymvFCekcxs9EfT261HuhNTg',n:'FineUpholstery9.jpg'},{id:'1htsb6PhmlfZZb6MKI2gJDMzISzGr8Cn1',n:'FineUpholstery10.jpg'},
+    {id:'1uX25YuFDL9OfY2Q0I1WGC3l6urTgZz53',n:'FineUpholstery11.jpg'},{id:'1I-zqcRK2-N36i0bXgWlnocr3Ov2FPLKM',n:'FineUpholstery12.jpg'},
+    {id:'1mhdlQmLZnG20D7uf9FDMx5CM-xFo-LZP',n:'FineUpholstery13.jpg'},{id:'1iiZ5TYgrm_v2tqRgBin0Frv02Y1fm0FA',n:'FineUpholstery14.jpg'},
+    {id:'1JhRL_5ZO-5NGXPjSqMQPV1u0MASbB8ii',n:'FineUpholstery15.jpg'},{id:'1GKfh8-4PMruAAm2J7OeDkQoZ0p4BY8z0',n:'FineUpholstery16.jpg'},
+    {id:'1sPLSBDYMTCJ3jIgKHJNemeJzu2sJHdSQ',n:'FineUpholstery17.jpg'},{id:'18KNifgmp8AuiTq7Bci5WpuYylXTDhdwi',n:'FineUpholstery18.jpg'},
+    {id:'1KFlqueP7U4Ux4c_fDmBcSl6pa3cm1uRt',n:'FineUpholstery19.jpg'},{id:'1Xeqm7840eSACZQcdg8qLjTAja9PHW65X',n:'FineUpholstery20.jpg'},
+    {id:'10YOdEHEEy5mBcDDhoNf48pMvnqSYRWkO',n:'FineUpholstery21.jpg'},{id:'1-8BEF3oIgqdRVYxrnb-urEQTyyEz61YJ',n:'FineUpholstery22.jpg'},
+    {id:'1IKvIl7yCz8nCWCafbV3_mlnVbRASBf0f',n:'FineUpholstery23.jpg'},{id:'17bVzSV3R0E79Pe_PqC6uhuwrOW7SYpXY',n:'FineUpholstery24.jpg'},
+    {id:'1PsRp5ZI03nk60runXgRySob1BD9xzZjo',n:'FineUpholstery25.jpg'},{id:'1p1qDGfdo05S0DzSgNEjgeJmqcHw3hVkk',n:'FineUpholstery26.jpg'},
+    {id:'1z1ZOz1PkCYUkGA29Crl0YfCYIJz8qo8O',n:'FineUpholstery27.jpg'},{id:'13_32GGPl59UQbrjJknQxfxJqZRWmpBfr',n:'FineUpholstery28.jpg'},
+    {id:'11g13Zwwhs6pNb0iLas5FsaPeJ7DcUlAT',n:'FineUpholstery29.jpg'},{id:'1xLvNFv74LsaaQCD6s4oEH-OgAjiXSZ7M',n:'FineUpholstery30.jpg'}
+  ]
+};
+const CATMETA={restoration:{label:'Antique Restoration',icon:'🪑'},cabinetry:{label:'Custom Cabinetry',icon:'🏠'},millwork:{label:'Custom Millwork',icon:'🪵'},upholstery:{label:'Fine Upholstery',icon:'🛋️'}};
+const ALL=[...CAT.restoration.map(p=>({...p,cat:'restoration'})),...CAT.cabinetry.map(p=>({...p,cat:'cabinetry'})),...CAT.millwork.map(p=>({...p,cat:'millwork'})),...CAT.upholstery.map(p=>({...p,cat:'upholstery'}))];
+const TOTAL=ALL.length;
+const PR=[
+  {p:'work',cats:['restoration','millwork','cabinetry','upholstery'],lbl:'The Work',col:'#c9a84c'},
+  {p:'process',cats:['millwork','cabinetry'],lbl:'The Process',col:'#5a8a7a'},
+  {p:'transformation',cats:['restoration'],lbl:'The Transformation',col:'#8a6a47'},
+  {p:'work',cats:['cabinetry','millwork'],lbl:'The Work',col:'#c9a84c'},
+  {p:'education',cats:['restoration','cabinetry','upholstery'],lbl:'The Education',col:'#5a6a8a'},
+  {p:'transformation',cats:['restoration'],lbl:'The Transformation',col:'#8a6a47'},
+  {p:'work',cats:['upholstery'],lbl:'The Work',col:'#c9a84c'},
+  {p:'process',cats:['millwork','restoration'],lbl:'The Process',col:'#5a8a7a'},
+  {p:'legacy',cats:['restoration','millwork'],lbl:'The Legacy',col:'#7a6a8a'},
+  {p:'work',cats:['cabinetry'],lbl:'The Work',col:'#c9a84c'},
+  {p:'process',cats:['cabinetry','restoration'],lbl:'The Process',col:'#5a8a7a'},
+  {p:'transformation',cats:['restoration'],lbl:'The Transformation',col:'#8a6a47'}
+];
+
+const SYS_IG=`You are the Instagram content writer for Brandt Wood Finishing (BWF). Founded 1985, Winter Garden FL. Custom millwork, cabinetry, antique furniture restoration, fine upholstery. Serving Orlando to Miami.
+
+VOICE — pick register:
+1. ARTISAN (default): Confident, precise, no ostentation. Work speaks.
+2. GUARDIAN: Antique restoration. Slow, contemplative, honors original maker.
+3. BUILDER: Millwork/cabinetry. Technical, functional, specific.
+
+NEVER use: passionate, quality you can trust, dream home, transform your space, stunning, beautiful, amazing, world-class, take pride, we offer, we are, we provide, dedication
+Caption NEVER starts with: "We", "Brandt", "BWF", or company name.
+
+STRUCTURE:
+HOOK (line 1): Max 10 words. ONE concrete specific detail. No rhetorical questions.
+SUBSTANCE (2-4 lines): Goes beyond what photo shows — material, technique, decision, time.
+PAYOFF (last line): Subtle CTA: "Inquiries via link in bio." or "Serving Orlando to Miami." or "Falamos português."
+[blank line]
+HASHTAGS: 8-12 tags. Always include #brandtwoodfinishing. Mix category + geographic.
+
+Output exactly two:
+--- VARIATION A ---
+[caption]
+
+[hashtags]
+
+--- VARIATION B ---
+[caption]
+
+[hashtags]`;
+
+const SYS_FB=`You are the Facebook content writer for Brandt Wood Finishing (BWF). Founded 1985, Winter Garden FL. Custom millwork, cabinetry, antique furniture restoration, fine upholstery. Serving Orlando to Miami.
+
+Facebook audience: homeowners 35-65, Brazilian community in FL, people who research before calling. They READ. They share when something resonates.
+
+VOICE — pick register:
+1. ARTISAN (default): Tells the craft story. Reader learns something real without feeling lectured.
+2. GUARDIAN: Antique restoration. Slower, more narrative. The piece has history and dignity.
+3. BUILDER: Millwork/cabinetry. Technical specifics, functional description.
+
+NEVER use: passionate, quality you can trust, dream home, transform your space, stunning, beautiful, amazing, world-class, take pride, we offer, we are, we provide, dedication
+Post NEVER starts with: "We", "Brandt", "BWF", or company name.
+
+STRUCTURE:
+HOOK (1-2 sentences): Opens strong. More space than Instagram — can be up to 15 words.
+STORY (2-4 paragraphs, 1-3 lines each): Tell the project story. Include ONE specific technical or historical detail the reader cannot guess from the photo.
+CTA (last line): Can be more direct than Instagram: "Send us a message." or "Inquiries via link below." or "Serving all of Florida." or "Falamos português — entre em contato."
+HASHTAGS: Maximum 2. Prefer zero. Only use #brandtwoodfinishing if using any.
+
+Output exactly two:
+--- VARIATION A ---
+[post body]
+
+[0-2 hashtags or none]
+
+--- VARIATION B ---
+[post body]
+
+[0-2 hashtags or none]`;
+
+const SYS_BOTH=`You are the social media content writer for Brandt Wood Finishing (BWF). Founded 1985, Winter Garden FL. Custom millwork, cabinetry, antique furniture restoration, fine upholstery. Serving Orlando to Miami.
+
+BRAND RULES (apply to both platforms):
+- NEVER use: passionate, quality you can trust, dream home, transform your space, stunning, beautiful, amazing, world-class, take pride, we offer, we provide, dedication
+- Content NEVER starts with: "We", "Brandt", "BWF", or company name
+- Three voice registers: ARTISAN (default) / GUARDIAN (restoration) / BUILDER (millwork/cabinetry)
+
+Generate content for BOTH Instagram and Facebook. Use === markers exactly as shown.
+
+=== INSTAGRAM ===
+Short and visual. Hook max 10 words. 2-4 lines body. 8-12 hashtags.
+
+--- VARIATION A ---
+[caption]
+
+[hashtags]
+
+--- VARIATION B ---
+[caption]
+
+[hashtags]
+
+=== FACEBOOK ===
+Narrative and story-driven. Hook up to 15 words. 2-4 paragraphs. Direct CTA. Max 2 hashtags (prefer none).
+
+--- VARIATION A ---
+[post]
+
+[0-2 hashtags]
+
+--- VARIATION B ---
+[post]
+
+[0-2 hashtags]`;
+
+let apiKey='',used=new Set(),queue=[],pi=0,cur=null,vars=null,platform='instagram';
+
+function startApp(){
+  const k=document.getElementById('api-in').value.trim();
+  if(!k.startsWith('sk-ant-')&&!k.startsWith('sk-')){toast('Invalid API key format');return;}
+  apiKey=k;localStorage.setItem('bwf_key',k);
+  document.getElementById('setup').style.display='none';
+  document.getElementById('app').style.display='block';
+  loadS();
+}
+function resetKey(){localStorage.removeItem('bwf_key');apiKey='';document.getElementById('setup').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('api-in').value='';}
+
+function setPlatform(p){
+  platform=p;
+  ['ig','fb','both'].forEach(x=>{document.getElementById('pb-'+x).className='plat-btn';});
+  const cls=p==='instagram'?'on-ig':p==='facebook'?'on-fb':'on-both';
+  document.getElementById('pb-'+(p==='instagram'?'ig':p==='facebook'?'fb':'both')).className='plat-btn '+cls;
+  document.getElementById('cout').innerHTML='';
+  vars=null;
+  const btn=document.getElementById('gbtn');
+  btn.textContent=p==='both'?'Generate for Instagram + Facebook':'Generate content for this photo';
+}
+
+function loadS(){
+  try{const v=localStorage.getItem('bwf_used');if(v)used=new Set(JSON.parse(v))}catch(e){}
+  try{const v=localStorage.getItem('bwf_queue');if(v)queue=JSON.parse(v)}catch(e){}
+  try{const v=localStorage.getItem('bwf_pi');if(v)pi=parseInt(v)||0}catch(e){}
+  updS();pick();
+}
+function saveS(){try{localStorage.setItem('bwf_used',JSON.stringify([...used]));localStorage.setItem('bwf_queue',JSON.stringify(queue));localStorage.setItem('bwf_pi',String(pi))}catch(e){}}
+function updS(){
+  const u=used.size,r=TOTAL-u;
+  document.getElementById('s-tot').textContent=TOTAL;document.getElementById('s-used').textContent=u;
+  document.getElementById('s-q').textContent=queue.length;document.getElementById('s-rem').textContent=r;
+  document.getElementById('hdr-sub').textContent=r+' photos remaining';
+}
+function pick(){
+  const pilar=PR[pi%PR.length];
+  document.getElementById('plabel').textContent=pilar.lbl;
+  document.getElementById('pdot').style.background=pilar.col;
+  let pool=ALL.filter(p=>pilar.cats.includes(p.cat)&&!used.has(p.id));
+  if(!pool.length)pool=ALL.filter(p=>!used.has(p.id));
+  if(!pool.length){used.clear();pool=ALL.filter(p=>pilar.cats.includes(p.cat));if(!pool.length)pool=[...ALL];}
+  cur=pool[Math.floor(Math.random()*pool.length)];
+  renderPF();document.getElementById('cout').innerHTML='';
+  const btn=document.getElementById('gbtn');btn.disabled=false;
+  btn.textContent=platform==='both'?'Generate for Instagram + Facebook':'Generate content for this photo';
+  vars=null;
+}
+function renderPF(){
+  if(!cur)return;
+  const thumb=`https://lh3.googleusercontent.com/d/${cur.id}=w600-h380`;
+  const view=`https://drive.google.com/file/d/${cur.id}/view`;
+  const meta=CATMETA[cur.cat];const fid='fb'+cur.id.slice(0,8);
+  document.getElementById('pf').innerHTML=`
+    <img src="${thumb}" style="width:100%;max-height:280px;object-fit:contain;border-radius:8px" onerror="this.style.display='none';document.getElementById('${fid}').style.display='flex'" alt="${cur.n}">
+    <div id="${fid}" style="display:none;flex-direction:column;align-items:center;gap:8px"><div style="font-size:32px">${meta.icon}</div><p style="font-size:12px;color:var(--text2)">Log into Google Drive to see preview</p></div>
+    <div class="pname">${cur.n}</div><div class="pcat">${meta.label}</div>
+    <a href="${view}" class="dlink" target="_blank">View in Drive &rarr;</a>`;
+}
+function skip(){pick();}
+
+async function gen(){
+  if(!cur||!apiKey)return;
+  const btn=document.getElementById('gbtn');btn.disabled=true;
+  btn.innerHTML='<span class="dots"><span class="d"></span><span class="d"></span><span class="d"></span></span> Generating...';
+  const pilar=PR[pi%PR.length];const bil=document.getElementById('bil').checked;
+  const sys=platform==='instagram'?SYS_IG:platform==='facebook'?SYS_FB:SYS_BOTH;
+  const label=platform==='instagram'?'Instagram':platform==='facebook'?'Facebook':'Instagram + Facebook';
+  document.getElementById('cout').innerHTML=`<div style="padding:24px;text-align:center;color:var(--text2);font-size:13px"><div class="dots" style="justify-content:center;margin-bottom:8px"><div class="d"></div><div class="d"></div><div class="d"></div></div>Writing ${label} content with BWF voice...</div>`;
+  const msg=`Photo: ${cur.n}\nCategory: ${CATMETA[cur.cat].label}\nEditorial pilar: ${pilar.lbl}\n${bil?'\nAlso add a Portuguese adaptation after each variation (not literal translation — adapt naturally for the platform).':''}`;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:platform==='both'?2000:1000,system:sys,messages:[{role:'user',content:msg}]})});
+    const data=await resp.json();
+    if(data.error){toast('API error: '+data.error.message);btn.disabled=false;btn.textContent=platform==='both'?'Generate for Instagram + Facebook':'Try again';return;}
+    const raw=data.content?.find(b=>b.type==='text')?.text||'';
+    if(platform==='both')renderBoth(raw);
+    else{vars=parseV(raw);renderC(vars,platform);}
+    btn.disabled=false;btn.textContent=platform==='both'?'Generate new variations':'Generate new variations';
+  }catch(e){toast('Connection error. Check your internet.');btn.disabled=false;btn.textContent='Try again';document.getElementById('cout').innerHTML='';}
+}
+
+function parseV(raw){
+  const parts=raw.split(/---\s*VARIATION [AB]\s*---/).filter(s=>s.trim());
+  return parts.map(p=>{
+    const lines=p.trim().split('\n');
+    const hi=lines.findIndex(l=>l.trim().startsWith('#'));
+    if(hi===-1)return{body:p.trim(),tags:''};
+    return{body:lines.slice(0,hi).join('\n').trim(),tags:lines.slice(hi).join(' ').trim()};
+  });
+}
+function parseBoth(raw){
+  const igMatch=raw.match(/===\s*INSTAGRAM\s*===([\s\S]*?)(?===\s*FACEBOOK\s*===|$)/i);
+  const fbMatch=raw.match(/===\s*FACEBOOK\s*===([\s\S]*?)$/i);
+  return{ig:igMatch?parseV(igMatch[1]):[],fb:fbMatch?parseV(fbMatch[1]):[]};
+}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function renderC(vs,plat){
+  const isIg=plat==='instagram';
+  let h=`<div class="sl">Generated captions &mdash; edit directly before approving</div>`;
+  vs.forEach((v,i)=>{
+    const vid=`ct_${plat}_${i}`;
+    h+=`<div class="cc">
+      <div class="cl">Variation ${i===0?'A':'B'}</div>
+      <div class="ct" id="${vid}" contenteditable="true">${esc(v.body)}</div>
+      ${isIg&&v.tags?`<div class="ht">${esc(v.tags)}</div>`:''}
+      ${!isIg&&v.tags?`<div class="ht" style="color:var(--text3);font-size:11px">${esc(v.tags)}</div>`:''}
+      <div class="ca">
+        <button class="ab" onclick="cp('${vid}','${plat}',${i})">Copy</button>
+        <button class="ab ${isIg?'g':'b'}" onclick="approve('${vid}','${plat}',${i})">Approve &rarr;</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById('cout').innerHTML=h;
+  window._vars={[plat]:vs};
+}
+
+function renderBoth(raw){
+  const parsed=parseBoth(raw);
+  window._vars={instagram:parsed.ig,facebook:parsed.fb};
+  let h='';
+  if(parsed.ig.length){
+    h+=`<div class="plat-section">
+      <div class="plat-header"><div class="plat-icon ig">IG</div><span class="plat-header-label">Instagram</span></div>`;
+    parsed.ig.forEach((v,i)=>{
+      const vid=`ct_instagram_${i}`;
+      h+=`<div class="cc">
+        <div class="cl">Variation ${i===0?'A':'B'}</div>
+        <div class="ct" id="${vid}" contenteditable="true">${esc(v.body)}</div>
+        ${v.tags?`<div class="ht">${esc(v.tags)}</div>`:''}
+        <div class="ca">
+          <button class="ab" onclick="cp('${vid}','instagram',${i})">Copy</button>
+          <button class="ab g" onclick="approve('${vid}','instagram',${i})">Approve IG &rarr;</button>
+        </div>
+      </div>`;
+    });
+    h+=`</div>`;
+  }
+  if(parsed.fb.length){
+    h+=`<div class="plat-section">
+      <div class="plat-header"><div class="plat-icon fb">FB</div><span class="plat-header-label">Facebook</span></div>`;
+    parsed.fb.forEach((v,i)=>{
+      const vid=`ct_facebook_${i}`;
+      h+=`<div class="cc">
+        <div class="cl">Variation ${i===0?'A':'B'}</div>
+        <div class="ct" id="${vid}" contenteditable="true">${esc(v.body)}</div>
+        ${v.tags?`<div class="ht" style="font-size:11px;color:var(--text3)">${esc(v.tags)}</div>`:''}
+        <div class="ca">
+          <button class="ab" onclick="cp('${vid}','facebook',${i})">Copy</button>
+          <button class="ab b" onclick="approve('${vid}','facebook',${i})">Approve FB &rarr;</button>
+        </div>
+      </div>`;
+    });
+    h+=`</div>`;
+  }
+  document.getElementById('cout').innerHTML=h||'<div class="empty">No content generated. Try again.</div>';
+}
+
+function cp(vid,plat,i){
+  const el=document.getElementById(vid);
+  const vs=window._vars?.[plat];
+  const t=(el?.innerText||'')+(vs?.[i]?.tags?'\n\n'+vs[i].tags:'');
+  navigator.clipboard?.writeText(t).then(()=>toast('Copied!'));
+}
+function approve(vid,plat,i){
+  if(!cur)return;
+  const el=document.getElementById(vid);
+  const vs=window._vars?.[plat];
+  const body=el?.innerText||vs?.[i]?.body||'';
+  const tags=vs?.[i]?.tags||'';
+  const pilar=PR[pi%PR.length];
+  const isIg=plat==='instagram';
+  queue.push({id:Date.now(),photo:cur,pilar:pilar.lbl,pilarCol:pilar.col,caption:body,hashtags:tags,at:new Date().toISOString(),platform:plat,driveUrl:`https://drive.google.com/file/d/${cur.id}/view`});
+  if(platform!=='both'){used.add(cur.id);pi++;}
+  else{
+    const igDone=queue.filter(q=>q.photo.id===cur.id&&q.platform==='instagram').length>0;
+    const fbDone=queue.filter(q=>q.photo.id===cur.id&&q.platform==='facebook').length>0;
+    if(igDone&&fbDone){used.add(cur.id);pi++;}
+  }
+  saveS();updS();
+  toast((isIg?'Instagram':'Facebook')+' post added to queue');
+  if(platform!=='both'){
+    document.getElementById('cout').innerHTML=`<div style="padding:18px;text-align:center;border:0.5px solid var(--border);border-radius:12px;margin-top:8px;background:var(--bg2)"><div style="font-size:13px;font-weight:500;margin-bottom:4px">Added to queue</div><div style="font-size:12px;color:var(--text2)">Loading next photo...</div></div>`;
+    setTimeout(pick,1500);
+  }
+}
+
+function sw(tab){
+  ['generate','queue','export'].forEach(t=>{document.getElementById('t-'+t).style.display=t===tab?'block':'none';});
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',['generate','queue','export'][i]===tab));
+  if(tab==='queue')renderQ();if(tab==='export')renderE();
+}
+function renderQ(){
+  const el=document.getElementById('qlist');
+  if(!queue.length){el.innerHTML='<div class="empty">No approved posts yet. Generate and approve in the Generate tab.</div>';return;}
+  let h=`<div class="sl">${queue.length} post${queue.length>1?'s':''} approved</div>`;
+  queue.forEach((post,i)=>{
+    const d=new Date(post.at).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const isIg=post.platform==='instagram';
+    h+=`<div class="qi">
+      <div style="width:6px;height:6px;border-radius:50%;background:${post.pilarCol};flex-shrink:0;margin-top:5px"></div>
+      <div class="qm">
+        <div class="qn">${post.photo.n}<span class="plat-pill ${isIg?'ig':'fb'}">${isIg?'Instagram':'Facebook'}</span></div>
+        <div class="qc">${(post.caption||'').substring(0,90)}...</div>
+        <div style="display:flex;gap:6px;margin-top:7px">
+          <a href="${post.driveUrl}" class="dlink" target="_blank" style="font-size:11px;padding:4px 9px">Photo &rarr;</a>
+          <button class="ab" onclick="cpPost(${i})" style="font-size:11px">Copy</button>
+          <button class="ab" onclick="rmPost(${i})" style="font-size:11px;color:var(--text3)">Remove</button>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text2);flex-shrink:0">${d}</div>
+    </div>`;
+  });
+  h+=`<button class="gbtn dim" onclick="clrQ()" style="margin-top:4px">Clear all approved posts</button>`;
+  el.innerHTML=h;
+}
+function cpPost(i){const p=queue[i];if(!p)return;navigator.clipboard?.writeText(p.caption+'\n\n'+p.hashtags).then(()=>toast('Copied!'));}
+function rmPost(i){queue.splice(i,1);saveS();updS();renderQ();}
+function clrQ(){if(confirm('Clear all approved posts?')){queue=[];saveS();updS();renderQ();}}
+
+function renderE(){
+  const el=document.getElementById('econtent');
+  if(!queue.length){el.innerHTML='<div class="empty">No posts to export. Approve posts first.</div>';return;}
+  const igPosts=queue.filter(p=>p.platform==='instagram');
+  const fbPosts=queue.filter(p=>p.platform==='facebook');
+  const payload={instagram:igPosts.map(p=>({photo_name:p.photo.n,photo_drive_id:p.photo.id,photo_drive_url:p.driveUrl,caption:p.caption,hashtags:p.hashtags,full_post:p.caption+'\n\n'+p.hashtags,pilar:p.pilar,category:p.photo.cat,approved_at:p.at})),facebook:fbPosts.map(p=>({photo_name:p.photo.n,photo_drive_id:p.photo.id,photo_drive_url:p.driveUrl,caption:p.caption,full_post:p.caption+(p.hashtags?'\n\n'+p.hashtags:''),pilar:p.pilar,category:p.photo.cat,approved_at:p.at}))};
+  const json=JSON.stringify(payload,null,2);window._ej=json;
+  el.innerHTML=`
+    <div class="sl">Make.com webhook payload</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">${igPosts.length} Instagram + ${fbPosts.length} Facebook posts ready. Structured by platform for separate Make.com scenarios.</p>
+    <div class="exb"><div class="exc">${esc(json)}</div></div>
+    <button class="gbtn gold" onclick="cpE()">Copy JSON for Make.com</button>
+    <div class="sl">Optimal posting times (EST)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <div class="st"><div style="font-size:12px;font-weight:500">Tue + Thu</div><div class="st-l">Instagram 11am or 7:30pm</div></div>
+      <div class="st"><div style="font-size:12px;font-weight:500">Mon + Wed</div><div class="st-l">Facebook 12pm or 7pm</div></div>
+      <div class="st"><div style="font-size:12px;font-weight:500">Saturday</div><div class="st-l">Both platforms 10am</div></div>
+    </div>`;
+}
+function cpE(){if(window._ej){navigator.clipboard?.writeText(window._ej).then(()=>toast('Copied!'));}}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2200);}
+
+window.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('setup').style.display!=='none')startApp();});
+const saved=localStorage.getItem('bwf_key');
+if(saved&&(saved.startsWith('sk-ant-')||saved.startsWith('sk-'))){
+  apiKey=saved;document.getElementById('api-in').value=saved;
+  document.getElementById('setup').style.display='none';document.getElementById('app').style.display='block';loadS();
+}
+</script>
+</body>
+</html>
