@@ -385,13 +385,13 @@ const S = {
   rejectingPostId: null,
   webhookUrl: '',
   schedule: [
-    {day:0,name:'Dom',morning:'09:00',evening:'19:00',active:false},
-    {day:1,name:'Seg',morning:'09:00',evening:'19:00',active:true},
-    {day:2,name:'Ter',morning:'09:00',evening:'19:00',active:true},
-    {day:3,name:'Qua',morning:'09:00',evening:'19:00',active:true},
-    {day:4,name:'Qui',morning:'09:00',evening:'19:00',active:true},
-    {day:5,name:'Sex',morning:'09:00',evening:'19:00',active:true},
-    {day:6,name:'Sáb',morning:'10:00',evening:'18:00',active:true},
+    {day:0,name:'Dom',morning:'20:00',evening:'',active:true},
+    {day:1,name:'Seg',morning:'',evening:'',active:false},
+    {day:2,name:'Ter',morning:'12:00',evening:'19:30',active:true},
+    {day:3,name:'Qua',morning:'09:30',evening:'13:00',active:true},
+    {day:4,name:'Qui',morning:'13:00',evening:'',active:true},
+    {day:5,name:'Sex',morning:'12:00',evening:'19:00',active:true},
+    {day:6,name:'Sáb',morning:'10:00',evening:'',active:true},
   ]
 };
 
@@ -453,6 +453,11 @@ PROHIBITIONS — never use:
 - Max one em dash per post
 - Content NEVER starts with: "We", "Brandt", "BWF", or company name
 
+CONTACT — REGRA CRÍTICA:
+- NUNCA invente telefones, endereços, e-mails, preços ou qualquer dado específico
+- NUNCA coloque números de telefone em nenhum post
+- CTAs aprovados: "Link in bio." / "Inquiries via link in bio." / "Serving Orlando to Miami." / "Falamos português." / "Send us a message."
+
 OUTPUT FORMAT — respond with EXACTLY this structure:
 ===INSTAGRAM===
 [caption — hook max 10 words, 2-4 lines body, one marketing technique embedded]
@@ -461,6 +466,7 @@ OUTPUT FORMAT — respond with EXACTLY this structure:
 [post — first 2 lines must earn the "see more" click; 2-4 short paragraphs; one imperfect specific detail; warm direct CTA at end]
 ===END===`;
 
+const CONTACT_BLOCK = '\n.\n🇺🇸 (689) 250-1209\n🇧🇷 (754) 215-0045\n🌐 www.brandtwf.com';
 
 // ===== HELPERS =====
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
@@ -555,6 +561,60 @@ function getStats(){
 }
 
 // ===== GENERATE =====
+async function generateAndPublishNow(){
+  if(!S.apiKey||S.isGenerating) return;
+  S.isGenerating = true;
+  render();
+  const {photo,pilar} = pickPhoto();
+  const photoUrl = githubUrl(photo.n);
+  const msgContent = [
+    {type:'image',source:{type:'url',url:photoUrl}},
+    {type:'text',text:'Photo file: '+photo.n+'\nCategory: '+CATMETA[photo.cat].label+'\nEditorial pilar: '+pilar.lbl+'\n\nLook carefully at this image and write content based on what you actually see in the photo.'}
+  ];
+  try{
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1800,system:SYS_BOTH,messages:[{role:'user',content:msgContent}]})
+    });
+    const data = await resp.json();
+    if(data.error){toast('Erro API: '+data.error.message,'error');S.isGenerating=false;render();return;}
+    const raw = data.content?.find(b=>b.type==='text')?.text||'';
+    const {ig_text,ig_tags,fb_text} = parseBothResponse(raw);
+    const now = new Date();
+    const post = {
+      id: uid(),
+      photoId: photo.id,
+      photoName: photo.n,
+      photoThumb: thumb(photo.id),
+      photoGithubUrl: githubUrl(photo.n),
+      photoDriveUrl: driveUrl(photo.id),
+      category: photo.cat,
+      pilar: pilar.lbl,
+      title: catTitle(photo.n),
+      caption_ig: ig_text + CONTACT_BLOCK,
+      hashtags_ig: ig_tags,
+      caption_fb: fb_text + CONTACT_BLOCK,
+      status: 'pending',
+      slot: 'immediate',
+      scheduledDate: now.toISOString().slice(0,10),
+      scheduledTime: now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0'),
+      createdAt: now.toISOString(),
+      approvedBy: null, approvedAt: null, rejectionReason: null, publishedAt: null,
+    };
+    S.posts.unshift(post);
+    saveState();
+    S.isGenerating = false;
+    render();
+    // Auto-open modal for immediate review
+    setTimeout(()=>openModal(post.id), 200);
+  }catch(e){
+    toast('Erro de conexão.','error');
+    S.isGenerating = false;
+    render();
+  }
+}
+
 async function generatePost(){
   if(!S.apiKey||S.isGenerating) return;
   S.isGenerating = true;
@@ -592,9 +652,9 @@ async function generatePost(){
       category: photo.cat,
       pilar: pilar.lbl,
       title: catTitle(photo.n),
-      caption_ig: ig_text,
+      caption_ig: ig_text + CONTACT_BLOCK,
       hashtags_ig: ig_tags,
-      caption_fb: fb_text,
+      caption_fb: fb_text + CONTACT_BLOCK,
       status: 'pending',
       slot: slot.slot,
       scheduledDate: slot.date,
@@ -847,11 +907,18 @@ function renderDashboard(){
           <div class="hero-title">Dashboard <em>Publisher</em></div>
           <div class="hero-sub">Agente de publicação &middot; Instagram &amp; Facebook</div>
         </div>
-        <button class="btn-nova" onclick="generatePost()" ${S.isGenerating?'disabled':''}>
-          ${S.isGenerating?
-            '<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' :
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Nova Publicação'}
-        </button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+          <button class="btn-nova" onclick="generatePost()" ${S.isGenerating?'disabled':''} style="background:transparent;border:1px solid var(--gold);color:var(--gold)">
+            ${S.isGenerating?
+              '<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' :
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Agendar'}
+          </button>
+          <button class="btn-nova" onclick="generateAndPublishNow()" ${S.isGenerating?'disabled':''}>
+            ${S.isGenerating?
+              '<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' :
+              '⚡ Publicar Agora'}
+          </button>
+        </div>
       </div>
     </div>
     <div class="stats-grid">
@@ -894,9 +961,8 @@ function renderApprovals(){
           <div class="hero-label">Fila de Revisão</div>
           <div class="hero-title">Aprovações <em>Pendentes</em></div>
         </div>
-        <button class="btn-nova" onclick="generatePost()" ${S.isGenerating?'disabled':''}>
-          ${S.isGenerating?'<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' :
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Novo Post'}
+        <button class="btn-nova" onclick="generateAndPublishNow()" ${S.isGenerating?'disabled':''}>
+          ${S.isGenerating?'<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' : '⚡ Publicar Agora'}
         </button>
       </div>
     </div>
