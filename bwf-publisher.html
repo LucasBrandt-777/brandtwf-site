@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BWF Publisher</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:oklch(0.09 0 0);
+  --bg-card:oklch(0.13 0 0);
+  --bg-sidebar:oklch(0.07 0 0);
+  --bg-input:oklch(0.10 0 0);
+  --gold:oklch(0.72 0.12 85);
+  --gold-muted:oklch(0.60 0.09 85);
+  --text:oklch(0.93 0 0);
+  --text-muted:oklch(0.55 0 0);
+  --text-dim:oklch(0.40 0 0);
+  --border:oklch(0.22 0 0);
+  --border-subtle:oklch(0.17 0 0);
+  --font-display:'Cormorant Garamond',Georgia,serif;
+  --font-body:'Montserrat',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  /* status */
+  --c-pending:oklch(0.72 0.12 85);
+  --c-approved:oklch(0.65 0.18 145);
+  --c-published:oklch(0.65 0.15 240);
+  --c-rejected:oklch(0.65 0.20 25);
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:13px;min-height:100vh;overflow:hidden}
+/* SETUP */
+#setup{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:200;padding:24px}
+.setup-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:36px;width:100%;max-width:420px}
+.setup-logo{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.setup-dot{width:10px;height:10px;border-radius:50%;background:var(--gold)}
+.setup-title{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--text)}
+.setup-sub{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-muted);margin-bottom:24px;font-family:var(--font-body)}
+.setup-label{font-size:11px;color:var(--text-muted);margin-bottom:6px;display:block;letter-spacing:0.05em}
+.setup-input{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-size:12px;font-family:var(--font-mono);outline:none;transition:border-color 0.2s}
+.setup-input:focus{border-color:var(--gold)}
+.setup-btn{width:100%;margin-top:14px;padding:11px;background:var(--gold);border:none;border-radius:6px;color:oklch(0.08 0 0);font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:var(--font-body);transition:opacity 0.2s}
+.setup-btn:hover{opacity:0.9}
+.setup-note{font-size:10px;color:var(--text-dim);margin-top:10px;line-height:1.5}
+/* APP LAYOUT */
+#app{display:none;height:100vh;display:grid;grid-template-columns:240px 1fr}
+/* SIDEBAR */
+#sidebar{background:var(--bg-sidebar);border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;overflow:hidden;height:100vh}
+.sb-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border-subtle)}
+.sb-logo-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.sb-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,oklch(0.72 0.12 85 / 0.15),oklch(0.72 0.12 85 / 0.05));border:1px solid oklch(0.72 0.12 85 / 0.3);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--gold);font-family:var(--font-display);font-weight:600}
+.sb-logo-name{font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--text)}
+.sb-logo-sub{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold-muted);font-family:var(--font-body)}
+.sb-divider{height:1px;background:linear-gradient(90deg,transparent,oklch(0.72 0.12 85 / 0.35),transparent);margin:0}
+.sb-agent{padding:12px 16px;border-bottom:1px solid var(--border-subtle)}
+.sb-agent-row{display:flex;align-items:center;gap:8px}
+.sb-pulse{width:7px;height:7px;border-radius:50%;background:oklch(0.70 0.18 145);flex-shrink:0;animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 oklch(0.70 0.18 145 / 0.6)}50%{box-shadow:0 0 0 4px oklch(0.70 0.18 145 / 0)}}
+.sb-agent-name{font-size:12px;font-weight:600;color:var(--text)}
+.sb-agent-info{font-size:10px;color:var(--text-muted);margin-top:2px;margin-left:15px;letter-spacing:0.02em}
+.sb-section-label{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);padding:14px 16px 6px;font-family:var(--font-body)}
+.sb-nav{flex:1;overflow-y:auto;padding:4px 8px}
+.sb-nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;cursor:pointer;transition:all 0.15s;position:relative;margin-bottom:2px;color:var(--text-muted);font-size:12px;font-weight:500;font-family:var(--font-body);border:1px solid transparent}
+.sb-nav-item:hover{background:oklch(0.13 0 0);color:var(--text)}
+.sb-nav-item.active{background:oklch(0.14 0.02 85);border-color:oklch(0.72 0.12 85 / 0.2);color:var(--gold)}
+.sb-nav-item.active .sb-nav-icon{color:var(--gold)}
+.sb-nav-icon{width:16px;height:16px;flex-shrink:0;opacity:0.7}
+.sb-nav-item.active .sb-nav-icon{opacity:1}
+.sb-nav-arrow{margin-left:auto;font-size:10px;opacity:0}
+.sb-nav-item.active .sb-nav-arrow{opacity:0.5}
+.sb-badge{background:var(--gold);color:oklch(0.08 0 0);border-radius:10px;padding:1px 6px;font-size:9px;font-weight:700;margin-left:auto;font-family:var(--font-body)}
+.sb-badge.red{background:var(--c-rejected)}
+.sb-platforms{padding:12px 16px;border-top:1px solid var(--border-subtle)}
+.sb-plat-label{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px}
+.sb-plat-item{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sb-plat-icon{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.sb-plat-icon.ig{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+.sb-plat-icon.fb{background:#1877F2}
+.sb-plat-name{font-size:11px;font-weight:600;color:var(--text)}
+.sb-plat-status{font-size:9px;color:oklch(0.70 0.18 145);margin-top:1px}
+.sb-footer{padding:10px 16px;border-top:1px solid var(--border-subtle)}
+.sb-notif{display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 8px;border-radius:6px;transition:background 0.15s}
+.sb-notif:hover{background:oklch(0.12 0 0)}
+.sb-notif-icon{font-size:13px;color:var(--text-muted)}
+.sb-notif-text{font-size:11px;color:var(--text-muted)}
+.sb-notif-badge{background:var(--c-pending);color:oklch(0.08 0 0);border-radius:10px;padding:1px 7px;font-size:9px;font-weight:700;margin-left:auto}
+/* MAIN */
+#main{overflow-y:auto;height:100vh;background:var(--bg)}
+.page{padding:28px;max-width:1100px}
+/* HERO */
+.hero{border-radius:10px;overflow:hidden;height:140px;position:relative;margin-bottom:24px;background:linear-gradient(135deg,oklch(0.09 0 0) 0%,oklch(0.13 0.02 85) 100%)}
+.hero-topline{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,oklch(0.72 0.12 85 / 0.4),transparent)}
+.hero-botline{position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,oklch(0.72 0.12 85 / 0.4),transparent)}
+.hero-bg-text{position:absolute;top:50%;right:24px;transform:translateY(-50%);font-family:var(--font-display);font-size:72px;font-weight:300;color:oklch(0.72 0.12 85 / 0.06);line-height:1;user-select:none;pointer-events:none}
+.hero-content{position:relative;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+.hero-label{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-family:var(--font-body)}
+.hero-title{font-family:var(--font-display);font-size:32px;font-weight:300;color:var(--text);letter-spacing:0.02em;line-height:1.1}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:10px;color:var(--text-dim);margin-top:4px;letter-spacing:0.05em;font-family:var(--font-body)}
+.btn-nova{display:flex;align-items:center;gap:7px;padding:10px 18px;background:var(--gold);border:none;border-radius:7px;color:oklch(0.08 0 0);font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:var(--font-body);transition:opacity 0.2s;white-space:nowrap}
+.btn-nova:hover{opacity:0.88}
+.btn-nova:disabled{opacity:0.4;cursor:not-allowed}
+.btn-nova svg{width:13px;height:13px}
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.stat-card{border-radius:8px;padding:14px 16px;border:1px solid}
+.stat-card-icon{width:14px;height:14px;margin-bottom:8px;opacity:0.8}
+.stat-card-val{font-family:var(--font-display);font-size:28px;font-weight:600;line-height:1;margin-bottom:4px}
+.stat-card-lbl{font-size:10px;color:var(--text-muted);letter-spacing:0.04em;font-family:var(--font-body)}
+/* SECTION HEADER */
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-label-sm{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);font-family:var(--font-body)}
+.section-title{font-family:var(--font-display);font-size:22px;font-weight:400;color:var(--text);display:flex;align-items:center;gap:10px}
+.section-title em{font-style:italic;color:var(--gold)}
+.section-badge{background:var(--gold);color:oklch(0.08 0 0);border-radius:12px;padding:2px 9px;font-size:10px;font-weight:700;font-family:var(--font-body)}
+.section-link{font-size:11px;color:var(--gold-muted);cursor:pointer;display:flex;align-items:center;gap:4px;font-family:var(--font-body)}
+.section-link:hover{color:var(--gold)}
+.section-divider{height:1px;background:linear-gradient(90deg,transparent,oklch(0.72 0.12 85 / 0.2),transparent);margin:20px 0}
+/* POST CARDS */
+.posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.post-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color 0.2s,transform 0.15s}
+.post-card:hover{border-color:oklch(0.72 0.12 85 / 0.25);transform:translateY(-1px)}
+.pc-image{position:relative;height:170px;overflow:hidden;background:oklch(0.11 0 0)}
+.pc-image img{width:100%;height:100%;object-fit:cover}
+.pc-image-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px;background:oklch(0.11 0 0)}
+.pc-img-overlay{position:absolute;inset:0;background:linear-gradient(0deg,oklch(0.07 0 0 / 0.7) 0%,transparent 50%)}
+.pc-time{position:absolute;bottom:10px;left:10px;display:flex;align-items:center;gap:5px;background:oklch(0.06 0 0 / 0.85);border:1px solid oklch(0.72 0.12 85 / 0.2);border-radius:5px;padding:3px 8px;font-family:var(--font-mono);font-size:11px;color:var(--text)}
+.pc-time-icon{font-size:10px}
+.pc-plat{position:absolute;top:10px;right:10px;display:flex;gap:4px}
+.plat-badge{display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:0.05em;font-family:var(--font-body)}
+.plat-badge.ig{background:linear-gradient(135deg,#f09433,#dc2743,#bc1888);color:#fff}
+.plat-badge.fb{background:#1877F2;color:#fff}
+.plat-badge.both{background:oklch(0.18 0 0);border:1px solid var(--border);color:var(--text)}
+.pc-body{padding:13px 14px 10px}
+.pc-badges{display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;font-size:9px;font-weight:600;letter-spacing:0.05em;border:1px solid;font-family:var(--font-body)}
+.status-badge.pending{background:oklch(0.72 0.12 85 / 0.12);border-color:oklch(0.72 0.12 85 / 0.3);color:var(--gold)}
+.status-badge.approved{background:oklch(0.65 0.18 145 / 0.12);border-color:oklch(0.65 0.18 145 / 0.3);color:oklch(0.65 0.18 145)}
+.status-badge.published{background:oklch(0.65 0.15 240 / 0.12);border-color:oklch(0.65 0.15 240 / 0.3);color:oklch(0.65 0.15 240)}
+.status-badge.rejected{background:oklch(0.65 0.20 25 / 0.12);border-color:oklch(0.65 0.20 25 / 0.3);color:oklch(0.65 0.20 25)}
+.type-badge{background:oklch(0.17 0 0);border:1px solid var(--border);color:var(--text-muted);border-radius:4px;padding:2px 7px;font-size:9px;font-family:var(--font-body);letter-spacing:0.04em}
+.pc-title{font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--text);margin-bottom:5px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.pc-caption{font-size:11px;color:var(--text-muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px}
+.pc-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-top:1px solid var(--border-subtle)}
+.pc-date{font-size:10px;color:var(--text-dim);font-family:var(--font-mono)}
+.pc-slot{font-size:10px;color:var(--text-dim);font-family:var(--font-body)}
+.pc-actions{display:flex;gap:6px;align-items:center}
+.btn-revisar{display:flex;align-items:center;gap:5px;padding:5px 12px;background:transparent;border:1px solid var(--gold);border-radius:5px;color:var(--gold);font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-body);transition:all 0.15s}
+.btn-revisar:hover{background:oklch(0.72 0.12 85 / 0.1)}
+.btn-circle{width:26px;height:26px;border-radius:50%;border:1px solid;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;transition:all 0.15s;background:transparent}
+.btn-approve{border-color:oklch(0.65 0.18 145 / 0.4);color:oklch(0.65 0.18 145)}
+.btn-approve:hover{background:oklch(0.65 0.18 145 / 0.15);border-color:oklch(0.65 0.18 145)}
+.btn-reject{border-color:oklch(0.65 0.20 25 / 0.4);color:oklch(0.65 0.20 25)}
+.btn-reject:hover{background:oklch(0.65 0.20 25 / 0.15);border-color:oklch(0.65 0.20 25)}
+/* LOADING STATE */
+.pc-loading{height:170px;background:oklch(0.11 0 0);display:flex;align-items:center;justify-content:center}
+/* AGENDA */
+.agenda-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.agenda-day{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.agenda-day-hdr{padding:8px 10px;border-bottom:1px solid var(--border-subtle);text-align:center}
+.agenda-day-name{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-body)}
+.agenda-day-num{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--text);line-height:1}
+.agenda-day.today .agenda-day-hdr{background:oklch(0.72 0.12 85 / 0.08)}
+.agenda-day.today .agenda-day-num{color:var(--gold)}
+.agenda-slot{padding:8px 10px;min-height:80px;border-bottom:1px solid var(--border-subtle);cursor:pointer;transition:background 0.15s}
+.agenda-slot:last-child{border-bottom:none}
+.agenda-slot:hover{background:oklch(0.11 0 0)}
+.agenda-slot-hdr{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--text-dim);margin-bottom:6px;font-family:var(--font-mono)}
+.agenda-slot.has-post{cursor:default}
+.agenda-slot.has-post:hover{background:transparent}
+.agenda-mini-post{font-size:10px;color:var(--text);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.agenda-empty{display:flex;align-items:center;justify-content:center;height:48px;border:1px dashed oklch(0.25 0 0);border-radius:5px;color:var(--text-dim);font-size:18px}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:oklch(0.04 0 0 / 0.85);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;width:100%;max-width:820px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
+.modal-hdr{padding:18px 22px;border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between}
+.modal-hdr-title{font-family:var(--font-display);font-size:20px;font-weight:400}
+.modal-hdr-title em{font-style:italic;color:var(--gold)}
+.modal-close{background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;padding:4px;border-radius:4px;transition:color 0.15s}
+.modal-close:hover{color:var(--text)}
+.modal-body{overflow-y:auto;flex:1}
+.modal-split{display:grid;grid-template-columns:1fr 1fr;height:100%}
+.modal-image{background:oklch(0.10 0 0);position:relative}
+.modal-image img{width:100%;height:100%;object-fit:cover}
+.modal-image-fallback{width:100%;height:300px;display:flex;align-items:center;justify-content:center;font-size:48px}
+.modal-content-area{padding:20px 22px;overflow-y:auto;max-height:70vh}
+.modal-section{margin-bottom:18px}
+.modal-section-label{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold-muted);margin-bottom:8px;font-family:var(--font-body)}
+.modal-caption-box{background:oklch(0.10 0 0);border:1px solid var(--border);border-radius:7px;padding:12px 14px}
+.modal-caption-text{font-size:12px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word}
+.modal-hashtags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.hashtag-chip{background:oklch(0.72 0.12 85 / 0.1);border:1px solid oklch(0.72 0.12 85 / 0.25);color:var(--gold);border-radius:4px;padding:2px 8px;font-size:10px;font-family:var(--font-mono)}
+.modal-meta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.modal-meta-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted);font-family:var(--font-mono)}
+.modal-plat-row{display:flex;gap:6px;margin-top:6px}
+.modal-input{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-size:12px;font-family:var(--font-body);outline:none;transition:border-color 0.2s}
+.modal-input:focus{border-color:var(--gold)}
+.modal-ftr{padding:16px 22px;border-top:1px solid var(--border-subtle);display:flex;gap:10px;justify-content:flex-end}
+.btn-approve-lg{display:flex;align-items:center;gap:6px;padding:10px 20px;background:oklch(0.65 0.18 145 / 0.15);border:1px solid oklch(0.65 0.18 145 / 0.4);border-radius:7px;color:oklch(0.65 0.18 145);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-body);transition:all 0.15s}
+.btn-approve-lg:hover{background:oklch(0.65 0.18 145 / 0.25)}
+.btn-approve-lg:disabled{opacity:0.35;cursor:not-allowed}
+.btn-reject-lg{display:flex;align-items:center;gap:6px;padding:10px 20px;background:transparent;border:1px solid var(--border);border-radius:7px;color:var(--text-muted);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-body);transition:all 0.15s}
+.btn-reject-lg:hover{background:oklch(0.65 0.20 25 / 0.12);border-color:oklch(0.65 0.20 25 / 0.4);color:oklch(0.65 0.20 25)}
+.btn-publish-lg{display:flex;align-items:center;gap:6px;padding:10px 20px;background:oklch(0.65 0.15 240 / 0.15);border:1px solid oklch(0.65 0.15 240 / 0.4);border-radius:7px;color:oklch(0.65 0.15 240);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-body);transition:all 0.15s}
+.btn-publish-lg:hover{background:oklch(0.65 0.15 240 / 0.25)}
+.fb-section{margin-top:12px;padding-top:12px;border-top:1px solid var(--border-subtle)}
+/* GENERATING INDICATOR */
+.gen-indicator{display:flex;align-items:center;gap:8px;padding:10px 14px;background:oklch(0.72 0.12 85 / 0.08);border:1px solid oklch(0.72 0.12 85 / 0.2);border-radius:7px;margin-bottom:12px;font-size:11px;color:var(--gold-muted)}
+.gen-dots{display:inline-flex;gap:3px}
+.gen-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);animation:gd 1.2s ease-in-out infinite}
+.gen-dot:nth-child(2){animation-delay:.2s}.gen-dot:nth-child(3){animation-delay:.4s}
+@keyframes gd{0%,80%,100%{opacity:.3;transform:scale(.7)}40%{opacity:1;transform:scale(1)}}
+/* EMPTY */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;text-align:center;color:var(--text-muted)}
+.empty-icon{font-size:32px;margin-bottom:12px;opacity:0.4}
+.empty-title{font-family:var(--font-display);font-size:18px;font-weight:400;color:var(--text-muted);margin-bottom:6px}
+.empty-sub{font-size:11px;color:var(--text-dim)}
+/* SETTINGS */
+.settings-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:14px}
+.settings-title{font-family:var(--font-display);font-size:17px;font-weight:400;margin-bottom:14px;color:var(--text)}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-subtle)}
+.settings-row:last-child{border-bottom:none}
+.settings-row-label{font-size:12px;color:var(--text)}
+.settings-row-sub{font-size:10px;color:var(--text-muted);margin-top:2px}
+.schedule-day{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border-subtle);flex-wrap:nowrap}
+.schedule-day:last-child{border-bottom:none}
+.schedule-day-name{font-size:12px;color:var(--text);width:80px}
+.schedule-time-input{background:var(--bg-input);border:1px solid var(--border);border-radius:5px;padding:5px 8px;color:var(--text);font-family:var(--font-mono);font-size:11px;outline:none;width:95px}
+.schedule-time-input:focus{border-color:var(--gold)}
+/* TOAST */
+#toast{position:fixed;bottom:24px;right:24px;z-index:300;display:flex;flex-direction:column;gap:8px}
+.toast-item{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:12px;color:var(--text);display:flex;align-items:center;gap:8px;animation:slide-in 0.3s ease;font-family:var(--font-body)}
+.toast-item.success{border-left:3px solid oklch(0.65 0.18 145)}
+.toast-item.error{border-left:3px solid oklch(0.65 0.20 25)}
+.toast-item.info{border-left:3px solid var(--gold)}
+@keyframes slide-in{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:oklch(0.25 0 0);border-radius:2px}
+::-webkit-scrollbar-thumb:hover{background:var(--gold-muted)}
+/* TABS */
+.tab-row{display:flex;border-bottom:1px solid var(--border);margin-bottom:18px}
+.tab-btn{padding:10px 16px;font-size:11px;font-weight:600;background:transparent;border:none;cursor:pointer;color:var(--text-muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s;font-family:var(--font-body);letter-spacing:0.04em}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div id="setup">
+  <div class="setup-card">
+    <div class="setup-logo"><div class="setup-dot"></div><span class="setup-title">BWF Publisher</span></div>
+    <div class="setup-sub">Agente de Publicação</div>
+    <div style="height:1px;background:linear-gradient(90deg,transparent,oklch(0.72 0.12 85 / 0.3),transparent);margin-bottom:20px"></div>
+    <label class="setup-label">Chave da API Anthropic</label>
+    <input id="api-in" class="setup-input" type="password" placeholder="sk-ant-..." autocomplete="off">
+    <button class="setup-btn" onclick="startApp()">Iniciar Publisher</button>
+    <p class="setup-note">Chave armazenada apenas neste navegador. Obtenha em console.anthropic.com → API Keys.</p>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none">
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-row">
+        <div class="sb-logo-icon">B</div>
+        <div>
+          <div class="sb-logo-name">BWF Publisher</div>
+          <div class="sb-logo-sub">Agente de Publicação</div>
+        </div>
+      </div>
+    </div>
+    <div class="sb-divider"></div>
+    <div class="sb-agent">
+      <div class="sb-agent-row">
+        <div class="sb-pulse"></div>
+        <div class="sb-agent-name">Agente Ativo</div>
+      </div>
+      <div class="sb-agent-info">2 posts/dia &middot; seg-sáb</div>
+    </div>
+    <div class="sb-section-label">Menu</div>
+    <nav class="sb-nav">
+      <div class="sb-nav-item active" onclick="nav('dashboard')" id="nav-dashboard">
+        <svg class="sb-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+        <span class="sb-nav-arrow">›</span>
+      </div>
+      <div class="sb-nav-item" onclick="nav('agenda')" id="nav-agenda">
+        <svg class="sb-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Agenda Semanal
+      </div>
+      <div class="sb-nav-item" onclick="nav('approvals')" id="nav-approvals">
+        <svg class="sb-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Aprovações
+        <span class="sb-badge" id="sb-pending-count">0</span>
+      </div>
+      <div class="sb-nav-item" onclick="nav('published')" id="nav-published">
+        <svg class="sb-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Publicados
+      </div>
+      <div class="sb-nav-item" onclick="nav('settings')" id="nav-settings">
+        <svg class="sb-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Configurações
+      </div>
+    </nav>
+    <div class="sb-platforms">
+      <div class="sb-plat-label">Plataformas</div>
+      <div class="sb-plat-item">
+        <div class="sb-plat-icon ig">IG</div>
+        <div><div class="sb-plat-name">Instagram</div><div class="sb-plat-status">Conectado</div></div>
+      </div>
+      <div class="sb-plat-item">
+        <div class="sb-plat-icon fb">f</div>
+        <div><div class="sb-plat-name">Facebook</div><div class="sb-plat-status">Conectado</div></div>
+      </div>
+    </div>
+    <div class="sb-footer">
+      <div class="sb-notif" onclick="nav('approvals')">
+        <span class="sb-notif-icon">🔔</span>
+        <span class="sb-notif-text">Notificações</span>
+        <span class="sb-notif-badge" id="sb-notif-count">0</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main id="main">
+    <div id="page-content"></div>
+  </main>
+</div>
+
+<!-- APPROVAL MODAL -->
+<div class="modal-overlay" id="approval-modal">
+  <div class="modal" style="max-width:900px">
+    <div class="modal-hdr">
+      <span class="modal-hdr-title">Revisar <em>Publicação</em></span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-split">
+        <div class="modal-image" id="modal-image-area"></div>
+        <div class="modal-content-area" id="modal-content-area"></div>
+      </div>
+    </div>
+    <div class="modal-ftr" id="modal-footer"></div>
+  </div>
+</div>
+
+<!-- REJECT REASON MODAL -->
+<div class="modal-overlay" id="reject-modal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hdr">
+      <span class="modal-hdr-title">Motivo da <em>Rejeição</em></span>
+      <button class="modal-close" onclick="closeRejectModal()">✕</button>
+    </div>
+    <div style="padding:20px 22px">
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px">Descreva o motivo da rejeição (opcional):</p>
+      <textarea id="reject-reason" class="modal-input" style="height:80px;resize:none" placeholder="Ex: Caption muito longa, foto errada..."></textarea>
+    </div>
+    <div class="modal-ftr">
+      <button class="btn-reject-lg" onclick="closeRejectModal()" style="color:var(--text-muted)">Cancelar</button>
+      <button class="btn-reject-lg" onclick="confirmReject()" style="background:oklch(0.65 0.20 25 / 0.15);border-color:oklch(0.65 0.20 25 / 0.4);color:oklch(0.65 0.20 25)">Confirmar Rejeição</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ===== STATE =====
+const S = {
+  posts: [],
+  pi: 0,
+  usedPhotos: [],
+  page: 'dashboard',
+  apiKey: '',
+  isGenerating: false,
+  selectedPostId: null,
+  rejectingPostId: null,
+  webhookUrl: '',
+  schedule: [
+    {day:0,name:'Dom',morning:'09:00',evening:'19:00',active:false},
+    {day:1,name:'Seg',morning:'09:00',evening:'19:00',active:true},
+    {day:2,name:'Ter',morning:'09:00',evening:'19:00',active:true},
+    {day:3,name:'Qua',morning:'09:00',evening:'19:00',active:true},
+    {day:4,name:'Qui',morning:'09:00',evening:'19:00',active:true},
+    {day:5,name:'Sex',morning:'09:00',evening:'19:00',active:true},
+    {day:6,name:'Sáb',morning:'10:00',evening:'18:00',active:true},
+  ]
+};
+
+// ===== CATALOG =====
+const CAT={restoration:[{id:'1KqLJeVNE9w5z_bGhtG9EnJNLtldRVu5_',n:'Furniture1.jpg',cat:'restoration'},{id:'1yPUOaglk49lS9OVIL_Dh-k9enfCQQd7C',n:'Furniture2.jpg',cat:'restoration'},{id:'1CpBYz9vBnpjTnZ6fuO5tqxl66pMX3IVl',n:'Furniture3.jpg',cat:'restoration'},{id:'1Wd9w20R3CKbktZ1a011johX2dDAvOsv4',n:'Furniture4.jpg',cat:'restoration'},{id:'1h9bfq7X7QtTDxKXsjUeipi-POKVhacYY',n:'Furniture5.jpg',cat:'restoration'},{id:'1JxkGotfUShezOIymFXhSThzbAOoxoLn3',n:'Furniture6.jpg',cat:'restoration'},{id:'1gmsFyMSfwd85SJQQ33D8vZHDG8GCpeSi',n:'Furniture7.jpg',cat:'restoration'},{id:'1x4IZnuo2vaolR2QiaGBdfeeCg_t9pHvr',n:'Furniture8.jpg',cat:'restoration'},{id:'1-BQBj5NmzEsVNDwRKLH6-99DEr-bxEwD',n:'Furniture9.jpg',cat:'restoration'},{id:'1-UeFGK_OLFDooiqdi90vYQl2D37nvsLp',n:'Furniture10.jpg',cat:'restoration'},{id:'15_YUiog47TESaU5T_AzUMyoXivCoOMZP',n:'Furniture11.jpg',cat:'restoration'},{id:'1w2LWhu4M8WLyCPNPBTx6_meIsHv9t_jk',n:'Furniture12.jpg',cat:'restoration'},{id:'1zKfFzVguLPsof5-jk3h5ozlLtr6DmXVW',n:'Furniture13.jpg',cat:'restoration'},{id:'1j_SXu2xl8dv7HfD_SnvNveVenR9c8mQr',n:'Furniture14.jpg',cat:'restoration'},{id:'1BERoeAOcDRh1J2CStydzsr3LM3yQ1JQm',n:'Furniture15.jpg',cat:'restoration'},{id:'1emkvvTJUFL-IcuBGwO3D6enuTNdHHPkY',n:'Furniture16.jpg',cat:'restoration'},{id:'1Q3CJpDxf-MWG6p6YToy55v3RMq3260v1',n:'Furniture17.jpg',cat:'restoration'},{id:'1ghcZWOYubTuYlt6npGgVJqrr4ny8sTJg',n:'Furniture18.jpg',cat:'restoration'},{id:'11rwzIrLRIvrd2iE2cQmYszRycIoUjRH5',n:'Furniture19.jpg',cat:'restoration'},{id:'1Z1JmazrGdV1cQ-Q00hCDH2NiRQBzKoM8',n:'Furniture20.jpg',cat:'restoration'},{id:'1l7RduulVW73i-Frf2tKobpGvA84k-zyL',n:'Furniture21.jpg',cat:'restoration'},{id:'1S7c_iU62ELpeo_fY6EkE7qZXeXIHcGrf',n:'Furniture22.jpg',cat:'restoration'},{id:'1QSTDGi0V-S8EQChYer0ly-ZqHOAQzj5E',n:'Furniture23.jpg',cat:'restoration'},{id:'1Kua_WaPVuQCPp4FVR3mdVYNxITsy2Nk0',n:'Furniture24.jpg',cat:'restoration'},{id:'1YXlYr0tab5JLSHvcFfTEz7kdQMGflOqD',n:'Furniture25.jpg',cat:'restoration'},{id:'1S1U_YY1S5eQEWcSP4AlXm3s-HHSo-FRf',n:'Furniture26.jpg',cat:'restoration'},{id:'1jcJBd3kGX3PzfWBNkf6f_l6qv6Wyqawx',n:'Furniture27.jpg',cat:'restoration'},{id:'1eZXQmZgBEzMt-1Y3WBlmgyfto_b8tgkH',n:'Furniture28.jpg',cat:'restoration'},{id:'1jXSAOzuTiIiPdvx6qMAgbmX83HDSOTsn',n:'Furniture29.jpg',cat:'restoration'},{id:'1xvgbnoKU7iWpPf0IcA_8Jyz176-J4EXE',n:'Furniture30.jpg',cat:'restoration'},{id:'1Ghz99Snw5Lh5mwAcI6MEP5wW3NHmkJhZ',n:'Furniture31.jpg',cat:'restoration'},{id:'1kZgYTDNOSlRXG_amA2_O96nYjTWbCFX2',n:'Furniture32.jpg',cat:'restoration'},{id:'1XddxylL6Ao9824aPtU3WFFMoHbw7Xwh9',n:'Furniture33.jpg',cat:'restoration'},{id:'1fpAvwE1ltoMTK_uA2itOguOeC33A4vkg',n:'Furniture34.jpg',cat:'restoration'},{id:'1_61oW2G5aa_adgon8ZsxPzrjo0zcPWZm',n:'Furniture35.jpg',cat:'restoration'},{id:'1PIgfPIjhgQCdatOY0xwkL9M4pHc-qIuB',n:'Furniture36.jpg',cat:'restoration'},{id:'1ko7SRKMninG31neQjW9N30JNiZgbVLar',n:'Furniture37.jpg',cat:'restoration'},{id:'1UuCqvUjQJOsDTH4w3XEbCQGZF_lmEYek',n:'Furniture38.jpg',cat:'restoration'},{id:'1jbvwMG80HGZAwT4P717zshje4ZZ2MKap',n:'Furniture39.jpg',cat:'restoration'},{id:'13KD5o1fqjDyIDZMDydIHqsLJFGM4XDwK',n:'Furniture40.jpg',cat:'restoration'},{id:'1ocZAXfZT_55MbNdjY0KTaASc0IOvYAdm',n:'Furniture41.jpg',cat:'restoration'},{id:'1Z6VAJXKbfwKSlQqcNxia6E_cP8ZPYVba',n:'Furniture42.jpg',cat:'restoration'},{id:'1hPjH6o2sLmE57qJycteggG-Y-7mik-ai',n:'Furniture43.jpg',cat:'restoration'},{id:'1K3kz9KUbengvX3jp1pgWtuWDeq_7PU4R',n:'Furniture44.jpg',cat:'restoration'},{id:'1ACnC4IO_UG8NEEG0Xl2LuEQ_qkCnCC0m',n:'Furniture45.jpg',cat:'restoration'},{id:'1ePG1uXFbwIb-ok_GoyiWvhrhqH86502R',n:'Furniture46.jpg',cat:'restoration'},{id:'1KVvuj0xOvdmbOoo4_byppXOCvfhCdzPB',n:'Furniture47.jpg',cat:'restoration'},{id:'1Ahlg63c_RbF-d7HW2UN_CFIoDooypRn8',n:'Furniture48.jpg',cat:'restoration'},{id:'1tNdrNXEeCghO8NK4WI6RzX2Mzu7nx5-t',n:'Furniture49.jpg',cat:'restoration'},{id:'1qtQRpINmu82_IDjTd0Gsa1vnfHRF7Xr8',n:'Furniture50.jpg',cat:'restoration'},{id:'1AL48DvF3Acgz5s2ZMODLEsZPz6nL0peP',n:'Furniture51.jpg',cat:'restoration'},{id:'1NfwRJFAYuG4dumgbZw5Cu7X3YwgkHz8B',n:'Furniture52.jpg',cat:'restoration'},{id:'17PaWMDepx6O0OMm3CHOhZNSdaxPngz-J',n:'Furniture53.jpg',cat:'restoration'},{id:'1mgru1myizIQ6I6Abzu7O0mLRIutdurru',n:'Furniture54.jpg',cat:'restoration'},{id:'1PN5Mn80e95RweRo8Wla9o-05BYHJ-AtU',n:'Furniture55.jpg',cat:'restoration'},{id:'1n8bhjoG3ac1syia-A0z0yRmb2cJTvxM1',n:'Furniture56.jpg',cat:'restoration'},{id:'1ymYJ2hzal7oWOfs1Z4nDzVUa54pX21Zg',n:'Furniture57.jpg',cat:'restoration'},{id:'19o3cgDVKaAyFNf1YQEbAvHZj-fmn6PT4',n:'Furniture58.jpg',cat:'restoration'},{id:'10Wp34kxGGMpP-QvkBHwcOeoDAI0ofRJJ',n:'Furniture59.jpg',cat:'restoration'},{id:'1NXDjK3DgXHF6x-cmI6AEUXKqfABluKF5',n:'Furniture60.jpg',cat:'restoration'},{id:'1mZzpT8-0my8Qep66DH0zY7V3V6WwR8HZ',n:'Furniture61.jpg',cat:'restoration'},{id:'1DaSM6yn9CnBhFmDB5wsOOQq0DibkJ2ni',n:'Furniture62.jpg',cat:'restoration'},{id:'1nRS9jVdYjWW0Gmms9rTwEYv_61lIPgWU',n:'Furniture63.jpg',cat:'restoration'},{id:'1a-Ai5FFlPKCDGuw4qYx2OFz_0w0OUkGB',n:'Furniture64.jpg',cat:'restoration'},{id:'1tZFBSgHSVFwrkc-Rfe6eRQjWl-KPdhuK',n:'Furniture65.jpg',cat:'restoration'},{id:'15GZKEB_OMGT_wDSjJdalZIoLPA3eM3Ld',n:'Furniture66.jpg',cat:'restoration'},{id:'1cWl-KqMKlmUE19W4HO4yUg3eFwqbKYtp',n:'Furniture67.jpg',cat:'restoration'},{id:'1SYJven8kubGCcGYrkv_AWTIo5XT85gPh',n:'Furniture68.jpg',cat:'restoration'},{id:'1zPOQBUTcJv5ERVN6y7CMEqVEjTN34d4K',n:'Furniture69.jpg',cat:'restoration'},{id:'1U9PPuQPJ5RTkMlzff_Tth23lD8Ih4nnT',n:'Furniture70.jpg',cat:'restoration'},{id:'16445PKhAO570rdkf6_vO7A8Q2OUqM3iv',n:'Furniture71.jpg',cat:'restoration'},{id:'1i3r5HO5gLHSUaqQFQYLkaFzAXb49QSnl',n:'Furniture72.jpg',cat:'restoration'},{id:'1TiYZpxAFrrRliMBwgFz59FktwFXYnFzv',n:'Furniture73.jpg',cat:'restoration'},{id:'1yf8MWhXo11qGSpMSeNVrNGn4vWrAfukS',n:'Furniture74.jpg',cat:'restoration'},{id:'14-Wu0Wx9q355-SDrHnRkwJdwi3GRRv71',n:'Furniture75.jpg',cat:'restoration'},{id:'1Ym0V9SxluofejSgyoK5LPMaXTF5Revsz',n:'Furniture76.jpg',cat:'restoration'},{id:'1JdfLiLbP3HHRUhFM-lgUkds0D4DIzUfV',n:'Furniture77.jpg',cat:'restoration'},{id:'18N_g2IhoWJt5E9As1U-QMH-se2dp3-3S',n:'Furniture78.jpg',cat:'restoration'},{id:'1eAuAr7lMGWKRTxy42miZeSp5ZG1br2gJ',n:'Furniture79.jpg',cat:'restoration'}],cabinetry:[{id:'1zgNLHKS-Rv2GjwiVRalCSBtKbBGaq8t1',n:'Banheiros1.jpg',cat:'cabinetry'},{id:'11aRcX5ZzTyD2tssXQxd4uCfeub3_nugI',n:'Banheiros2.jpg',cat:'cabinetry'},{id:'1OkPKn9GixOfJWQElv2FVCSLo3gvYDFby',n:'Banheiros3.jpg',cat:'cabinetry'},{id:'13TPJtaOdxDnMZ8i5VcMphh6Q7W0xjgrL',n:'Banheiros4.jpg',cat:'cabinetry'},{id:'1lLahOJUugHZJ6KDjVxiMnRGXEPxgDQwA',n:'Banheiros5.jpg',cat:'cabinetry'},{id:'1ckyoE-Fnl_vzP8ZHjqiDqbTbghsuvA97',n:'Banheiros6.jpg',cat:'cabinetry'},{id:'1bHTgUV-fiJ_kp3Ewu-09RfdKPAgKGEvI',n:'Banheiros7.jpg',cat:'cabinetry'},{id:'1_oZmFepMDUhSNumpFvqusvFBP0S4dEJQ',n:'Banheiros8.jpg',cat:'cabinetry'},{id:'12ubDb8NxBvIUG1ulhg-xDrmV6n0-oBAI',n:'Closet1.jpg',cat:'cabinetry'},{id:'1694qu4az2ktmevpsoiLAMNQk6CqOotlS',n:'Closet2.jpg',cat:'cabinetry'},{id:'11tHb4EOLBFT7qxUyapm-2V3U1oSTdxgJ',n:'Closet3.jpg',cat:'cabinetry'},{id:'15fEn70YGfX4RnVkApFmbKz6MBsCv2VOD',n:'Closet4.jpg',cat:'cabinetry'},{id:'1jqCDbSQJNsBbWt61139sGUksC0_iLO6Y',n:'Cozinhas1.jpg',cat:'cabinetry'},{id:'1bO03ug3oQT7AIpFEE0sXm9_QYYQgXoSB',n:'Cozinhas2.jpg',cat:'cabinetry'},{id:'1BTKyC9j-KoYGwpalAqqp1fjw_n6L248r',n:'Cozinhas3.jpg',cat:'cabinetry'},{id:'1o6e832zufFP1WQJ1NqKxcgg93cqTGDSL',n:'Cozinhas4.jpg',cat:'cabinetry'},{id:'1R9esNnCI39hxQIETIRplkdupJ23MkRQh',n:'Cozinhas5.jpg',cat:'cabinetry'},{id:'1i_R8UlNbL6PJLtq5VqxpcLMW1S3A6PhX',n:'Cozinhas6.jpg',cat:'cabinetry'},{id:'1eRCFzwmDmqxOzJaSuFux26ngtDDIYXSy',n:'Cozinhas7.jpg',cat:'cabinetry'},{id:'1Jka_uNL96l11lQoNtIKf2FCA8Z5aX2kx',n:'Cozinhas8.jpg',cat:'cabinetry'},{id:'1iH8zhZHAhZN4J3dn5CvH6kcIYyPQTihm',n:'Cozinhas9.jpg',cat:'cabinetry'},{id:'1pp_IMtaqA52vTN9OnOQzrJnBrMmQC7fp',n:'Cozinhas10.jpg',cat:'cabinetry'},{id:'198QzZs0VFYB9T04BmGgicUAP01aROXNH',n:'Cozinhas11.jpg',cat:'cabinetry'},{id:'1WDKkzynIpwr5ohmhHemEX4D3nqV_KgaY',n:'Cozinhas12.jpg',cat:'cabinetry'},{id:'15qSESvbw1ujVnskdEMxYQNl6WneUJ1UD',n:'Cozinhas13.jpg',cat:'cabinetry'},{id:'1zC4R_uP0y4ahdHRBl0UZTKmIh2trQCPN',n:'Cozinhas14.jpg',cat:'cabinetry'},{id:'171ZIDhxyA7JejlOVLzPtr1am4BLMMqWR',n:'Cozinhas15.jpg',cat:'cabinetry'},{id:'1wF4sAHd1Q_-A6zSrbhxKcYxS3_nEaVgh',n:'Cozinhas16.jpg',cat:'cabinetry'},{id:'1IDLiFs8lVpR-KNm-n-qqzZ3Ib8g3pQAZ',n:'Cozinhas17.jpg',cat:'cabinetry'},{id:'1FwepXNw1gBDiE0RUA2XBdMR9Q_gh_HDu',n:'Cozinhas18.jpg',cat:'cabinetry'},{id:'1TxJMKkjachfQyr2Yo7ie68p31LG-wBO7',n:'Cozinhas19.jpg',cat:'cabinetry'},{id:'1cLTZALRd1aKS9Z58n7IH8_Ffk9u5aEHL',n:'Cozinhas20.jpg',cat:'cabinetry'},{id:'1lpap0VljqFLZZTJU6bCH9-XQ4ib78GR_',n:'Cozinhas21.jpg',cat:'cabinetry'},{id:'1ckFEQPk_5ic5uHj-eEf7zrzzK8YdT8B7',n:'Cozinhas22.jpg',cat:'cabinetry'},{id:'1vRgZK7IVmMn_wLrjC_vlZDffz-0F0E-T',n:'Cozinhas23.jpg',cat:'cabinetry'},{id:'1PDg0uZ9f_5SxfP0gvwyA2VfMkwTahqJ6',n:'Cozinhas24.jpg',cat:'cabinetry'},{id:'1NM8v46MZtviFH-LHof5NQw0Ch_Fi9BeH',n:'Cozinhas25.jpg',cat:'cabinetry'},{id:'1oYSKMjMmtItB8Q22r0d60xiEn7rerznp',n:'Cozinhas26.jpg',cat:'cabinetry'},{id:'1A5cgvbVHYtgpCPm5_FkvODqNJIaIdKkd',n:'Cozinhas27.jpg',cat:'cabinetry'},{id:'1vUTeMeTbUadRaCZAgCz0A9UXLBTuh6of',n:'Cozinhas28.jpg',cat:'cabinetry'},{id:'1RnOBZ-SDh1MP6y1VnNb-WfBzfsM0mP7W',n:'Cozinhas29.jpg',cat:'cabinetry'}],millwork:[{id:'1Fbj1rFgdOKNLj4Lwm5OlQK0F6LAAkNet',n:'WallUnit1.jpg',cat:'millwork'},{id:'1zF7Otr44HDmh_HqtGB4jQ_VwZu8raz0V',n:'WallUnit2.jpg',cat:'millwork'},{id:'1n3LQJQHWXXPd-FYgrDUH8Ttv41HKs0Eb',n:'WallUnit3.jpg',cat:'millwork'},{id:'1eN-Mt3RO8hyGuODwakuRq0nVmJkumedb',n:'WallUnit6.jpg',cat:'millwork'},{id:'1H5iiLhh7tbFeL-P9toytyxk2j6mDeNqp',n:'WallUnit7.jpg',cat:'millwork'},{id:'17HKJwstagw2eQj-OBHRCT91JGlnG0LTT',n:'WallUnit8.jpg',cat:'millwork'},{id:'1mQfyzEm8otQzlerQDic29lA4Mpj0Im31',n:'Portas1.jpg',cat:'millwork'},{id:'1yL4EbD2QoRkZnu39Dcx56MGyXKNke7wE',n:'Portas2.jpg',cat:'millwork'},{id:'1YDqK9dsaLAkTa05gvnQjgr6ZEv4vzf8D',n:'Portas3.jpg',cat:'millwork'},{id:'135z9R1i-gNSp91oT5UH-fPU2vpvjIBnD',n:'Portas4.jpg',cat:'millwork'},{id:'1NcYQsCVSYo5RwkGSbPi_NSS3vcaxyENa',n:'Portas5.jpg',cat:'millwork'},{id:'1Z6hlvqF7rBoq_ObxUkfqzp_UxAhmCA0-',n:'Portas6.jpg',cat:'millwork'},{id:'1v-SkaQaMCWzGEoejYyXkhIzNI2BN-fKQ',n:'Portas7.jpg',cat:'millwork'},{id:'1boMsmWdofIB9mYO8fUgQfv8jvk7vZ3i_',n:'Portas8.jpg',cat:'millwork'},{id:'17C5Wj_GvtC_tE-JIdWe7pt3DBYGPvHKV',n:'Portas9.jpg',cat:'millwork'},{id:'1STQbl67SPetStwF3jaHXWmyOfzWudRmw',n:'Portas10.jpg',cat:'millwork'},{id:'1Qk5baMeifbNXFmbUZGjWKScI1jn6GJt9',n:'MillWork1.jpg',cat:'millwork'},{id:'10xWvt2DvR8SSOCQhMU8UTm1U4pmTzN0N',n:'MillWork2.jpg',cat:'millwork'},{id:'1FjSihFi9kNEX5WnZ_vw5zzWVRVKSVtaM',n:'MillWork4.jpg',cat:'millwork'},{id:'1W5sTnfMC6U9mRdyYRGlpeVJrCPwoJvt6',n:'MillWork5.jpg',cat:'millwork'},{id:'1XVS92AZVhWVKMRQBXsQQUIrP3t4Ez3PA',n:'MillWork6.jpg',cat:'millwork'},{id:'1q1SRDVAhUw4g8HCd7V4xvmOvxbaC-yfP',n:'MillWork7.jpg',cat:'millwork'},{id:'1KzIVAfxzgaPbsnHm2RSD-jg0RaYfhDoI',n:'MillWork8.jpg',cat:'millwork'},{id:'1GeYNzPGfGy6cf4kq7K7g1yV4Ek6hMatI',n:'MillWork9.jpg',cat:'millwork'},{id:'1xTr9PBHgrkhL84QjQ_GBcPMorvl_qQ2H',n:'MillWork10.jpg',cat:'millwork'},{id:'1IOYPDImDayYvfcvbxlQ9N6F1r-AzqCx7',n:'MillWork11.jpg',cat:'millwork'},{id:'1QMZsIgx7C8Z0q-jed8d3k1xC5wgBj2d8',n:'MillWork12.jpg',cat:'millwork'},{id:'1qZKqLmHc1XTxMBrKxv8RCgE5jI37nn7A',n:'MillWork13.jpg',cat:'millwork'},{id:'1qbQkANPEp-y1zZwIeaaaaAJQjbJTXSyT',n:'MillWork14.jpg',cat:'millwork'},{id:'1TIFfexlPgJalSzoxNtwht176Uqnq3KNz',n:'MillWork15.jpg',cat:'millwork'},{id:'1ppQ2-4ZJL_UJDtF9rRzw5klYCwpRogDz',n:'MillWork16.jpg',cat:'millwork'},{id:'1WS85ajxBuAn_lK_eM-pRv9iHad4XYBwx',n:'MillWork17.jpg',cat:'millwork'},{id:'1XfbECmXiUuH0_XRg6306ZdBK_YgcJD8m',n:'MillWork18.jpg',cat:'millwork'},{id:'1Y1rgACxC4TrVkE5tn0NB0RhuFwJe7ZlS',n:'MillWork19.jpg',cat:'millwork'},{id:'1C7WHO-Ijayha8Wz-bHWejW_2b7JLZRQq',n:'MillWork20.jpg',cat:'millwork'},{id:'1aiKJKt2-9WwxDsctzgj9vqpec44Emgeo',n:'MillWork21.jpg',cat:'millwork'},{id:'1kTvUhTYt4wzNsfu7VN7peO7QHwo1mClU',n:'MillWork22.jpg',cat:'millwork'},{id:'1fCpcVbiV2fStnZc3RSL9Enk1Rw8h3ZoH',n:'MillWork23.jpg',cat:'millwork'},{id:'11lBRB86IXdFDduWRJN4XtCGaYCNVTizu',n:'MillWork24.jpg',cat:'millwork'},{id:'1CpoyrSPXR81QaPTYR7REVe8P8mah-uO6',n:'MillWork25.jpg',cat:'millwork'},{id:'1PwwkDXsGm8SjDFLXhR0JEOIdJjDTkj5S',n:'MillWork26.jpg',cat:'millwork'},{id:'10UFnyPY_jqZ6_4mKxoHOqYxZ113R9mxV',n:'MillWork27.jpg',cat:'millwork'},{id:'1B6M-B8U9h9w5PL8pk4DtNpQxkSg9BHlx',n:'MillWork28.jpg',cat:'millwork'},{id:'1KExdpvNb2Q3nObmXguqWAPCdzej4H8hp',n:'MillWork29.jpg',cat:'millwork'},{id:'1AhdT3khovcHIOBrfeponPdt74f4Lw8y_',n:'MillWork30.jpg',cat:'millwork'},{id:'1Ahk44G79LxgJIdK2Vk5hJsfcCYsSN602',n:'MillWork31.jpg',cat:'millwork'},{id:'1qNE-RzKupSmweDQFmvEAYYnPsrFb3UeX',n:'MillWork32.jpg',cat:'millwork'},{id:'1_ASIve1ninzvtUieuSAdakoaJJRTbySN',n:'MillWork33.jpg',cat:'millwork'},{id:'1H3bEF9J3oK54yN-0nTqbOaJYzVAsihoJ',n:'Lareira1.jpg',cat:'millwork'},{id:'1A0_N355C-cXswfH2_Gi6j6upNEzO31Pl',n:'Lareira2.jpg',cat:'millwork'},{id:'1F9QYlnOCWBEw3dGw4Zw23BKq0Fgeicqf',n:'Lareira3.jpg',cat:'millwork'},{id:'1qkAo2Ixsn9LgYPljoAYxeoDhmPR3C5ia',n:'Escadas1.jpg',cat:'millwork'},{id:'1lM7scd_FnbUa8qKMR4YNvyRMeM2kEGbi',n:'Escadas2.jpg',cat:'millwork'},{id:'1xLIAci_xOFbntSwQLw737AqY-IgvfgG6',n:'Escadas3.jpg',cat:'millwork'},{id:'1UsMz6eTv3nWyCcrD2IVdyCmzrLtAnewz',n:'Escadas4.jpg',cat:'millwork'},{id:'1IYbYXhf077NsztjVQci1afifVqlytbx1',n:'Escadas5.jpg',cat:'millwork'},{id:'1VXZz77Lcf2Dsjjg31fPE-ZB-v08hCfXe',n:'Escadas6.jpg',cat:'millwork'},{id:'1OvnVLUg-uleD7yyWXcZqXS9N5Tg6loUI',n:'Escadas7.jpg',cat:'millwork'},{id:'1YrNeTLcgqraZM7NFIAA9uXLDH2kFuzCf',n:'Escadas8.jpg',cat:'millwork'},{id:'10DxtrAJSeMWGn5teh6GRd-zPiZ54Fh4U',n:'camas1.jpg',cat:'millwork'},{id:'1dMYMjYHPMiUqU2sbvOa3whesSrYQYSN5',n:'camas2.jpg',cat:'millwork'},{id:'16SngUIaNzE7gn3wD60ON-PLgrHVGHEHQ',n:'camas3.jpg',cat:'millwork'},{id:'1fNA7oUr55j97QleBf_Kc5KMEghnaz6fu',n:'camas4.jpg',cat:'millwork'},{id:'145e6-ArB_errdm4-Ywdd3Jwedc4TfkUJ',n:'camas5.jpg',cat:'millwork'}],upholstery:[{id:'1jILYRTyCs8dPQYqANKJCAtjuUeLDaUsK',n:'FineUpholstery1.jpg',cat:'upholstery'},{id:'1FDEdWzqFkep9OFMOnX_uhvA62Cgkn-h7',n:'FineUpholstery2.jpg',cat:'upholstery'},{id:'1U-je0J0v1WmNrW2x_nOK_MrweGZx6NkP',n:'FineUpholstery3.jpg',cat:'upholstery'},{id:'1ryT_RrUSuQPlx3mNI5Tjb1-VadLI7b2-',n:'FineUpholstery4.jpg',cat:'upholstery'},{id:'1puPwXO725Nptd2W_fxx_lKUBwAuLsddB',n:'FineUpholstery5.jpg',cat:'upholstery'},{id:'1VHZu19f4pw_zLM9UNsUpZk0_C4EfRrDC',n:'FineUpholstery6.jpg',cat:'upholstery'},{id:'1VktnPfwU1TDFqN6AVXuEpY_F1oZZ9nJ7',n:'FineUpholstery7.jpg',cat:'upholstery'},{id:'1fhidSsfCHXQ-4RSU53Bn1be2d1WbpV24',n:'FineUpholstery8.jpg',cat:'upholstery'},{id:'1qA_exlIdZymvFCekcxs9EfT261HuhNTg',n:'FineUpholstery9.jpg',cat:'upholstery'},{id:'1htsb6PhmlfZZb6MKI2gJDMzISzGr8Cn1',n:'FineUpholstery10.jpg',cat:'upholstery'},{id:'1uX25YuFDL9OfY2Q0I1WGC3l6urTgZz53',n:'FineUpholstery11.jpg',cat:'upholstery'},{id:'1I-zqcRK2-N36i0bXgWlnocr3Ov2FPLKM',n:'FineUpholstery12.jpg',cat:'upholstery'},{id:'1mhdlQmLZnG20D7uf9FDMx5CM-xFo-LZP',n:'FineUpholstery13.jpg',cat:'upholstery'},{id:'1iiZ5TYgrm_v2tqRgBin0Frv02Y1fm0FA',n:'FineUpholstery14.jpg',cat:'upholstery'},{id:'1JhRL_5ZO-5NGXPjSqMQPV1u0MASbB8ii',n:'FineUpholstery15.jpg',cat:'upholstery'},{id:'1GKfh8-4PMruAAm2J7OeDkQoZ0p4BY8z0',n:'FineUpholstery16.jpg',cat:'upholstery'},{id:'1sPLSBDYMTCJ3jIgKHJNemeJzu2sJHdSQ',n:'FineUpholstery17.jpg',cat:'upholstery'},{id:'18KNifgmp8AuiTq7Bci5WpuYylXTDhdwi',n:'FineUpholstery18.jpg',cat:'upholstery'},{id:'1KFlqueP7U4Ux4c_fDmBcSl6pa3cm1uRt',n:'FineUpholstery19.jpg',cat:'upholstery'},{id:'1Xeqm7840eSACZQcdg8qLjTAja9PHW65X',n:'FineUpholstery20.jpg',cat:'upholstery'},{id:'10YOdEHEEy5mBcDDhoNf48pMvnqSYRWkO',n:'FineUpholstery21.jpg',cat:'upholstery'},{id:'1-8BEF3oIgqdRVYxrnb-urEQTyyEz61YJ',n:'FineUpholstery22.jpg',cat:'upholstery'},{id:'1IKvIl7yCz8nCWCafbV3_mlnVbRASBf0f',n:'FineUpholstery23.jpg',cat:'upholstery'},{id:'17bVzSV3R0E79Pe_PqC6uhuwrOW7SYpXY',n:'FineUpholstery24.jpg',cat:'upholstery'},{id:'1PsRp5ZI03nk60runXgRySob1BD9xzZjo',n:'FineUpholstery25.jpg',cat:'upholstery'},{id:'1p1qDGfdo05S0DzSgNEjgeJmqcHw3hVkk',n:'FineUpholstery26.jpg',cat:'upholstery'},{id:'1z1ZOz1PkCYUkGA29Crl0YfCYIJz8qo8O',n:'FineUpholstery27.jpg',cat:'upholstery'},{id:'13_32GGPl59UQbrjJknQxfxJqZRWmpBfr',n:'FineUpholstery28.jpg',cat:'upholstery'},{id:'11g13Zwwhs6pNb0iLas5FsaPeJ7DcUlAT',n:'FineUpholstery29.jpg',cat:'upholstery'},{id:'1xLvNFv74LsaaQCD6s4oEH-OgAjiXSZ7M',n:'FineUpholstery30.jpg',cat:'upholstery'}]};
+
+const CATMETA = {
+  restoration:{label:'Antique Restoration',icon:'🪑'},
+  cabinetry:{label:'Custom Cabinetry',icon:'🏠'},
+  millwork:{label:'Custom Millwork',icon:'🪵'},
+  upholstery:{label:'Fine Upholstery',icon:'🛋️'}
+};
+const ALL_PHOTOS = [
+  ...CAT.restoration.map(p=>({...p,cat:'restoration'})),
+  ...CAT.cabinetry.map(p=>({...p,cat:'cabinetry'})),
+  ...CAT.millwork.map(p=>({...p,cat:'millwork'})),
+  ...CAT.upholstery.map(p=>({...p,cat:'upholstery'}))
+];
+
+const PILARS = [
+  {p:'work',cats:['restoration','millwork','cabinetry','upholstery'],lbl:'The Work'},
+  {p:'process',cats:['millwork','cabinetry'],lbl:'The Process'},
+  {p:'transformation',cats:['restoration'],lbl:'The Transformation'},
+  {p:'work',cats:['cabinetry','millwork'],lbl:'The Work'},
+  {p:'education',cats:['restoration','cabinetry','upholstery'],lbl:'The Education'},
+  {p:'transformation',cats:['restoration'],lbl:'The Transformation'},
+  {p:'work',cats:['upholstery'],lbl:'The Work'},
+  {p:'process',cats:['millwork','restoration'],lbl:'The Process'},
+  {p:'legacy',cats:['restoration','millwork'],lbl:'The Legacy'},
+];
+
+// ===== SYSTEM PROMPTS =====
+const SYS_BOTH = `You are the social media content writer for Brandt Wood Finishing (BWF). Founded 1985, Winter Garden FL. Custom millwork, cabinetry, antique furniture restoration, fine upholstery. Serving Orlando to Miami.
+
+MARKETING PSYCHOLOGY — embed at least one technique per post:
+- SPECIFICITY: Exact numbers create instant credibility. "127 tacks" beats "many tacks". "11 days" beats "a long time". Pull real craft specifics from the category.
+- CURIOSITY GAP: Say enough to intrigue, hold back enough to pull them to contact you.
+- IDENTITY APPEAL: Speak to who they want to be. "For the person who knows the difference" lands harder than "high quality".
+- TRANSFORMATION: Hook on the before-state (old/worn/plain). Resolve in the body. Contrast is the engine of attention.
+- QUIET URGENCY: "Two project slots left this quarter." Use sparingly. Never fabricate.
+
+ORGANIC WRITING — fight AI patterns directly:
+- Vary sentence length violently. Short sentence. Then a longer one that breathes and opens up. Short again.
+- Use fragments on purpose. Intentionally. Like this.
+- One unexpected word per post — not flowery, just human. The word a real craftsman would say out loud.
+- No perfect parallel structure. Symmetrical lists scream AI.
+- Never start two consecutive sentences the same way.
+- Include one imperfect lived-in detail: "took three extra days because the grain wasn't cooperating" feels real.
+- If it sounds like a brochure when read aloud, rewrite it from scratch.
+
+VOICE REGISTERS — pick one per post:
+1. ARTISAN (default): Confident, dry, precise. Work does the talking.
+2. GUARDIAN: Antique restoration. Slow, weighted, honors what came before.
+3. BUILDER: Millwork/cabinetry. Technical but direct.
+
+PROHIBITIONS — never use:
+- Words: passionate, quality you can trust, dream home, transform your space, stunning, beautiful, amazing, world-class, take pride, we offer, we are, we provide, dedication, craftsmanship (the word itself)
+- Structures: "Not only X but also Y" / "From X to Y" / "Additionally" / "Furthermore" / "Moreover" / "In conclusion"
+- Max one em dash per post
+- Content NEVER starts with: "We", "Brandt", "BWF", or company name
+
+OUTPUT FORMAT — respond with EXACTLY this structure:
+===INSTAGRAM===
+[caption — hook max 10 words, 2-4 lines body, one marketing technique embedded]
+[hashtags line: 8-12 tags, always #brandtwoodfinishing, mix category + Florida geographic]
+===FACEBOOK===
+[post — first 2 lines must earn the "see more" click; 2-4 short paragraphs; one imperfect specific detail; warm direct CTA at end]
+===END===`;
+
+
+// ===== HELPERS =====
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function thumb(id){return 'https://lh3.googleusercontent.com/d/'+id+'=w600-h380'}
+function driveUrl(id){return 'https://drive.google.com/file/d/'+id+'/view'}
+
+function nextSlot(){
+  const now = new Date();
+  const taken = {};
+  S.posts.filter(p=>p.status!=='rejected').forEach(p=>{
+    taken[p.scheduledDate+'_'+p.slot] = true;
+  });
+  for(let d=0;d<14;d++){
+    const dt = new Date(now);
+    dt.setDate(dt.getDate()+d);
+    const dayOfWeek = dt.getDay();
+    const sch = S.schedule[dayOfWeek];
+    if(!sch.active) continue;
+    const dateStr = dt.toISOString().slice(0,10);
+    if(!taken[dateStr+'_morning']){
+      return {date:dateStr,slot:'morning',time:sch.morning};
+    }
+    if(!taken[dateStr+'_evening']){
+      return {date:dateStr,slot:'evening',time:sch.evening};
+    }
+  }
+  const dt = new Date(now);
+  dt.setDate(dt.getDate()+1);
+  return {date:dt.toISOString().slice(0,10),slot:'morning',time:'09:00'};
+}
+
+function pickPhoto(){
+  const pilar = PILARS[S.pi % PILARS.length];
+  let pool = ALL_PHOTOS.filter(p=>pilar.cats.includes(p.cat)&&!S.usedPhotos.includes(p.id));
+  if(!pool.length) pool = ALL_PHOTOS.filter(p=>!S.usedPhotos.includes(p.id));
+  if(!pool.length){S.usedPhotos=[];pool=[...ALL_PHOTOS];}
+  const photo = pool[Math.floor(Math.random()*pool.length)];
+  S.pi++;
+  S.usedPhotos.push(photo.id);
+  saveState();
+  return {photo,pilar};
+}
+
+function parseBothResponse(raw){
+  const igMatch = raw.match(/===INSTAGRAM===([\s\S]*?)(?:===FACEBOOK===|===END===)/i);
+  const fbMatch = raw.match(/===FACEBOOK===([\s\S]*?)(?:===END===|$)/i);
+  let ig_text='',ig_tags='',fb_text='';
+  if(igMatch){
+    const igRaw = igMatch[1].trim();
+    const lines = igRaw.split('\n');
+    const tagLine = lines.findIndex(l=>l.trim().startsWith('#'));
+    if(tagLine>-1){
+      ig_text = lines.slice(0,tagLine).join('\n').trim();
+      ig_tags = lines.slice(tagLine).join(' ').trim();
+    } else {
+      ig_text = igRaw;
+    }
+  }
+  if(fbMatch){
+    const fbRaw = fbMatch[1].trim();
+    const lines = fbRaw.split('\n');
+    const tagLine = lines.findIndex(l=>l.trim().startsWith('#'));
+    fb_text = tagLine>-1 ? lines.slice(0,tagLine).join('\n').trim() : fbRaw;
+  }
+  return {ig_text,ig_tags,fb_text};
+}
+
+function catTitle(n){
+  const base = n.replace(/\d+\.jpg$/,'').replace(/([A-Z])/g,' $1').trim();
+  const titles = {
+    'Furniture':'Restauração de Móvel Antigo','Banheiros':'Projeto de Banheiro','Closet':'Closet Personalizado',
+    'Cozinhas':'Cozinha sob Medida','Wall Unit':'Wall Unit Embutido','Portas':'Porta Personalizada',
+    'Mill Work':'Millwork Arquitetônico','Lareira':'Lareira em Madeira','Escadas':'Escada Artesanal',
+    'Camas':'Cabeceira sob Medida','Fine Upholstery':'Estofamento Premium'
+  };
+  for(const k of Object.keys(titles)){
+    if(base.toLowerCase().includes(k.toLowerCase())) return titles[k];
+  }
+  return base||'Projeto BWF';
+}
+
+// ===== STATS =====
+function getStats(){
+  return {
+    pending: S.posts.filter(p=>p.status==='pending').length,
+    approved: S.posts.filter(p=>p.status==='approved').length,
+    published: S.posts.filter(p=>p.status==='published').length,
+    rejected: S.posts.filter(p=>p.status==='rejected').length,
+  };
+}
+
+// ===== GENERATE =====
+async function generatePost(){
+  if(!S.apiKey||S.isGenerating) return;
+  S.isGenerating = true;
+  render();
+  const {photo,pilar} = pickPhoto();
+  const slot = nextSlot();
+  const photoUrl = thumb(photo.id);
+  const msgContent = [
+    {
+      type:'image',
+      source:{type:'url',url:photoUrl}
+    },
+    {
+      type:'text',
+      text:'Photo file: '+photo.n+'\nCategory: '+CATMETA[photo.cat].label+'\nEditorial pilar: '+pilar.lbl+'\n\nLook carefully at this image and write content based on what you actually see in the photo.'
+    }
+  ];
+  try{
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1800,system:SYS_BOTH,messages:[{role:'user',content:msgContent}]})
+    });
+    const data = await resp.json();
+    if(data.error){toast('Erro API: '+data.error.message,'error');S.isGenerating=false;render();return;}
+    const raw = data.content?.find(b=>b.type==='text')?.text||'';
+    const {ig_text,ig_tags,fb_text} = parseBothResponse(raw);
+    const post = {
+      id: uid(),
+      photoId: photo.id,
+      photoName: photo.n,
+      photoThumb: thumb(photo.id),
+      photoDriveUrl: driveUrl(photo.id),
+      category: photo.cat,
+      pilar: pilar.lbl,
+      title: catTitle(photo.n),
+      caption_ig: ig_text,
+      hashtags_ig: ig_tags,
+      caption_fb: fb_text,
+      status: 'pending',
+      slot: slot.slot,
+      scheduledDate: slot.date,
+      scheduledTime: slot.time,
+      createdAt: new Date().toISOString(),
+      approvedBy: null,
+      approvedAt: null,
+      rejectionReason: null,
+      publishedAt: null,
+    };
+    S.posts.unshift(post);
+    saveState();
+    toast('Post gerado e aguardando aprovação','success');
+  }catch(e){
+    toast('Erro de conexão. Tente novamente.','error');
+  }
+  S.isGenerating = false;
+  render();
+}
+
+// ===== APPROVAL ACTIONS =====
+function openModal(postId){
+  const post = S.posts.find(p=>p.id===postId);
+  if(!post) return;
+  S.selectedPostId = postId;
+  const imgArea = document.getElementById('modal-image-area');
+  const contentArea = document.getElementById('modal-content-area');
+  const footer = document.getElementById('modal-footer');
+  const catIcon = CATMETA[post.category]?.icon||'🪵';
+  imgArea.innerHTML = '<img src="'+esc(post.photoThumb)+'" style="width:100%;height:100%;min-height:350px;object-fit:cover" onerror="this.parentElement.innerHTML=\'<div class=&quot;modal-image-fallback&quot;>'+catIcon+'</div>\'" alt="'+esc(post.title)+'">';
+  const slotIcon = post.slot==='morning'?'☀':'🌙';
+  const slotLabel = post.slot==='morning'?'Manhã':'Noite';
+  const igTags = (post.hashtags_ig||'').split(' ').filter(t=>t.startsWith('#')).map(t=>'<span class="hashtag-chip">'+esc(t)+'</span>').join('');
+  contentArea.innerHTML = `
+    <div class="modal-section">
+      <div class="modal-section-label">Foto</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div class="plat-badge ig">IG</div>
+        <div class="plat-badge fb">FB</div>
+        <span style="font-size:11px;color:var(--text-muted)">${esc(post.title)}</span>
+      </div>
+      <div class="modal-meta-row">
+        <span class="modal-meta-item">${slotIcon} ${slotLabel} &middot; ${esc(post.scheduledTime)}</span>
+        <span class="modal-meta-item">📅 ${esc(post.scheduledDate)}</span>
+        <span class="modal-meta-item">🏷 ${esc(post.pilar)}</span>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">📷 Caption Instagram</div>
+      <div class="modal-caption-box">
+        <div class="modal-caption-text">${esc(post.caption_ig||'Não gerado')}</div>
+        ${igTags?'<div class="modal-hashtags">'+igTags+'</div>':''}
+      </div>
+    </div>
+    <div class="modal-section fb-section">
+      <div class="modal-section-label">📘 Post Facebook</div>
+      <div class="modal-caption-box">
+        <div class="modal-caption-text">${esc(post.caption_fb||'Não gerado')}</div>
+      </div>
+    </div>
+    ${post.status==='pending'?`
+    <div class="modal-section" style="margin-top:18px">
+      <div class="modal-section-label">Aprovado por</div>
+      <input id="approver-name" class="modal-input" type="text" placeholder="Seu nome (obrigatório)" oninput="updateApproveBtn()">
+    </div>`:''}
+    ${post.status==='rejected'&&post.rejectionReason?`
+    <div class="modal-section" style="margin-top:12px;padding:10px 12px;background:oklch(0.65 0.20 25 / 0.08);border:1px solid oklch(0.65 0.20 25 / 0.2);border-radius:6px">
+      <div style="font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:oklch(0.65 0.20 25);margin-bottom:4px">Motivo da Rejeição</div>
+      <div style="font-size:11px;color:var(--text-muted)">${esc(post.rejectionReason)}</div>
+    </div>`:''}`;
+  if(post.status==='pending'){
+    footer.innerHTML = `
+      <a href="${esc(post.photoDriveUrl)}" target="_blank" style="font-size:10px;color:var(--text-muted);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:4px;opacity:0.7">🔗 Ver foto no Drive</a>
+      <button class="btn-reject-lg" onclick="startReject('${esc(post.id)}')">✕ Rejeitar</button>
+      <button class="btn-approve-lg" id="btn-approve-confirm" onclick="approvePost()" disabled>✓ Aprovar</button>`;
+  }else if(post.status==='approved'){
+    footer.innerHTML = `
+      <a href="${esc(post.photoDriveUrl)}" target="_blank" style="font-size:10px;color:var(--text-muted);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:4px;opacity:0.7">🔗 Ver foto no Drive</a>
+      <button class="btn-publish-lg" onclick="publishPost('${esc(post.id)}')">↗ Marcar como Publicado</button>`;
+  }else{
+    footer.innerHTML = `<a href="${esc(post.photoDriveUrl)}" target="_blank" style="font-size:10px;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:4px">🔗 Ver foto no Drive</a>`;
+  }
+  document.getElementById('approval-modal').classList.add('open');
+}
+
+function updateApproveBtn(){
+  const inp = document.getElementById('approver-name');
+  const btn = document.getElementById('btn-approve-confirm');
+  if(btn) btn.disabled = !inp||!inp.value.trim();
+}
+
+function closeModal(){
+  document.getElementById('approval-modal').classList.remove('open');
+  S.selectedPostId = null;
+}
+
+function approvePost(){
+  const inp = document.getElementById('approver-name');
+  if(!inp||!inp.value.trim()) return;
+  const post = S.posts.find(p=>p.id===S.selectedPostId);
+  if(!post) return;
+  post.status = 'approved';
+  post.approvedBy = inp.value.trim();
+  post.approvedAt = new Date().toISOString();
+  saveState();
+  fireWebhook(post);
+  closeModal();
+  toast('Post aprovado por '+post.approvedBy,'success');
+  render();
+}
+
+function startReject(postId){
+  S.rejectingPostId = postId;
+  document.getElementById('reject-reason').value='';
+  document.getElementById('reject-modal').classList.add('open');
+}
+
+function closeRejectModal(){
+  document.getElementById('reject-modal').classList.remove('open');
+  S.rejectingPostId = null;
+}
+
+function confirmReject(){
+  const post = S.posts.find(p=>p.id===S.rejectingPostId);
+  if(!post) return;
+  post.status = 'rejected';
+  post.rejectionReason = document.getElementById('reject-reason').value.trim()||null;
+  saveState();
+  closeRejectModal();
+  closeModal();
+  toast('Post rejeitado','info');
+  render();
+}
+
+function publishPost(postId){
+  const post = S.posts.find(p=>p.id===postId);
+  if(!post) return;
+  post.status = 'published';
+  post.publishedAt = new Date().toISOString();
+  saveState();
+  closeModal();
+  toast('Post marcado como publicado','success');
+  render();
+}
+
+function quickApprove(postId){
+  S.selectedPostId = postId;
+  openModal(postId);
+}
+
+function quickReject(postId){
+  S.rejectingPostId = postId;
+  document.getElementById('reject-reason').value='';
+  document.getElementById('reject-modal').classList.add('open');
+}
+
+// ===== RENDER FUNCTIONS =====
+function render(){
+  updateSidebar();
+  const content = document.getElementById('page-content');
+  if(S.page==='dashboard') content.innerHTML = renderDashboard();
+  else if(S.page==='approvals') content.innerHTML = renderApprovals();
+  else if(S.page==='agenda') content.innerHTML = renderAgenda();
+  else if(S.page==='published') content.innerHTML = renderPublished();
+  else if(S.page==='settings') content.innerHTML = renderSettings();
+}
+
+function updateSidebar(){
+  const stats = getStats();
+  const pending = stats.pending;
+  document.getElementById('sb-pending-count').textContent = pending;
+  document.getElementById('sb-notif-count').textContent = pending;
+  document.getElementById('sb-pending-count').style.display = pending>0?'':'none';
+  document.getElementById('sb-notif-count').style.display = pending>0?'':'none';
+  ['dashboard','agenda','approvals','published','settings'].forEach(p=>{
+    const el = document.getElementById('nav-'+p);
+    el&&el.classList.toggle('active',S.page===p);
+  });
+}
+
+function postCardHTML(post,compact){
+  const catIcon = CATMETA[post.category]?.icon||'🪵';
+  const slotIcon = post.slot==='morning'?'☀':'🌙';
+  const slotLabel = post.slot==='morning'?'Manhã':'Noite';
+  const dateStr = post.scheduledDate? post.scheduledDate.slice(5).replace('-','/'):'';
+  const statusLabels = {pending:'Aguardando Aprovação',approved:'Aprovado',published:'Publicado',rejected:'Rejeitado'};
+  return `<div class="post-card">
+    <div class="pc-image">
+      <img src="${esc(post.photoThumb)}" alt="${esc(post.title)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="pc-image-fallback" style="display:none">${catIcon}</div>
+      <div class="pc-img-overlay"></div>
+      <div class="pc-time"><span class="pc-time-icon">${slotIcon}</span><span>${esc(post.scheduledTime)}</span></div>
+      <div class="pc-plat"><span class="plat-badge ig" style="font-size:8px">IG</span><span class="plat-badge fb" style="font-size:8px">FB</span></div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-badges">
+        <span class="status-badge ${post.status}">${statusLabels[post.status]||post.status}</span>
+        <span class="type-badge">Imagem</span>
+      </div>
+      <div class="pc-title">${esc(post.title)}</div>
+      <div class="pc-caption">${esc(post.caption_ig)}</div>
+    </div>
+    <div class="pc-footer">
+      <div>
+        <div class="pc-date">${dateStr} &middot; ${esc(post.scheduledTime)}</div>
+        <div class="pc-slot">${slotIcon} ${slotLabel}</div>
+      </div>
+      <div class="pc-actions">
+        <button class="btn-revisar" onclick="openModal('${esc(post.id)}')">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/></svg>
+          REVISAR
+        </button>
+        ${post.status==='pending'?`
+        <button class="btn-circle btn-approve" onclick="quickApprove('${esc(post.id)}')" title="Aprovar">✓</button>
+        <button class="btn-circle btn-reject" onclick="quickReject('${esc(post.id)}')" title="Rejeitar">✕</button>`:''}
+        ${post.status==='approved'?`<button class="btn-circle btn-approve" style="border-color:oklch(0.65 0.15 240 / 0.4);color:oklch(0.65 0.15 240)" onclick="publishPost('${esc(post.id)}')" title="Publicar">↗</button>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderDashboard(){
+  const stats = getStats();
+  const pending = S.posts.filter(p=>p.status==='pending');
+  const today = new Date().toISOString().slice(0,10);
+  const todayPosts = S.posts.filter(p=>p.scheduledDate===today);
+  const approved = S.posts.filter(p=>p.status==='approved');
+  const statDefs = [
+    {label:'Aguardando Aprovação',val:stats.pending,icon:'⏱',bg:'oklch(0.72 0.12 85 / 0.08)',bc:'oklch(0.72 0.12 85 / 0.2)',c:'var(--gold)'},
+    {label:'Aprovados',val:stats.approved,icon:'✓',bg:'oklch(0.65 0.18 145 / 0.08)',bc:'oklch(0.65 0.18 145 / 0.2)',c:'oklch(0.65 0.18 145)'},
+    {label:'Publicados',val:stats.published,icon:'↗',bg:'oklch(0.65 0.15 240 / 0.08)',bc:'oklch(0.65 0.15 240 / 0.2)',c:'oklch(0.65 0.15 240)'},
+    {label:'Rejeitados',val:stats.rejected,icon:'✕',bg:'oklch(0.65 0.20 25 / 0.08)',bc:'oklch(0.65 0.20 25 / 0.2)',c:'oklch(0.65 0.20 25)'},
+  ];
+  return `<div class="page">
+    <div class="hero">
+      <div class="hero-topline"></div>
+      <div class="hero-botline"></div>
+      <div class="hero-bg-text">BWF</div>
+      <div class="hero-content">
+        <div>
+          <div class="hero-label">Brandt Wood Finishing</div>
+          <div class="hero-title">Dashboard <em>Publisher</em></div>
+          <div class="hero-sub">Agente de publicação &middot; Instagram &amp; Facebook</div>
+        </div>
+        <button class="btn-nova" onclick="generatePost()" ${S.isGenerating?'disabled':''}>
+          ${S.isGenerating?
+            '<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' :
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Nova Publicação'}
+        </button>
+      </div>
+    </div>
+    <div class="stats-grid">
+      ${statDefs.map(s=>`<div class="stat-card" style="background:${s.bg};border-color:${s.bc}">
+        <div style="font-size:16px;margin-bottom:6px;color:${s.c}">${s.icon}</div>
+        <div class="stat-card-val" style="color:${s.c}">${s.val}</div>
+        <div class="stat-card-lbl">${s.label}</div>
+      </div>`).join('')}
+    </div>
+    ${pending.length>0?`
+    <div style="margin-bottom:8px">
+      <div class="section-label-sm" style="margin-bottom:6px">Revisão Necessária</div>
+      <div class="section-hdr" style="margin-bottom:14px">
+        <div class="section-title">Aguardando <em>Aprovação</em> <span class="section-badge">${pending.length}</span></div>
+        <div class="section-link" onclick="nav('approvals')">Ver todas <span>›</span></div>
+      </div>
+      <div class="posts-grid">${pending.slice(0,3).map(p=>postCardHTML(p)).join('')}</div>
+    </div>`:''}
+    ${approved.length>0?`
+    <div class="section-divider"></div>
+    <div>
+      <div class="section-hdr">
+        <div class="section-title">Prontos para <em>Publicar</em> <span class="section-badge" style="background:oklch(0.65 0.15 240 / 0.15);border:1px solid oklch(0.65 0.15 240 / 0.3);color:oklch(0.65 0.15 240)">${approved.length}</span></div>
+      </div>
+      <div class="posts-grid">${approved.slice(0,3).map(p=>postCardHTML(p)).join('')}</div>
+    </div>`:''}
+    ${S.posts.length===0?`<div class="empty-state"><div class="empty-icon">✦</div><div class="empty-title">Nenhuma publicação ainda</div><div class="empty-sub">Clique em "Nova Publicação" para gerar conteúdo com IA</div></div>`:''}
+  </div>`;
+}
+
+function renderApprovals(){
+  const pending = S.posts.filter(p=>p.status==='pending');
+  const rejected = S.posts.filter(p=>p.status==='rejected');
+  return `<div class="page">
+    <div class="hero" style="height:110px">
+      <div class="hero-topline"></div><div class="hero-botline"></div>
+      <div class="hero-bg-text" style="font-size:56px">≡</div>
+      <div class="hero-content">
+        <div>
+          <div class="hero-label">Fila de Revisão</div>
+          <div class="hero-title">Aprovações <em>Pendentes</em></div>
+        </div>
+        <button class="btn-nova" onclick="generatePost()" ${S.isGenerating?'disabled':''}>
+          ${S.isGenerating?'<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' :
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Novo Post'}
+        </button>
+      </div>
+    </div>
+    <div class="tab-row">
+      <div class="tab-btn active">Aguardando (${pending.length})</div>
+      <div class="tab-btn" style="color:var(--text-dim)">Rejeitados (${rejected.length})</div>
+    </div>
+    ${pending.length>0?`<div class="posts-grid">${pending.map(p=>postCardHTML(p)).join('')}</div>` :
+      `<div class="empty-state"><div class="empty-icon">✦</div><div class="empty-title">Nenhum post aguardando aprovação</div><div class="empty-sub">Gere novos posts com o botão "Nova Publicação"</div></div>`}
+    ${rejected.length>0?`
+    <div class="section-divider"></div>
+    <div class="section-hdr" style="margin-bottom:14px">
+      <div class="section-title" style="font-size:18px">Rejeitados <span class="section-badge" style="background:oklch(0.65 0.20 25 / 0.15);border:1px solid oklch(0.65 0.20 25 / 0.3);color:oklch(0.65 0.20 25)">${rejected.length}</span></div>
+    </div>
+    <div class="posts-grid">${rejected.map(p=>postCardHTML(p)).join('')}</div>`:''}
+  </div>`;
+}
+
+function renderAgenda(){
+  const today = new Date();
+  const weekStart = new Date(today);
+  const day = today.getDay();
+  weekStart.setDate(today.getDate() - (day===0?6:day-1));
+  const days = [];
+  for(let i=0;i<7;i++){
+    const d = new Date(weekStart);
+    d.setDate(weekStart.getDate()+i);
+    days.push(d);
+  }
+  const dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const todayStr = today.toISOString().slice(0,10);
+  return `<div class="page">
+    <div class="hero" style="height:110px">
+      <div class="hero-topline"></div><div class="hero-botline"></div>
+      <div class="hero-bg-text" style="font-size:56px">≡</div>
+      <div class="hero-content">
+        <div>
+          <div class="hero-label">Semana Atual</div>
+          <div class="hero-title">Agenda <em>Semanal</em></div>
+        </div>
+        <button class="btn-nova" onclick="generatePost()" ${S.isGenerating?'disabled':''}>
+          ${S.isGenerating?'Gerando...' : '+ Novo Post'}
+        </button>
+      </div>
+    </div>
+    <div class="agenda-grid">
+      ${days.map(d=>{
+        const ds = d.toISOString().slice(0,10);
+        const isToday = ds===todayStr;
+        const sch = S.schedule[d.getDay()];
+        const mPost = S.posts.find(p=>p.scheduledDate===ds&&p.slot==='morning'&&p.status!=='rejected');
+        const ePost = S.posts.find(p=>p.scheduledDate===ds&&p.slot==='evening'&&p.status!=='rejected');
+        const slotHTML = (post,slot,time)=>{
+          if(post) return `<div class="agenda-slot has-post">
+            <div class="agenda-slot-hdr">${slot==='morning'?'☀':'🌙'} ${esc(time)}</div>
+            <div class="status-badge ${post.status}" style="margin-bottom:5px;font-size:8px">${post.status==='pending'?'⏱':post.status==='approved'?'✓':post.status==='published'?'↗':'✕'}</div>
+            <div class="agenda-mini-post" onclick="openModal('${esc(post.id)}')" style="cursor:pointer">${esc(post.title)}</div>
+          </div>`;
+          if(!sch.active) return `<div class="agenda-slot" style="opacity:0.3"><div class="agenda-slot-hdr">${slot==='morning'?'☀':'🌙'} ${esc(time)}</div><div class="agenda-empty" style="font-size:12px">—</div></div>`;
+          return `<div class="agenda-slot" onclick="generatePost()" title="Gerar post para este slot">
+            <div class="agenda-slot-hdr">${slot==='morning'?'☀':'🌙'} ${esc(time)}</div>
+            <div class="agenda-empty">+</div>
+          </div>`;
+        };
+        return `<div class="agenda-day${isToday?' today':''}">
+          <div class="agenda-day-hdr">
+            <div class="agenda-day-name">${dayNames[d.getDay()]}</div>
+            <div class="agenda-day-num">${d.getDate()}</div>
+          </div>
+          ${slotHTML(mPost,'morning',sch.morning)}
+          ${slotHTML(ePost,'evening',sch.evening)}
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap">
+      <span style="font-size:10px;color:var(--text-dim)">Legenda:</span>
+      <span class="status-badge pending" style="font-size:9px">⏱ Aguardando</span>
+      <span class="status-badge approved" style="font-size:9px">✓ Aprovado</span>
+      <span class="status-badge published" style="font-size:9px">↗ Publicado</span>
+    </div>
+  </div>`;
+}
+
+function renderPublished(){
+  const published = S.posts.filter(p=>p.status==='published');
+  const approved = S.posts.filter(p=>p.status==='approved');
+  return `<div class="page">
+    <div class="hero" style="height:110px">
+      <div class="hero-topline"></div><div class="hero-botline"></div>
+      <div class="hero-bg-text" style="font-size:56px">↗</div>
+      <div class="hero-content">
+        <div>
+          <div class="hero-label">Histórico</div>
+          <div class="hero-title">Posts <em>Publicados</em></div>
+        </div>
+      </div>
+    </div>
+    ${approved.length>0?`
+    <div class="section-hdr"><div class="section-title">Prontos para <em>Publicar</em> <span class="section-badge" style="background:oklch(0.65 0.15 240 / 0.15);border:1px solid oklch(0.65 0.15 240 / 0.3);color:oklch(0.65 0.15 240)">${approved.length}</span></div></div>
+    <div class="posts-grid" style="margin-bottom:20px">${approved.map(p=>postCardHTML(p)).join('')}</div>
+    <div class="section-divider"></div>`:''}
+    ${published.length>0?`
+    <div class="section-hdr"><div class="section-title">Publicados <span class="section-badge" style="background:oklch(0.65 0.15 240 / 0.15);border:1px solid oklch(0.65 0.15 240 / 0.3);color:oklch(0.65 0.15 240)">${published.length}</span></div></div>
+    <div class="posts-grid">${published.map(p=>postCardHTML(p)).join('')}</div>` :
+    `<div class="empty-state"><div class="empty-icon">↗</div><div class="empty-title">Nenhum post publicado</div><div class="empty-sub">Posts aprovados aparecem aqui quando marcados como publicados</div></div>`}
+  </div>`;
+}
+
+function renderSettings(){
+  const dayNames = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  return `<div class="page">
+    <div class="hero" style="height:110px">
+      <div class="hero-topline"></div><div class="hero-botline"></div>
+      <div class="hero-bg-text" style="font-size:56px">⚙</div>
+      <div class="hero-content">
+        <div><div class="hero-label">Sistema</div><div class="hero-title">Configurações <em>Publisher</em></div></div>
+      </div>
+    </div>
+    <div class="settings-card">
+      <div class="settings-title">Publicação Automática</div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-row-label">Webhook Make.com</div>
+          <div class="settings-row-sub">Cole a URL do webhook para publicação automática após aprovação</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <input id="webhook-input" class="modal-input" type="url" placeholder="https://hook.eu1.make.com/..." value="${esc(S.webhookUrl)}" style="flex:1;font-size:11px;font-family:var(--font-mono)">
+        <button class="btn-revisar" onclick="saveWebhook()" style="white-space:nowrap;padding:8px 14px">Salvar</button>
+      </div>
+      ${S.webhookUrl ? '<div style="margin-top:8px;font-size:10px;color:oklch(0.65 0.18 145);display:flex;align-items:center;gap:5px">✓ Webhook ativo — posts aprovados serão enviados automaticamente</div>' : '<div style="margin-top:8px;font-size:10px;color:var(--text-dim)">Sem webhook configurado — você precisará exportar manualmente</div>'}
+    </div>
+    <div class="settings-card">
+      <div class="settings-title">Agente</div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Chave API Anthropic</div><div class="settings-row-sub">Usada para geração de captions com IA</div></div>
+        <button class="btn-revisar" onclick="resetKey()" style="white-space:nowrap">Trocar Chave</button>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Total de Fotos</div><div class="settings-row-sub">Catálogo Google Drive (214 fotos)</div></div>
+        <span style="font-family:var(--font-mono);font-size:12px;color:var(--gold)">214</span>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Fotos Usadas</div><div class="settings-row-sub">No ciclo atual (reseta automaticamente)</div></div>
+        <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted)">${S.usedPhotos.length}</span>
+      </div>
+    </div>
+    <div class="settings-card">
+      <div class="settings-title">Agenda Semanal</div>
+      ${S.schedule.map((sch,i)=>`
+      <div class="schedule-day">
+        <div class="schedule-day-name">${dayNames[i]}</div>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:11px;color:var(--text-muted)">
+          <input type="checkbox" ${sch.active?'checked':''} onchange="toggleDay(${i},this.checked)" style="accent-color:var(--gold)"> Ativo
+        </label>
+        <span style="font-size:10px;color:var(--text-dim);margin-left:4px">Manhã:</span>
+        <input class="schedule-time-input" type="time" value="${sch.morning}" onchange="updateTime(${i},'morning',this.value)" ${sch.active?'':'disabled'}>
+        <span style="font-size:10px;color:var(--text-dim)">Noite:</span>
+        <input class="schedule-time-input" type="time" value="${sch.evening}" onchange="updateTime(${i},'evening',this.value)" ${sch.active?'':'disabled'}>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ===== SETTINGS ACTIONS =====
+function toggleDay(i,val){S.schedule[i].active=val;saveState();render();}
+function updateTime(i,slot,val){S.schedule[i][slot]=val;saveState();}
+
+// ===== WEBHOOK =====
+async function fireWebhook(post) {
+  if (!S.webhookUrl) return;
+  const payload = {
+    event: 'post_approved',
+    post_id: post.id,
+    title: post.title,
+    category: post.category,
+    pilar: post.pilar,
+    scheduled_date: post.scheduledDate,
+    scheduled_time: post.scheduledTime,
+    slot: post.slot,
+    photo: {
+      name: post.photoName,
+      drive_id: post.photoId,
+      drive_url: post.photoDriveUrl,
+      thumb_url: post.photoThumb
+    },
+    instagram: {
+      caption: post.caption_ig,
+      hashtags: post.hashtags_ig,
+      full_post: post.caption_ig + (post.hashtags_ig ? '\n\n' + post.hashtags_ig : '')
+    },
+    facebook: {
+      caption: post.caption_fb,
+      full_post: post.caption_fb
+    },
+    approved_by: post.approvedBy,
+    approved_at: post.approvedAt
+  };
+  try {
+    await fetch(S.webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    toast('Enviado para Make.com ✓', 'success');
+  } catch(e) {
+    toast('Webhook falhou — verifique a URL nas Configurações', 'error');
+  }
+}
+
+// ===== NAVIGATION =====
+function nav(page){
+  S.page = page;
+  saveState();
+  render();
+}
+
+// ===== TOAST =====
+function toast(msg,type){
+  const t = document.getElementById('toast');
+  const el = document.createElement('div');
+  el.className = 'toast-item '+(type||'info');
+  el.textContent = msg;
+  t.appendChild(el);
+  setTimeout(()=>el.remove(),3500);
+}
+
+// ===== PERSISTENCE =====
+function saveState(){
+  try{
+    localStorage.setItem('bwfp_posts',JSON.stringify(S.posts));
+    localStorage.setItem('bwfp_pi',String(S.pi));
+    localStorage.setItem('bwfp_used',JSON.stringify(S.usedPhotos));
+    localStorage.setItem('bwfp_page',S.page);
+    localStorage.setItem('bwfp_schedule',JSON.stringify(S.schedule));
+    if(S.webhookUrl)localStorage.setItem('bwfp_webhook',S.webhookUrl);
+  }catch(e){}
+}
+
+function loadState(){
+  try{const v=localStorage.getItem('bwfp_posts');if(v)S.posts=JSON.parse(v);}catch(e){}
+  try{const v=localStorage.getItem('bwfp_pi');if(v)S.pi=parseInt(v)||0;}catch(e){}
+  try{const v=localStorage.getItem('bwfp_used');if(v)S.usedPhotos=JSON.parse(v);}catch(e){}
+  try{const v=localStorage.getItem('bwfp_page');if(v)S.page=v;}catch(e){}
+  try{const v=localStorage.getItem('bwfp_schedule');if(v)S.schedule=JSON.parse(v);}catch(e){}
+  try{const v=localStorage.getItem('bwfp_webhook');if(v)S.webhookUrl=v;}catch(e){}
+}
+
+function saveWebhook(){
+  const inp = document.getElementById('webhook-input');
+  if(!inp) return;
+  S.webhookUrl = inp.value.trim();
+  saveState();
+  toast(S.webhookUrl ? 'Webhook salvo ✓' : 'Webhook removido', 'info');
+  render();
+}
+
+// ===== INIT =====
+function startApp(){
+  const k = document.getElementById('api-in').value.trim();
+  if(!k.startsWith('sk-ant-')&&!k.startsWith('sk-')){toast('Chave inválida. Verifique o formato.','error');return;}
+  S.apiKey = k;
+  localStorage.setItem('bwfp_key',k);
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('app').style.display = 'grid';
+  render();
+}
+
+function resetKey(){
+  localStorage.removeItem('bwfp_key');
+  S.apiKey='';
+  document.getElementById('setup').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('api-in').value='';
+}
+
+window.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.getElementById('setup').style.display!=='none') startApp();
+  if(e.key==='Escape') closeModal();
+});
+
+document.getElementById('approval-modal').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+document.getElementById('reject-modal').addEventListener('click',function(e){
+  if(e.target===this) closeRejectModal();
+});
+
+// Boot
+loadState();
+const savedKey = localStorage.getItem('bwfp_key');
+if(savedKey&&(savedKey.startsWith('sk-ant-')||savedKey.startsWith('sk-'))){
+  S.apiKey = savedKey;
+  document.getElementById('api-in').value = savedKey;
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('app').style.display = 'grid';
+  render();
+}
+</script>
+</body>
+</html>
