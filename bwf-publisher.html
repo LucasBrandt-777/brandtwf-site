@@ -184,11 +184,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 .modal-image{background:oklch(0.10 0 0);position:relative}
 .modal-image img{width:100%;height:100%;object-fit:cover}
 .modal-image-fallback{width:100%;height:300px;display:flex;align-items:center;justify-content:center;font-size:48px}
-.modal-content-area{padding:20px 22px;overflow-y:auto;max-height:70vh}
+.modal-content-area{padding:20px 22px;overflow-y:auto;max-height:75vh}
 .modal-section{margin-bottom:18px}
 .modal-section-label{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold-muted);margin-bottom:8px;font-family:var(--font-body)}
 .modal-caption-box{background:oklch(0.10 0 0);border:1px solid var(--border);border-radius:7px;padding:12px 14px}
-.modal-caption-text{font-size:12px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word}
+.modal-caption-text{font-size:12px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;border-radius:4px;transition:background 0.15s}.modal-caption-text:focus{background:oklch(0.08 0 0);padding:4px 6px;margin:-4px -6px}
 .modal-hashtags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .hashtag-chip{background:oklch(0.72 0.12 85 / 0.1);border:1px solid oklch(0.72 0.12 85 / 0.25);color:var(--gold);border-radius:4px;padding:2px 8px;font-size:10px;font-family:var(--font-mono)}
 .modal-meta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
@@ -336,7 +336,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-si
 
 <!-- APPROVAL MODAL -->
 <div class="modal-overlay" id="approval-modal">
-  <div class="modal" style="max-width:900px">
+  <div class="modal" style="max-width:980px">
     <div class="modal-hdr">
       <span class="modal-hdr-title">Revisar <em>Publicação</em></span>
       <button class="modal-close" onclick="closeModal()">✕</button>
@@ -466,6 +466,7 @@ OUTPUT FORMAT — respond with EXACTLY this structure:
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function thumb(id){return 'https://lh3.googleusercontent.com/d/'+id+'=w600-h380'}
+function githubUrl(name){return 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/'+name.replace('.jpg','.webp')}
 function driveUrl(id){return 'https://drive.google.com/file/d/'+id+'/view'}
 
 function nextSlot(){
@@ -560,7 +561,7 @@ async function generatePost(){
   render();
   const {photo,pilar} = pickPhoto();
   const slot = nextSlot();
-  const photoUrl = thumb(photo.id);
+  const photoUrl = githubUrl(photo.n);
   const msgContent = [
     {
       type:'image',
@@ -586,6 +587,7 @@ async function generatePost(){
       photoId: photo.id,
       photoName: photo.n,
       photoThumb: thumb(photo.id),
+      photoGithubUrl: githubUrl(photo.n),
       photoDriveUrl: driveUrl(photo.id),
       category: photo.cat,
       pilar: pilar.lbl,
@@ -643,14 +645,16 @@ function openModal(postId){
     <div class="modal-section">
       <div class="modal-section-label">📷 Caption Instagram</div>
       <div class="modal-caption-box">
-        <div class="modal-caption-text">${esc(post.caption_ig||'Não gerado')}</div>
-        ${igTags?'<div class="modal-hashtags">'+igTags+'</div>':''}
+        <div class="modal-caption-text" contenteditable="${post.status==='pending'?'true':'false'}" id="edit-ig-caption" style="outline:none;min-height:60px;cursor:${post.status==='pending'?'text':'default'}">${esc(post.caption_ig||'Não gerado')}</div>
+        ${igTags?'<div class="modal-hashtags" style="margin-top:8px">'+igTags+'</div>':''}
+        ${post.status==='pending'?'<div style="font-size:10px;color:var(--text-dim);margin-top:6px">✎ Clique no texto para editar antes de aprovar</div>':''}
       </div>
     </div>
     <div class="modal-section fb-section">
       <div class="modal-section-label">📘 Post Facebook</div>
       <div class="modal-caption-box">
-        <div class="modal-caption-text">${esc(post.caption_fb||'Não gerado')}</div>
+        <div class="modal-caption-text" contenteditable="${post.status==='pending'?'true':'false'}" id="edit-fb-caption" style="outline:none;min-height:60px;cursor:${post.status==='pending'?'text':'default'}">${esc(post.caption_fb||'Não gerado')}</div>
+        ${post.status==='pending'?'<div style="font-size:10px;color:var(--text-dim);margin-top:6px">✎ Clique no texto para editar antes de aprovar</div>':''}
       </div>
     </div>
     ${post.status==='pending'?`
@@ -694,6 +698,12 @@ function approvePost(){
   if(!inp||!inp.value.trim()) return;
   const post = S.posts.find(p=>p.id===S.selectedPostId);
   if(!post) return;
+  // Save any edits made in the modal
+  const igEdit = document.getElementById('edit-ig-caption');
+  const fbEdit = document.getElementById('edit-fb-caption');
+  if(igEdit && igEdit.innerText.trim()) post.caption_ig = igEdit.innerText.trim();
+  if(fbEdit && fbEdit.innerText.trim()) post.caption_fb = fbEdit.innerText.trim();
+  // Rebuild full_post with hashtags
   post.status = 'approved';
   post.approvedBy = inp.value.trim();
   post.approvedAt = new Date().toISOString();
@@ -1071,7 +1081,7 @@ async function fireWebhook(post) {
       name: post.photoName,
       drive_id: post.photoId,
       drive_url: post.photoDriveUrl,
-      thumb_url: post.photoThumb
+      thumb_url: post.photoGithubUrl||post.photoThumb
     },
     instagram: {
       caption: post.caption_ig,
