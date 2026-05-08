@@ -426,45 +426,79 @@ const PILARS = [
 // ===== SYSTEM PROMPTS =====
 const SYS_BOTH = `You are the social media content writer for Brandt Wood Finishing (BWF). Founded 1985, Winter Garden FL. Custom millwork, cabinetry, antique furniture restoration, fine upholstery. Serving Orlando to Miami.
 
-MARKETING PSYCHOLOGY — embed at least one technique per post:
-- SPECIFICITY: Exact numbers create instant credibility. "127 tacks" beats "many tacks". "11 days" beats "a long time". Pull real craft specifics from the category.
-- CURIOSITY GAP: Say enough to intrigue, hold back enough to pull them to contact you.
-- IDENTITY APPEAL: Speak to who they want to be. "For the person who knows the difference" lands harder than "high quality".
-- TRANSFORMATION: Hook on the before-state (old/worn/plain). Resolve in the body. Contrast is the engine of attention.
-- QUIET URGENCY: "Two project slots left this quarter." Use sparingly. Never fabricate.
+STEP 1 — ANALYZE THE IMAGE CAREFULLY:
+Before writing anything, look at the photo and identify:
+- Exact piece type (armchair, kitchen cabinet, staircase, door, etc.)
+- Material and finish visible to the eye (wood species, color, sheen level, fabric texture)
+- One specific visual detail only visible in this photo (grain pattern, hardware, a curve, a joint, a texture)
+- The setting/context if visible (room, natural light, background)
 
-ORGANIC WRITING — fight AI patterns directly:
-- Vary sentence length violently. Short sentence. Then a longer one that breathes and opens up. Short again.
-- Use fragments on purpose. Intentionally. Like this.
-- One unexpected word per post — not flowery, just human. The word a real craftsman would say out loud.
-- No perfect parallel structure. Symmetrical lists scream AI.
-- Never start two consecutive sentences the same way.
-- Include one imperfect lived-in detail: "took three extra days because the grain wasn't cooperating" feels real.
-- If it sounds like a brochure when read aloud, rewrite it from scratch.
+CRITICAL — WHAT YOU CANNOT SEE, YOU CANNOT WRITE:
+You cannot see sandpaper grits, number of coats, drying times, specific products used, temperature of the workshop, or any step of the process that happened before the photo was taken. NEVER invent these. A professional reading your caption will immediately know you fabricated it and it destroys credibility.
+- You can describe WHAT IT LOOKS LIKE (the result, the sheen, the grain, the color)
+- You CANNOT describe HOW IT WAS MADE unless that process is literally visible in the photo
+- If the finish looks like high polish, you can say "mirror finish" — you cannot say "3 coats with 400 grit" because you did not see that happen
+- If it is a restoration, you can say "the grain is clean again" — you cannot invent the restoration steps
 
-VOICE REGISTERS — pick one per post:
-1. ARTISAN (default): Confident, dry, precise. Work does the talking.
-2. GUARDIAN: Antique restoration. Slow, weighted, honors what came before.
-3. BUILDER: Millwork/cabinetry. Technical but direct.
+STEP 2 — CHOOSE AN APPROACH (rotate, never repeat the same):
+Pick ONE angle for this post — do not mix them:
+A. THE MATERIAL — focus on the wood species, finish, or fabric. What makes it special technically.
+B. THE DETAIL — zoom in on one specific element. The joint. The grain match. The pull. The stitch.
+C. THE DECISION — one choice made during the build/restoration that changed the outcome.
+D. THE CONTRAST — what it was vs what it became. One sentence each. No more.
+E. THE CLIENT — speak to who would want this. Their taste, not their lifestyle.
+F. THE PROCESS — one specific technique used. Concrete and real, not generic.
 
-PROHIBITIONS — never use:
-- Words: passionate, quality you can trust, dream home, transform your space, stunning, beautiful, amazing, world-class, take pride, we offer, we are, we provide, dedication, craftsmanship (the word itself)
-- Structures: "Not only X but also Y" / "From X to Y" / "Additionally" / "Furthermore" / "Moreover" / "In conclusion"
-- Max one em dash per post
-- Content NEVER starts with: "We", "Brandt", "BWF", or company name
+ROTATION RULE: Each post must feel like a different writer made a different choice. If the last post used decay/neglect, this one cannot. If the last used time quantification, avoid it entirely.
 
-CONTACT — REGRA CRÍTICA:
-- NUNCA invente telefones, endereços, e-mails, preços ou qualquer dado específico
-- NUNCA coloque números de telefone em nenhum post
-- CTAs aprovados: "Link in bio." / "Inquiries via link in bio." / "Serving Orlando to Miami." / "Falamos português." / "Send us a message."
+ANTI-REPETITION — NEVER USE THESE PATTERNS:
+- "took X days/hours to complete" — time quantification is a crutch
+- "forgotten piece" / "peça esquecida" / "neglected for decades"
+- "X years of daily use"
+- "water stains" unless literally visible and central in the photo
+- "the client wanted" — you don't know the client
+- "this piece tells a story" — every piece "tells a story", it's meaningless
+- "attention to detail" — show it, don't say it
+- Any opening that starts with a state of decay
+- Consecutive posts with the same structural arc (problem → process → result)
+- ANY invented technical process: sandpaper grits, number of coats, drying times, specific products, hours of work
+- "X coats of Y" unless the coats are literally visible in the photo
+- "sanded with X grit" — you cannot see grit numbers in a photo
+- "took an extra day because" — you do not know why or how long anything took
+- Process descriptions that a professional would fact-check and find wrong
 
-OUTPUT FORMAT — respond with EXACTLY this structure:
+ORGANIC WRITING — fight AI patterns:
+- Vary sentence length violently. Short. Then one that breathes. Short again.
+- Fragments work. Used deliberately.
+- One word per post that surprises — not flowery, just human
+- No parallel structure. Symmetry signals AI.
+- Read it aloud. If it sounds like a brochure, rewrite entirely.
+
+MARKETING (one technique per post, rotated):
+- SPECIFICITY: one real detail that only someone who did this work would notice
+- IDENTITY: speak to who they want to be, not what they want to buy
+- CURIOSITY GAP: enough to intrigue, not enough to explain everything
+- TRANSFORMATION: one sentence before, one sentence after — no more
+
+VOICE:
+- ARTISAN (millwork, cabinetry): dry, precise, confident
+- GUARDIAN (restoration): slower, weighted, respectful of the original
+- BUILDER (upholstery, structural): technical but human
+
+PROHIBITIONS:
+- NEVER: passionate, stunning, beautiful, amazing, dream home, world-class, dedication, craftsmanship (the word), take pride, we offer, we provide
+- NEVER: "Not only X but also Y" / "Additionally" / "Furthermore"
+- NEVER: phone numbers, addresses, prices, or any invented data
+- NEVER start with: "We", "Brandt", "BWF"
+- CTAs only: "Link in bio." / "Inquiries via link in bio." / "Serving Orlando to Miami." / "Falamos português." / "Send us a message."
+
+OUTPUT — respond with EXACTLY this structure:
 ===INSTAGRAM===
-[caption — hook max 10 words, 2-4 lines body, one marketing technique embedded]
-[hashtags line: 8-12 tags, always #brandtwoodfinishing, mix category + Florida geographic]
+[caption — hook max 10 words, 2-4 lines, one technique, no invented facts]
+[hashtags: 8-12 tags, always #brandtwoodfinishing, mix category + Florida geographic]
 ===FACEBOOK===
-[post — first 2 lines must earn the "see more" click; 2-4 short paragraphs; one imperfect specific detail; warm direct CTA at end]
-===END===`;
+[post — 2-4 short paragraphs, one specific detail from the image, warm CTA]
+===END===``;
 
 const CONTACT_BLOCK = '\n.\n🇺🇸 (689) 250-1209\n🇧🇷 (754) 215-0045\n🌐 www.brandtwf.com';
 
@@ -474,6 +508,13 @@ function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace
 function thumb(id){return 'https://lh3.googleusercontent.com/d/'+id+'=w600-h380'}
 function githubUrl(name){return 'https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/'+name.replace('.jpg','.webp')}
 function driveUrl(id){return 'https://drive.google.com/file/d/'+id+'/view'}
+
+function toUnixTimestamp(dateStr, timeStr){
+  if(!dateStr) return null;
+  const [y,m,d] = dateStr.split('-').map(Number);
+  const [h,min] = (timeStr||'09:00').split(':').map(Number);
+  return Math.floor(new Date(y,m-1,d,h,min,0).getTime()/1000);
+}
 
 function nextSlot(){
   const now = new Date();
@@ -561,6 +602,72 @@ function getStats(){
 }
 
 // ===== GENERATE =====
+async function generateWeek(){
+  if(!S.apiKey||S.isGenerating) return;
+  const today = new Date();
+  const slots = [];
+  for(let d=0;d<7;d++){
+    const dt = new Date(today);
+    dt.setDate(today.getDate()+d);
+    const dow = dt.getDay();
+    const sch = S.schedule[dow];
+    if(!sch||!sch.active) continue;
+    const ds = dt.toISOString().slice(0,10);
+    const taken = {};
+    S.posts.filter(p=>p.status!=='rejected').forEach(p=>{taken[p.scheduledDate+'_'+p.slot]=true;});
+    if(sch.morning&&!taken[ds+'_morning']) slots.push({date:ds,slot:'morning',time:sch.morning});
+    if(sch.evening&&!taken[ds+'_evening']) slots.push({date:ds,slot:'evening',time:sch.evening});
+  }
+  if(!slots.length){toast('Todos os slots da semana já estão preenchidos','info');return;}
+  toast('Gerando '+slots.length+' posts para a semana...','info');
+  S.isGenerating = true;
+  render();
+  let done = 0;
+  for(const slot of slots){
+    const {photo,pilar} = pickPhoto();
+    const photoUrl = githubUrl(photo.n);
+    const msgContent = [
+      {type:'image',source:{type:'url',url:photoUrl}},
+      {type:'text',text:'Photo file: '+photo.n+'\nCategory: '+CATMETA[photo.cat].label+'\nEditorial pilar: '+pilar.lbl+'\n\nLook carefully at this image and write content based on what you actually see in the photo.'}
+    ];
+    try{
+      const resp = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1800,system:SYS_BOTH,messages:[{role:'user',content:msgContent}]})
+      });
+      const data = await resp.json();
+      if(!data.error){
+        const raw = data.content?.find(b=>b.type==='text')?.text||'';
+        const {ig_text,ig_tags,fb_text} = parseBothResponse(raw);
+        const post = {
+          id:uid(), photoId:photo.id, photoName:photo.n,
+          photoThumb:thumb(photo.id), photoGithubUrl:githubUrl(photo.n),
+          photoDriveUrl:driveUrl(photo.id), category:photo.cat, pilar:pilar.lbl,
+          title:catTitle(photo.n),
+          caption_ig:ig_text+CONTACT_BLOCK, hashtags_ig:ig_tags,
+          caption_fb:fb_text+CONTACT_BLOCK,
+          status:'pending', slot:slot.slot,
+          scheduledDate:slot.date, scheduledTime:slot.time,
+          createdAt:new Date().toISOString(),
+          approvedBy:null, approvedAt:null, rejectionReason:null, publishedAt:null,
+        };
+        S.posts.unshift(post);
+        done++;
+        toast(done+'/'+slots.length+' posts gerados','info');
+      }
+    }catch(e){}
+    saveState();
+    // Small delay between API calls
+    await new Promise(r=>setTimeout(r,1500));
+  }
+  S.isGenerating = false;
+  saveState();
+  toast(done+' posts prontos para aprovação ✓','success');
+  S.page = 'approvals';
+  render();
+}
+
 async function generateAndPublishNow(){
   if(!S.apiKey||S.isGenerating) return;
   S.isGenerating = true;
@@ -730,6 +837,7 @@ function openModal(postId){
   if(post.status==='pending'){
     footer.innerHTML = `
       <a href="${esc(post.photoDriveUrl)}" target="_blank" style="font-size:10px;color:var(--text-muted);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:4px;opacity:0.7">🔗 Ver foto no Drive</a>
+      <button id="btn-swap-photo" class="btn-reject-lg" onclick="showSwapMenu('${esc(post.id)}')" style="border-color:oklch(0.65 0.15 240 / 0.4);color:oklch(0.70 0.12 240)">🔄 Trocar Foto</button>
       <button class="btn-reject-lg" onclick="startReject('${esc(post.id)}')">✕ Rejeitar</button>
       <button class="btn-approve-lg" id="btn-approve-confirm" onclick="approvePost()" disabled>✓ Aprovar</button>`;
   }else if(post.status==='approved'){
@@ -746,6 +854,83 @@ function updateApproveBtn(){
   const inp = document.getElementById('approver-name');
   const btn = document.getElementById('btn-approve-confirm');
   if(btn) btn.disabled = !inp||!inp.value.trim();
+}
+
+async function swapPhoto(postId, cat){
+  const post = S.posts.find(p=>p.id===postId);
+  if(!post||!S.apiKey) return;
+  // Pick a new photo from selected category
+  let pool = ALL_PHOTOS.filter(p=>(!cat||p.cat===cat)&&p.id!==post.photoId);
+  if(!pool.length) pool = ALL_PHOTOS.filter(p=>p.cat===(cat||post.category));
+  const photo = pool[Math.floor(Math.random()*pool.length)];
+  if(!photo) return;
+  // Show loading in modal image
+  const imgArea = document.getElementById('modal-image-area');
+  imgArea.innerHTML = '<div style="width:100%;height:300px;display:flex;align-items:center;justify-content:center;background:oklch(0.10 0 0)"><div class="dots"><div class="d"></div><div class="d"></div><div class="d"></div></div></div>';
+  const swapBtn = document.getElementById('btn-swap-photo');
+  if(swapBtn) swapBtn.disabled = true;
+  // Regenerate caption with new photo
+  const photoUrl = githubUrl(photo.n);
+  const pilarObj = PILARS.find(p=>p.lbl===post.pilar)||PILARS[0];
+  const msgContent = [
+    {type:'image',source:{type:'url',url:photoUrl}},
+    {type:'text',text:'Photo file: '+photo.n+'\nCategory: '+CATMETA[photo.cat].label+'\nEditorial pilar: '+pilarObj.lbl+'\n\nLook carefully at this image and write content based on what you actually see in the photo.'}
+  ];
+  try{
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1800,system:SYS_BOTH,messages:[{role:'user',content:msgContent}]})
+    });
+    const data = await resp.json();
+    if(!data.error){
+      const raw = data.content?.find(b=>b.type==='text')?.text||'';
+      const {ig_text,ig_tags,fb_text} = parseBothResponse(raw);
+      post.photoId = photo.id;
+      post.photoName = photo.n;
+      post.photoThumb = thumb(photo.id);
+      post.photoGithubUrl = githubUrl(photo.n);
+      post.photoDriveUrl = driveUrl(photo.id);
+      post.category = photo.cat;
+      post.title = catTitle(photo.n);
+      post.caption_ig = ig_text + CONTACT_BLOCK;
+      post.hashtags_ig = ig_tags;
+      post.caption_fb = fb_text + CONTACT_BLOCK;
+      saveState();
+      toast('Foto trocada e caption atualizada ✓','success');
+      closeModal();
+      setTimeout(()=>openModal(postId),150);
+    }
+  }catch(e){
+    toast('Erro ao trocar foto','error');
+    if(swapBtn) swapBtn.disabled = false;
+  }
+}
+
+function showSwapMenu(postId){
+  const existing = document.getElementById('swap-menu');
+  if(existing){existing.remove();return;}
+  const menu = document.createElement('div');
+  menu.id = 'swap-menu';
+  menu.style.cssText = 'position:absolute;bottom:60px;left:0;background:oklch(0.13 0 0);border:1px solid oklch(0.25 0 0);border-radius:8px;padding:6px;z-index:10;min-width:180px;box-shadow:0 4px 20px rgba(0,0,0,0.5)';
+  const cats = [
+    {id:'',label:'🎲 Aleatória'},
+    {id:'restoration',label:'🪑 Restauração'},
+    {id:'cabinetry',label:'🏠 Cabinetry / Cozinha'},
+    {id:'millwork',label:'🪵 Millwork'},
+    {id:'upholstery',label:'🛋️ Estofado'},
+  ];
+  cats.forEach(c=>{
+    const btn = document.createElement('button');
+    btn.textContent = c.label;
+    btn.style.cssText = 'display:block;width:100%;padding:8px 12px;text-align:left;background:transparent;border:none;color:oklch(0.85 0 0);font-size:12px;cursor:pointer;border-radius:5px;font-family:var(--font-body)';
+    btn.onmouseenter = ()=>btn.style.background='oklch(0.18 0 0)';
+    btn.onmouseleave = ()=>btn.style.background='transparent';
+    btn.onclick = ()=>{menu.remove();swapPhoto(postId,c.id);};
+    menu.appendChild(btn);
+  });
+  const ftr = document.getElementById('modal-footer');
+  if(ftr){ftr.style.position='relative';ftr.appendChild(menu);}
 }
 
 function closeModal(){
@@ -908,15 +1093,14 @@ function renderDashboard(){
           <div class="hero-sub">Agente de publicação &middot; Instagram &amp; Facebook</div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+          <button class="btn-nova" onclick="generateWeek()" ${S.isGenerating?'disabled':''} style="background:transparent;border:1px solid oklch(0.65 0.15 240 / 0.6);color:oklch(0.70 0.12 240)">
+            ${S.isGenerating?'<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' : '📅 Gerar Semana'}
+          </button>
           <button class="btn-nova" onclick="generatePost()" ${S.isGenerating?'disabled':''} style="background:transparent;border:1px solid var(--gold);color:var(--gold)">
-            ${S.isGenerating?
-              '<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' :
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Agendar'}
+            ${S.isGenerating?'<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' : '+ Agendar'}
           </button>
           <button class="btn-nova" onclick="generateAndPublishNow()" ${S.isGenerating?'disabled':''}>
-            ${S.isGenerating?
-              '<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' :
-              '⚡ Publicar Agora'}
+            ${S.isGenerating?'<span style="display:flex;gap:3px"><span class="gen-dot"></span><span class="gen-dot"></span><span class="gen-dot"></span></span> Gerando...' : '⚡ Publicar Agora'}
           </button>
         </div>
       </div>
@@ -1159,7 +1343,8 @@ async function fireWebhook(post) {
       full_post: post.caption_fb
     },
     approved_by: post.approvedBy,
-    approved_at: post.approvedAt
+    approved_at: post.approvedAt,
+    scheduled_publish_time: toUnixTimestamp(post.scheduledDate, post.scheduledTime)
   };
   try {
     await fetch(S.webhookUrl, {
