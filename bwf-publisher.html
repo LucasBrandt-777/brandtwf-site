@@ -1382,6 +1382,10 @@ function renderSettings(){
         <button class="btn-revisar" onclick="resetKey()" style="white-space:nowrap">Trocar Chave</button>
       </div>
       <div class="settings-row">
+        <div><div class="settings-row-label">Limpar Fila Completa</div><div class="settings-row-sub">Remove todos os posts — pendentes, aprovados e rejeitados</div></div>
+        <button class="btn-revisar" onclick="clearAllPosts()" style="white-space:nowrap;border-color:oklch(0.65 0.20 25 / 0.5);color:oklch(0.65 0.20 25)">Limpar Tudo</button>
+      </div>
+      <div class="settings-row">
         <div><div class="settings-row-label">Total de Fotos</div><div class="settings-row-sub">Catálogo Google Drive (214 fotos)</div></div>
         <span style="font-family:var(--font-mono);font-size:12px;color:var(--gold)">214</span>
       </div>
@@ -1498,6 +1502,16 @@ function saveWebhook(){
   S.webhookUrl = inp.value.trim();
   saveState();
   toast(S.webhookUrl ? 'Webhook salvo ✓' : 'Webhook removido', 'info');
+  render();
+}
+
+function clearAllPosts(){
+  if(!confirm('Limpar TODOS os posts (pendentes, aprovados e rejeitados)?\nEssa ação não pode ser desfeita.')) return;
+  S.posts = [];
+  S.pi = 0;
+  S.usedPhotos = [];
+  saveState();
+  toast('Fila limpa com sucesso','success');
   render();
 }
 
