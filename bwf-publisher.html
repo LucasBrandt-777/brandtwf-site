@@ -1506,12 +1506,22 @@ function saveWebhook(){
 }
 
 function clearAllPosts(){
-  if(!confirm('Limpar TODOS os posts (pendentes, aprovados e rejeitados)?\nEssa ação não pode ser desfeita.')) return;
+  if(!confirm('Limpar TODOS os posts e resetar agenda?\nEssa ação não pode ser desfeita.')) return;
   S.posts = [];
   S.pi = 0;
   S.usedPhotos = [];
+  S.schedule = [
+    {day:0,name:'Dom',morning:'20:00',evening:'',active:true},
+    {day:1,name:'Seg',morning:'',evening:'',active:false},
+    {day:2,name:'Ter',morning:'12:00',evening:'',active:true},
+    {day:3,name:'Qua',morning:'09:30',evening:'',active:true},
+    {day:4,name:'Qui',morning:'13:00',evening:'',active:true},
+    {day:5,name:'Sex',morning:'19:00',evening:'',active:true},
+    {day:6,name:'Sáb',morning:'',evening:'',active:false},
+  ];
+  localStorage.removeItem('bwfp_schedule');
   saveState();
-  toast('Fila limpa com sucesso','success');
+  toast('Fila e agenda resetadas','success');
   render();
 }
 
