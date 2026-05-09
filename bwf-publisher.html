@@ -387,11 +387,11 @@ const S = {
   schedule: [
     {day:0,name:'Dom',morning:'20:00',evening:'',active:true},
     {day:1,name:'Seg',morning:'',evening:'',active:false},
-    {day:2,name:'Ter',morning:'12:00',evening:'19:30',active:true},
-    {day:3,name:'Qua',morning:'09:30',evening:'13:00',active:true},
+    {day:2,name:'Ter',morning:'12:00',evening:'',active:true},
+    {day:3,name:'Qua',morning:'09:30',evening:'',active:true},
     {day:4,name:'Qui',morning:'13:00',evening:'',active:true},
-    {day:5,name:'Sex',morning:'12:00',evening:'19:00',active:true},
-    {day:6,name:'Sáb',morning:'10:00',evening:'',active:true},
+    {day:5,name:'Sex',morning:'19:00',evening:'',active:true},
+    {day:6,name:'Sáb',morning:'',evening:'',active:false},
   ]
 };
 
@@ -548,7 +548,7 @@ function pickPhoto(){
   if(!pool.length){S.usedPhotos=[];pool=[...ALL_PHOTOS];}
   const photo = pool[Math.floor(Math.random()*pool.length)];
   S.pi++;
-  S.usedPhotos.push(photo.id);
+  if(!S.usedPhotos.includes(photo.id)) S.usedPhotos.push(photo.id);
   saveState();
   return {photo,pilar};
 }
@@ -644,7 +644,7 @@ async function generateWeek(){
           id:uid(), photoId:photo.id, photoName:photo.n,
           photoThumb:thumb(photo.id), photoGithubUrl:githubUrl(photo.n),
           photoDriveUrl:driveUrl(photo.id), category:photo.cat, pilar:pilar.lbl,
-          title:catTitle(photo.n),
+          title:(ig_text.split('\n')[0]||'').replace(/[#*]/g,'').trim().slice(0,60)||catTitle(photo.n),
           caption_ig:ig_text+CONTACT_BLOCK, hashtags_ig:ig_tags,
           caption_fb:fb_text+CONTACT_BLOCK,
           status:'pending', slot:slot.slot,
@@ -698,7 +698,7 @@ async function generateAndPublishNow(){
       photoDriveUrl: driveUrl(photo.id),
       category: photo.cat,
       pilar: pilar.lbl,
-      title: catTitle(photo.n),
+      title: (ig_text.split('\n')[0]||'').replace(/[#*]/g,'').trim().slice(0,60)||catTitle(photo.n),
       caption_ig: ig_text + CONTACT_BLOCK,
       hashtags_ig: ig_tags,
       caption_fb: fb_text + CONTACT_BLOCK,
@@ -758,7 +758,7 @@ async function generatePost(){
       photoDriveUrl: driveUrl(photo.id),
       category: photo.cat,
       pilar: pilar.lbl,
-      title: catTitle(photo.n),
+      title: (ig_text.split('\n')[0]||'').replace(/[#*]/g,'').trim().slice(0,60)||catTitle(photo.n),
       caption_ig: ig_text + CONTACT_BLOCK,
       hashtags_ig: ig_tags,
       caption_fb: fb_text + CONTACT_BLOCK,
@@ -933,6 +933,101 @@ function showSwapMenu(postId){
   if(ftr){ftr.style.position='relative';ftr.appendChild(menu);}
 }
 
+function getWeekSlots(){
+  const slots = [];
+  const today = new Date();
+  for(let d=0;d<14;d++){
+    const dt = new Date(today);
+    dt.setDate(today.getDate()+d);
+    const dow = dt.getDay();
+    const sch = S.schedule[dow];
+    if(!sch||!sch.active) continue;
+    const ds = dt.toISOString().slice(0,10);
+    const dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    const taken = {};
+    S.posts.filter(p=>p.status!=='rejected').forEach(p=>{
+      if(p.id !== (window._reschedulingId||'')) taken[p.scheduledDate+'_'+p.slot]=true;
+    });
+    if(sch.morning&&!taken[ds+'_morning']){
+      slots.push({date:ds,slot:'morning',time:sch.morning,label:dayNames[dow]+' '+ds.slice(5).replace('-','/')+ ' às '+sch.morning});
+    }
+    if(sch.evening&&!taken[ds+'_evening']){
+      slots.push({date:ds,slot:'evening',time:sch.evening,label:dayNames[dow]+' '+ds.slice(5).replace('-','/')+ ' às '+sch.evening});
+    }
+  }
+  return slots;
+}
+
+function showSlotPicker(postId){
+  window._reschedulingId = postId;
+  const existing = document.getElementById('slot-picker-menu');
+  if(existing){existing.remove();window._reschedulingId=null;return;}
+  const slots = getWeekSlots();
+  const post = S.posts.find(p=>p.id===postId);
+  const menu = document.createElement('div');
+  menu.id = 'slot-picker-menu';
+  menu.style.cssText = 'position:fixed;background:oklch(0.13 0 0);border:1px solid oklch(0.30 0.08 85 / 0.4);border-radius:10px;padding:8px;z-index:500;min-width:220px;box-shadow:0 8px 32px rgba(0,0,0,0.6)';
+  
+  const hdr = document.createElement('div');
+  hdr.style.cssText = 'font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:oklch(0.72 0.12 85);padding:6px 8px 10px;font-family:var(--font-body);border-bottom:1px solid oklch(0.22 0 0);margin-bottom:6px';
+  hdr.textContent = 'Escolher dia de publicação';
+  menu.appendChild(hdr);
+
+  if(!slots.length){
+    const empty = document.createElement('div');
+    empty.style.cssText = 'font-size:12px;color:var(--text-muted);padding:8px';
+    empty.textContent = 'Todos os slots estão ocupados';
+    menu.appendChild(empty);
+  }
+
+  slots.forEach(s=>{
+    const isCurrent = post && post.scheduledDate===s.date && post.slot===s.slot;
+    const btn = document.createElement('button');
+    btn.style.cssText = 'display:flex;align-items:center;gap:8px;width:100%;padding:9px 10px;text-align:left;background:'+(isCurrent?'oklch(0.72 0.12 85 / 0.12)':'transparent')+';border:'+(isCurrent?'1px solid oklch(0.72 0.12 85 / 0.3)':'1px solid transparent')+';color:'+(isCurrent?'oklch(0.72 0.12 85)':'oklch(0.85 0 0)')+';font-size:12px;cursor:pointer;border-radius:6px;margin-bottom:3px;font-family:var(--font-body)';
+    btn.innerHTML = (s.slot==='morning'?'☀':'🌙')+' <span>'+s.label+'</span>'+(isCurrent?' <span style="margin-left:auto;font-size:10px;opacity:0.7">atual</span>':'');
+    btn.onmouseenter = ()=>{if(!isCurrent)btn.style.background='oklch(0.18 0 0)'};
+    btn.onmouseleave = ()=>{if(!isCurrent)btn.style.background='transparent'};
+    btn.onclick = ()=>{
+      assignSlot(postId, s.date, s.slot, s.time);
+      menu.remove();
+      window._reschedulingId = null;
+    };
+    menu.appendChild(btn);
+  });
+
+  // Position near the clicked card
+  const cards = document.querySelectorAll('.post-card');
+  let targetCard = null;
+  cards.forEach(c=>{
+    if(c.innerHTML.includes(postId.slice(0,8))) targetCard = c;
+  });
+  document.body.appendChild(menu);
+  const rect = menu.getBoundingClientRect();
+  const vw = window.innerWidth, vh = window.innerHeight;
+  let left = vw/2 - rect.width/2;
+  let top = vh/2 - rect.height/2;
+  menu.style.left = left+'px';
+  menu.style.top = top+'px';
+  
+  // Close on outside click
+  setTimeout(()=>{
+    document.addEventListener('click', function handler(e){
+      if(!menu.contains(e.target)){menu.remove();window._reschedulingId=null;document.removeEventListener('click',handler);}
+    });
+  },100);
+}
+
+function assignSlot(postId, date, slot, time){
+  const post = S.posts.find(p=>p.id===postId);
+  if(!post) return;
+  post.scheduledDate = date;
+  post.slot = slot;
+  post.scheduledTime = time;
+  saveState();
+  toast('Post agendado para '+date.slice(5).replace('-','/')+' às '+time,'success');
+  render();
+}
+
 function closeModal(){
   document.getElementById('approval-modal').classList.remove('open');
   S.selectedPostId = null;
@@ -1061,6 +1156,7 @@ function postCardHTML(post,compact){
           REVISAR
         </button>
         ${post.status==='pending'?`
+        <button class="btn-circle" onclick="showSlotPicker('${esc(post.id)}')" title="Escolher dia" style="border-color:oklch(0.72 0.12 85 / 0.4);color:var(--gold);font-size:11px">📅</button>
         <button class="btn-circle btn-approve" onclick="quickApprove('${esc(post.id)}')" title="Aprovar">✓</button>
         <button class="btn-circle btn-reject" onclick="quickReject('${esc(post.id)}')" title="Rejeitar">✕</button>`:''}
         ${post.status==='approved'?`<button class="btn-circle btn-approve" style="border-color:oklch(0.65 0.15 240 / 0.4);color:oklch(0.65 0.15 240)" onclick="publishPost('${esc(post.id)}')" title="Publicar">↗</button>`:''}
