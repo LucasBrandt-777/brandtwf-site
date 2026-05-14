@@ -5,6 +5,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1145,7 +1146,9 @@ a{text-decoration:none;color:inherit}
     <div class="reveal">
       <h3 class="form-head">Request a Free Quote</h3>
       <div id="fok" class="fok"><span class="sb">&#10022;</span><h3>Thank You!</h3><p>Your request has been received. We&rsquo;ll be in touch within 24 hours.</p></div>
-      <form id='qform' method='POST' name='bwf-quote' novalidate>
+      <form id="qform" name="bwf-quote" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+        <input type="hidden" name="form-name" value="bwf-quote">
+        <input type="hidden" name="bot-field" style="display:none">
         <input type="hidden" name="form-name" value="bwf-quote">
         <input type="hidden" name="bot-field" style="display:none">
         <div class="f2">
