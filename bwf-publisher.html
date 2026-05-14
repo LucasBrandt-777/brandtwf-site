@@ -516,6 +516,11 @@ function toUnixTimestamp(dateStr, timeStr){
   return Math.floor(new Date(y,m-1,d,h,min,0).getTime()/1000);
 }
 
+function localDate(dt){
+  const d = dt || new Date();
+  return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');
+}
+
 function nextSlot(){
   const now = new Date();
   const taken = {};
@@ -528,7 +533,7 @@ function nextSlot(){
     const dayOfWeek = dt.getDay();
     const sch = S.schedule[dayOfWeek];
     if(!sch.active) continue;
-    const dateStr = dt.toISOString().slice(0,10);
+    const dateStr = localDate(dt);
     if(!taken[dateStr+'_morning']){
       return {date:dateStr,slot:'morning',time:sch.morning};
     }
@@ -538,17 +543,36 @@ function nextSlot(){
   }
   const dt = new Date(now);
   dt.setDate(dt.getDate()+1);
-  return {date:dt.toISOString().slice(0,10),slot:'morning',time:'09:00'};
+  return {date:localDate(dt),slot:'morning',time:'09:00'};
+}
+
+function getUsedPhotoIds(){
+  // Derive from active posts (not rejected) + historical usedPhotos list
+  const fromPosts = S.posts
+    .filter(p=>p.status!=='rejected')
+    .map(p=>p.photoId)
+    .filter(Boolean);
+  return [...new Set([...S.usedPhotos,...fromPosts])];
+}
+
+function syncUsedPhotos(){
+  // On load: ensure every active post photo is registered in usedPhotos
+  // This prevents re-picking photos that are already assigned to posts
+  S.posts
+    .filter(p=>p.status!=='rejected'&&p.photoId)
+    .forEach(p=>{ if(!S.usedPhotos.includes(p.photoId)) S.usedPhotos.push(p.photoId); });
 }
 
 function pickPhoto(){
   const pilar = PILARS[S.pi % PILARS.length];
+  // Use usedPhotos as single source of truth (kept in sync via syncUsedPhotos on load)
   let pool = ALL_PHOTOS.filter(p=>pilar.cats.includes(p.cat)&&!S.usedPhotos.includes(p.id));
   if(!pool.length) pool = ALL_PHOTOS.filter(p=>!S.usedPhotos.includes(p.id));
-  if(!pool.length){S.usedPhotos=[];pool=[...ALL_PHOTOS];}
+  // Only reset after ALL 214 photos have been used at least once
+  if(!pool.length){ S.usedPhotos=[]; pool=[...ALL_PHOTOS]; }
   const photo = pool[Math.floor(Math.random()*pool.length)];
   S.pi++;
-  if(!S.usedPhotos.includes(photo.id)) S.usedPhotos.push(photo.id);
+  S.usedPhotos.push(photo.id);
   saveState();
   return {photo,pilar};
 }
@@ -612,7 +636,7 @@ async function generateWeek(){
     const dow = dt.getDay();
     const sch = S.schedule[dow];
     if(!sch||!sch.active) continue;
-    const ds = dt.toISOString().slice(0,10);
+    const ds = localDate(dt);
     const taken = {};
     S.posts.filter(p=>p.status!=='rejected').forEach(p=>{taken[p.scheduledDate+'_'+p.slot]=true;});
     if(sch.morning&&!taken[ds+'_morning']) slots.push({date:ds,slot:'morning',time:sch.morning});
@@ -704,7 +728,7 @@ async function generateAndPublishNow(){
       caption_fb: fb_text + CONTACT_BLOCK,
       status: 'pending',
       slot: 'immediate',
-      scheduledDate: now.toISOString().slice(0,10),
+      scheduledDate: localDate(now),
       scheduledTime: now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0'),
       createdAt: now.toISOString(),
       approvedBy: null, approvedAt: null, rejectionReason: null, publishedAt: null,
@@ -942,7 +966,7 @@ function getWeekSlots(){
     const dow = dt.getDay();
     const sch = S.schedule[dow];
     if(!sch||!sch.active) continue;
-    const ds = dt.toISOString().slice(0,10);
+    const ds = localDate(dt);
     const dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
     const taken = {};
     S.posts.filter(p=>p.status!=='rejected').forEach(p=>{
@@ -1168,7 +1192,7 @@ function postCardHTML(post,compact){
 function renderDashboard(){
   const stats = getStats();
   const pending = S.posts.filter(p=>p.status==='pending');
-  const today = new Date().toISOString().slice(0,10);
+  const today = localDate(new Date());
   const todayPosts = S.posts.filter(p=>p.scheduledDate===today);
   const approved = S.posts.filter(p=>p.status==='approved');
   const statDefs = [
@@ -1273,7 +1297,7 @@ function renderAgenda(){
     days.push(d);
   }
   const dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  const todayStr = today.toISOString().slice(0,10);
+  const todayStr = localDate(today);
   return `<div class="page">
     <div class="hero" style="height:110px">
       <div class="hero-topline"></div><div class="hero-botline"></div>
@@ -1290,7 +1314,7 @@ function renderAgenda(){
     </div>
     <div class="agenda-grid">
       ${days.map(d=>{
-        const ds = d.toISOString().slice(0,10);
+        const ds = localDate(d);
         const isToday = ds===todayStr;
         const sch = S.schedule[d.getDay()];
         const mPost = S.posts.find(p=>p.scheduledDate===ds&&p.slot==='morning'&&p.status!=='rejected');
@@ -1558,6 +1582,7 @@ document.getElementById('reject-modal').addEventListener('click',function(e){
 
 // Boot
 loadState();
+syncUsedPhotos(); // ensure usedPhotos is in sync with active posts
 const savedKey = localStorage.getItem('bwfp_key');
 if(savedKey&&(savedKey.startsWith('sk-ant-')||savedKey.startsWith('sk-'))){
   S.apiKey = savedKey;
