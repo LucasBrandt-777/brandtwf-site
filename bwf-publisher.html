@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1078,6 +1079,19 @@ function approvePost(){
   render();
 }
 
+async function resendWebhook(postId){
+  const post = S.posts.find(p=>p.id===postId);
+  if(!post||post.status!=='approved') return;
+  await fireWebhook(post);
+}
+
+async function resendAllApproved(){
+  const approved = S.posts.filter(p=>p.status==='approved');
+  if(!approved.length){toast('Nenhum post aprovado para reenviar','info');return;}
+  for(const post of approved){ await fireWebhook(post); }
+  toast(approved.length+' webhook(s) reenviado(s) ✓','success');
+}
+
 function startReject(postId){
   S.rejectingPostId = postId;
   document.getElementById('reject-reason').value='';
@@ -1246,6 +1260,7 @@ function renderDashboard(){
     <div>
       <div class="section-hdr">
         <div class="section-title">Prontos para <em>Publicar</em> <span class="section-badge" style="background:oklch(0.65 0.15 240 / 0.15);border:1px solid oklch(0.65 0.15 240 / 0.3);color:oklch(0.65 0.15 240)">${approved.length}</span></div>
+        <button onclick="resendAllApproved()" style="font-size:10px;padding:4px 10px;border:1px solid oklch(0.72 0.12 85/0.4);border-radius:6px;background:transparent;color:var(--gold);cursor:pointer;font-family:var(--font-body)">🔄 Re-enviar todos</button>
       </div>
       <div class="posts-grid">${approved.slice(0,3).map(p=>postCardHTML(p)).join('')}</div>
     </div>`:''}
