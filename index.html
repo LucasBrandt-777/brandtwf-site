@@ -911,10 +911,30 @@ a{text-decoration:none;color:inherit}
 <section id="why">
   <div class="why-inner">
     <div class="why-img-wrap reveal">
-      <img src="https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork1.webp"
+      <img id="whyImg" src="https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/MillWork1.webp"
            alt="BWF craftsmanship detail" class="why-img parallax-img" loading="lazy" decoding="async" width="600" height="750">
       <div class="why-img-frame"></div>
     </div>
+    <script>
+    (function(){
+      var whyPhotos=[
+        "MillWork1.webp","MillWork2.webp","MillWork4.webp","MillWork5.webp","MillWork6.webp",
+        "MillWork7.webp","MillWork8.webp","MillWork9.webp","MillWork10.webp","MillWork11.webp",
+        "MillWork12.webp","MillWork13.webp","MillWork14.webp","MillWork15.webp","MillWork16.webp",
+        "MillWork17.webp","MillWork18.webp","MillWork19.webp","MillWork20.webp","MillWork21.webp",
+        "MillWork22.webp","MillWork23.webp","MillWork24.webp","MillWork25.webp","MillWork26.webp",
+        "MillWork27.webp","MillWork28.webp","MillWork29.webp","MillWork30.webp","MillWork31.webp",
+        "MillWork32.webp","MillWork33.webp",
+        "Escadas1.webp","Escadas2.webp","Escadas3.webp","Escadas4.webp",
+        "Escadas5.webp","Escadas6.webp","Escadas7.webp","Escadas8.webp",
+        "Lareira1.webp","Lareira2.webp","Lareira3.webp",
+        "WallUnit1.webp","WallUnit2.webp","WallUnit3.webp","WallUnit6.webp","WallUnit7.webp","WallUnit8.webp"
+      ];
+      var base="https://raw.githubusercontent.com/LucasBrandt-777/brandtwf-site/main/";
+      var pick=whyPhotos[Math.floor(Math.random()*whyPhotos.length)];
+      document.getElementById('whyImg').src=base+pick;
+    })();
+    </script>
     <div class="why-content reveal">
       <p class="eyebrow">Why Choose BWF</p>
       <div class="rule rule-l"></div>
