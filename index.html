@@ -655,17 +655,19 @@ a{text-decoration:none;color:inherit}
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is custom millwork?","acceptedAnswer":{"@type":"Answer","text":"Custom millwork refers to architectural woodwork crafted to exact specifications. Brandt Wood Finishing specializes in wall paneling, custom staircases, library walls, mantels and fireplaces for luxury homes across Florida."}},{"@type":"Question","name":"Where does Brandt Wood Finishing serve?","acceptedAnswer":{"@type":"Answer","text":"We are headquartered in Winter Garden, Florida and serve clients throughout the entire state of Florida — from Tallahassee and Jacksonville in the north to Miami in the south."}},{"@type":"Question","name":"How long has Brandt Wood Finishing been in business?","acceptedAnswer":{"@type":"Answer","text":"Brandt Wood Finishing has been crafting premium woodwork since 1985 — over 40 years of experience serving Florida."}},{"@type":"Question","name":"Do you restore antique furniture?","acceptedAnswer":{"@type":"Answer","text":"Yes. We specialize in expert antique furniture restoration, refinishing and structural repairs, preserving original character while restoring beauty and integrity."}},{"@type":"Question","name":"How do I get a quote?","acceptedAnswer":{"@type":"Answer","text":"Fill out the form on our website, call Asaph at (689) 250-1209 for English, or Lucas at (754) 215-0045 for Portuguese. You can also message us on WhatsApp. We respond within 24 hours."}}]}
 </script>
 
-<!-- Google Analytics — replace G-XXXXXXXXXX with your Measurement ID -->
-<!-- Get it at analytics.google.com → Admin → Data Streams → Measurement ID -->
-<!--
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<!-- ═══ Google Analytics GA4 + Google Ads ═══ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XZQ389ZLRW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
+
+  // GA4 — Brandt Wood Finishing
+  gtag('config', 'G-XZQ389ZLRW', {
+    page_title: document.title,
+    page_location: window.location.href
+  });
 </script>
--->
 
 </head>
 <body>
@@ -1159,6 +1161,7 @@ a{text-decoration:none;color:inherit}
   </div>
 </section>
 
+
 <!-- ═══ CONTACT ═══ -->
 <section id="contact">
   <div class="co-inner">
@@ -1236,8 +1239,6 @@ a{text-decoration:none;color:inherit}
       <form id="qform" name="bwf-quote" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
         <input type="hidden" name="form-name" value="bwf-quote">
         <input type="hidden" name="bot-field" style="display:none">
-        <input type="hidden" name="form-name" value="bwf-quote">
-        <input type="hidden" name="bot-field" style="display:none">
         <div class="f2">
           <div class="fg"><label class="fl" for="fn">First Name *</label><input type="text" id="fn" name="first-name" class="fi" placeholder="John" required></div>
           <div class="fg"><label class="fl" for="ln">Last Name *</label><input type="text" id="ln" name="last-name" class="fi" placeholder="Smith" required></div>
@@ -1302,7 +1303,7 @@ a{text-decoration:none;color:inherit}
         <a href="https://www.brandtwf.com" class="fo-soc" aria-label="Website">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c9a84c" stroke-width="1.3"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="#c9a84c" stroke-width="1.3"/></svg>
         </a>
-        <a href="#faq" class="fo-soc" aria-label="FAQ">
+        <a href="/faq.html" class="fo-soc" aria-label="FAQ">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c9a84c" stroke-width="1.3"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" stroke="#c9a84c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="17" r=".5" fill="#c9a84c" stroke="#c9a84c" stroke-width="1"/></svg>
         </a>
         <a href="https://share.google/QJOSoaV2v4FTIoI5O" target="_blank" rel="noopener" class="fo-soc" aria-label="Client Reviews">
@@ -1564,6 +1565,13 @@ document.getElementById('qform').addEventListener('submit', function(e) {
     .then(function() {
       form.style.display = 'none';
       document.getElementById('fok').classList.add('show');
+      if(typeof gtag === 'function'){
+        gtag('event', 'generate_lead', {
+          event_category: 'contact_form',
+          event_label: 'bwf_quote_request',
+          value: 1
+        });
+      }
     })
     .catch(function() {
       btn.disabled = false;
