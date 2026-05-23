@@ -669,6 +669,12 @@ a{text-decoration:none;color:inherit}
   });
 </script>
 
+<!-- Google Ads Conversion Tracking — AW-16641705674 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-16641705674"></script>
+<script>
+  gtag('config', 'AW-16641705674');
+</script>
+
 </head>
 <body>
 
@@ -1570,6 +1576,9 @@ document.getElementById('qform').addEventListener('submit', function(e) {
           event_category: 'contact_form',
           event_label: 'bwf_quote_request',
           value: 1
+        });
+        gtag('event', 'conversion', {
+          'send_to': 'AW-16955793005/cCt_CPCpjLAaEO28kSU_'
         });
       }
     })
