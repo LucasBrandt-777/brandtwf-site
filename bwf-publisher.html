@@ -1470,7 +1470,9 @@ async function fireWebhook(post) {
       name: post.photoName,
       drive_id: post.photoId,
       drive_url: post.photoDriveUrl,
-      thumb_url: post.photoGithubUrl||post.photoThumb
+      thumb_url: post.photoGithubUrl||post.photoThumb,
+      github_url: post.photoGithubUrl,
+      photo_url: post.photoGithubUrl||post.photoThumb
     },
     instagram: {
       caption: post.caption_ig,
@@ -1483,7 +1485,10 @@ async function fireWebhook(post) {
     },
     approved_by: post.approvedBy,
     approved_at: post.approvedAt,
-    scheduled_publish_time: toUnixTimestamp(post.scheduledDate, post.scheduledTime)
+    scheduled_publish_time: toUnixTimestamp(post.scheduledDate, post.scheduledTime),
+    photo_url: post.photoGithubUrl||post.photoThumb,
+    caption_ig: post.caption_ig + (post.hashtags_ig ? '\\n\\n' + post.hashtags_ig : ''),
+    caption_fb: post.caption_fb
   };
   try {
     await fetch(S.webhookUrl, {
