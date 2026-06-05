@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -512,6 +513,8 @@ function driveUrl(id){return 'https://drive.google.com/file/d/'+id+'/view'}
 
 function toUnixTimestamp(dateStr, timeStr){
   if(!dateStr) return null;
+  // Use local time (browser timezone) - Make.com interprets as UTC
+  // The scheduled_publish_time is sent as Unix timestamp in local time
   const [y,m,d] = dateStr.split('-').map(Number);
   const [h,min] = (timeStr||'09:00').split(':').map(Number);
   return Math.floor(new Date(y,m-1,d,h,min,0).getTime()/1000);
@@ -1073,10 +1076,11 @@ function approvePost(){
   post.approvedBy = inp.value.trim();
   post.approvedAt = new Date().toISOString();
   saveState();
-  fireWebhook(post);
   closeModal();
-  toast('Post aprovado por '+post.approvedBy,'success');
+  toast('Post aprovado por '+post.approvedBy+' — enviando para Make...','success');
   render();
+  // Fire webhook after UI update to avoid blocking
+  fireWebhook(post).catch(()=>{});
 }
 
 async function resendWebhook(postId){
@@ -1486,19 +1490,34 @@ async function fireWebhook(post) {
     approved_by: post.approvedBy,
     approved_at: post.approvedAt,
     scheduled_publish_time: toUnixTimestamp(post.scheduledDate, post.scheduledTime),
+    scheduled_publish_time_iso: (post.scheduledDate && post.scheduledTime) ? post.scheduledDate + 'T' + post.scheduledTime + ':00' : null,
     photo_url: post.photoGithubUrl||post.photoThumb,
-    caption_ig: post.caption_ig + (post.hashtags_ig ? '\\n\\n' + post.hashtags_ig : ''),
-    caption_fb: post.caption_fb
+    caption_ig: post.caption_ig + (post.hashtags_ig ? '\n\n' + post.hashtags_ig : ''),
+    caption_fb: post.caption_fb,
+    key: post.id
   };
   try {
-    await fetch(S.webhookUrl, {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    const resp = await fetch(S.webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal: controller.signal
     });
-    toast('Enviado para Make.com ✓', 'success');
+    clearTimeout(timeoutId);
+    if(resp.ok) {
+      toast('Enviado para Make.com ✓', 'success');
+    } else {
+      const errText = await resp.text().catch(()=>'');
+      toast('Make retornou erro ' + resp.status + (errText ? ': ' + errText.slice(0,80) : ''), 'error');
+    }
   } catch(e) {
-    toast('Webhook falhou — verifique a URL nas Configurações', 'error');
+    if(e.name === 'AbortError') {
+      toast('Webhook timeout — Make não respondeu em 15s', 'error');
+    } else {
+      toast('Webhook falhou — verifique a URL nas Configurações', 'error');
+    }
   }
 }
 
