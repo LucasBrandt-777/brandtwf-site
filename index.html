@@ -1243,7 +1243,7 @@ a{text-decoration:none;color:inherit}
     <div class="reveal">
       <h3 class="form-head">Request a Free Quote</h3>
       <div id="fok" class="fok"><span class="sb">&#10022;</span><h3>Thank You!</h3><p>Your request has been received. We&rsquo;ll be in touch within 24 hours.</p></div>
-      <form id='qform' method='POST' name='bwf-quote' data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+      <form id='qform' method='POST' name='bwf-quote' data-netlify="true" data-netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="bwf-quote">
         <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
         <div class="f2">
@@ -1558,6 +1558,21 @@ window.addEventListener('load', function() {
 document.getElementById('qform').addEventListener('submit', function(e) {
     e.preventDefault();
     var form = this;
+
+    // GUARD 1 - validacao nativa (backup do required)
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    // GUARD 2 - honeypot: bot preencheu, finge sucesso e nao envia
+    var honey = form.querySelector('[name="bot-field"]');
+    if (honey && honey.value.trim() !== '') {
+      form.style.display = 'none';
+      document.getElementById('fok').classList.add('show');
+      return;
+    }
+
     var btn = form.querySelector('.fsub');
     btn.disabled = true;
     btn.querySelector('span').textContent = 'Sending...';
@@ -1569,7 +1584,8 @@ document.getElementById('qform').addEventListener('submit', function(e) {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(data).toString()
     })
-    .then(function() {
+    .then(function(response) {
+      if (!response.ok) { throw new Error('HTTP ' + response.status); }
       form.style.display = 'none';
       document.getElementById('fok').classList.add('show');
       if(typeof gtag === 'function'){
