@@ -643,6 +643,14 @@ document.getElementById('qform').addEventListener('submit', function(e){
   e.preventDefault();
   var form = this;
 
+    // GUARD 0 (E1) - reenvio: pedido ja enviado nas ultimas 24h -> mostra confirmacao, nao reenvia
+    if (window.bwfLeadSentRecently && window.bwfLeadSentRecently()) {
+      form.style.display = 'none';
+      document.getElementById('fok').classList.add('show');
+      if (window.bwfMarkDuplicate) window.bwfMarkDuplicate();
+      return;
+    }
+
   // GUARD 1 - validacao nativa (backup do required)
   if (!form.checkValidity()) {
     form.reportValidity();
@@ -670,10 +678,12 @@ document.getElementById('qform').addEventListener('submit', function(e){
   })
   .then(function(response){
     if (!response.ok) { throw new Error('HTTP ' + response.status); }
+      if (window.bwfMarkSent) window.bwfMarkSent();
     form.style.display = 'none';
     document.getElementById('fok').classList.add('show');
     if(typeof gtag === 'function'){
       gtag('event', 'generate_lead', {
+          form_id: 'bwf-kitchen-quote',
         event_category: 'contact_form',
         event_label: 'bwf_kitchen_landing',
         value: 1
@@ -687,6 +697,60 @@ document.getElementById('qform').addEventListener('submit', function(e){
     alert('Error sending. Please call (689) 250-1209 or email brandtwoodfinishing@gmail.com');
   });
 });
+</script>
+
+<!-- ═══ E1 — medição (bwf-exec, 2026-10-18) ═══ -->
+<script>
+(function(){
+  var FORM_ID = 'bwf-kitchen-quote';
+  var KEY = 'bwf_lead_sent';
+  var WINDOW_MS = 24*60*60*1000;
+  function send(name, params){
+    if (typeof gtag !== 'function') return;
+    params = params || {};
+    params.transport_type = 'beacon';
+    gtag('event', name, params);
+  }
+  function sentAt(){
+    try { var v = localStorage.getItem(KEY); return v ? parseInt(v, 10) : 0; } catch(_) { return 0; }
+  }
+  window.bwfLeadSentRecently = function(){ var t = sentAt(); return t > 0 && (Date.now() - t) < WINDOW_MS; };
+  window.bwfMarkSent = function(){ try { localStorage.setItem(KEY, String(Date.now())); } catch(_) {} };
+  window.bwfMarkDuplicate = function(){ send('form_resubmit_blocked', { form_id: FORM_ID }); };
+
+  // 1) Recarregou a página depois de enviar: mantém a confirmação, não mostra o form de novo.
+  var form = document.getElementById('qform');
+  var ok = document.getElementById('fok');
+  if (form && ok && window.bwfLeadSentRecently()) {
+    form.style.display = 'none';
+    var p = ok.querySelector('p');
+    if (p) { p.textContent = 'We already have your request from today. Need to add something? Call or WhatsApp us.'; }
+    ok.classList.add('show');
+  }
+
+  // 2) form_start próprio: primeiro foco em qualquer campo, uma vez por página.
+  if (form) {
+    var started = false;
+    form.addEventListener('focusin', function(){
+      if (started) return; started = true;
+      send('bwf_form_start', { form_id: FORM_ID });
+    });
+  }
+
+  // 3) Cliques de contato: telefone, WhatsApp, e-mail — com a seção de origem.
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var name = null, target = '';
+    if (href.indexOf('tel:') === 0) { name = 'phone_click'; target = href.slice(4); }
+    else if (href.indexOf('wa.me/') !== -1 || href.indexOf('whatsapp.com') !== -1) { name = 'whatsapp_click'; target = (href.match(/wa\.me\/(\d+)/) || [,''])[1]; }
+    else if (href.indexOf('mailto:') === 0) { name = 'email_click'; target = href.slice(7).split('?')[0]; }
+    if (!name) return;
+    var sec = a.closest('[id]');
+    send(name, { location: sec ? sec.id : 'page', target: target, page: 'kitchens' });
+  }, true);
+})();
 </script>
 </body>
 </html>
