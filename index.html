@@ -1245,6 +1245,7 @@ a{text-decoration:none;color:inherit}
       <form id='qform' method='POST' name='bwf-quote' data-netlify="true" data-netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="bwf-quote">
         <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
+        <input type="hidden" name="subject" id="bwf-subject" value="New quote request — %{submissionId}">
         <div class="f2">
           <div class="fg"><label class="fl" for="fn">First Name *</label><input type="text" id="fn" name="first-name" class="fi" placeholder="John" required></div>
           <div class="fg"><label class="fl" for="ln">Last Name *</label><input type="text" id="ln" name="last-name" class="fi" placeholder="Smith" required></div>
@@ -1785,6 +1786,17 @@ document.getElementById('qform').addEventListener('submit', function(e) {
     btn.disabled = true;
     btn.querySelector('span').textContent = 'Sending...';
 
+    // (E1.1) assunto unico por lead: evita o Gmail agrupar notificacoes diferentes numa so conversa
+    try {
+      var sj = form.querySelector('#bwf-subject');
+      if (sj) {
+        var fn = (form.querySelector('[name="first-name"]') || {}).value || '';
+        var ln = (form.querySelector('[name="last-name"]') || {}).value || '';
+        var pt = (form.querySelector('[name="project-type"]') || {}).value || '';
+        var ct = (form.querySelector('[name="city"]') || {}).value || '';
+        sj.value = 'Quote — ' + (fn + ' ' + ln).trim() + (pt ? ' — ' + pt : '') + (ct ? ' (' + ct + ')' : '');
+      }
+    } catch (_) {}
     var data = new FormData(form);
 
     fetch('/', {
