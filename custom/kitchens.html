@@ -481,6 +481,7 @@ footer{background:var(--black-2);border-top:1px solid rgba(201,168,76,.12);paddi
         <input type="hidden" name="form-name" value="bwf-kitchen-quote">
         <input type="hidden" name="source" value="custom-kitchens-landing">
         <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
+        <input type="hidden" name="subject" id="bwf-subject" value="New kitchen quote request — %{submissionId}">
 
         <div class="f2">
           <div class="fg"><label class="fl" for="fn">First Name *</label><input type="text" id="fn" name="first-name" class="fi" placeholder="John" required></div>
@@ -669,7 +670,18 @@ document.getElementById('qform').addEventListener('submit', function(e){
   btn.disabled = true;
   btn.querySelector('span').textContent = 'Sending...';
 
-  var data = new FormData(form);
+  // (E1.1) assunto unico por lead: evita o Gmail agrupar notificacoes diferentes numa so conversa
+    try {
+      var sj = form.querySelector('#bwf-subject');
+      if (sj) {
+        var fn = (form.querySelector('[name="first-name"]') || {}).value || '';
+        var ln = (form.querySelector('[name="last-name"]') || {}).value || '';
+        var pt = (form.querySelector('[name="project-type"]') || {}).value || '';
+        var ct = (form.querySelector('[name="city"]') || {}).value || '';
+        sj.value = 'Kitchen quote — ' + (fn + ' ' + ln).trim() + (pt ? ' — ' + pt : '') + (ct ? ' (' + ct + ')' : '');
+      }
+    } catch (_) {}
+    var data = new FormData(form);
 
   fetch('/', {
     method: 'POST',
