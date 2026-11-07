@@ -100,6 +100,20 @@
     blocked('recent_submission_on_load');
   }
 
+  // BFCache restores the old DOM and JS state instead of running this script again.
+  // Another page may have submitted while this one was cached. Synchronize its UI,
+  // without resetting pending requests or replaying start/view/lead events.
+  window.addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    if (sentRecently() && form.style.display !== 'none') {
+      var p = ok.querySelector('p');
+      if (p) p.textContent = 'We already have your request from today. Need to add something? Call or WhatsApp us.';
+      showConfirmation();
+      blocked('recent_submission_on_restore');
+    }
+    checkView();
+  });
+
   // Observe the first field, not the entire tall form (important on mobile).
   var firstField = form.querySelector('[name="first-name"]');
   function checkView() {

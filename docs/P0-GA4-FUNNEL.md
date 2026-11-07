@@ -2,6 +2,11 @@
 
 Prepared 2026-11-06 (America/New_York). Development proposal; no production changes.
 
+Follow-up validation on 2026-11-06: see [P0-VALIDATION-2026-11-06.md](P0-VALIDATION-2026-11-06.md)
+for independently rerun tests, the cached-page correction, remaining blockers and the
+controlled-submission plan. The original 45-test results below are the initial baseline;
+the follow-up records the current coverage. Release remains unauthorized.
+
 ## Baseline and scope
 
 Continue the November 5 diagnosis; do not repeat the audit. The recovered record reported

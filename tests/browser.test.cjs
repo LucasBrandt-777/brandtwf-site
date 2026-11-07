@@ -132,3 +132,67 @@ for (const file of ['faq.html', 'reviews.html']) {
     assert.deepEqual(h.errors, []);
   });
 }
+
+// Actual Back/Forward navigation in Chromium. This harness disables BFCache and
+// restores documents by loading them; persisted pageshow is tested in funnel.test.cjs.
+for (const file of ['index.html', 'custom/kitchens.html']) {
+  for (const viewport of [{ width: 1365, height: 900 }, { width: 390, height: 844 }]) {
+    test(file + ': Back/Forward before and after submission at ' + viewport.width + 'px', async t => {
+      const h = await setup(t, file, viewport);
+      await h.view();
+      await h.valid();
+      await h.page.goto('https://bwf.test/faq.html', { waitUntil: 'load' });
+      await h.page.goBack({ waitUntil: 'load' });
+      assert.equal(await h.page.locator('#qform').isVisible(), true);
+      assert.equal(h.posts.length, 0);
+      assert.equal((await h.event('generate_lead')).length, 0);
+      await h.view(); await h.valid();
+      await h.page.locator('.fsub').click();
+      await h.success();
+      await h.page.goForward({ waitUntil: 'load' });
+      assert.ok(h.page.url().endsWith('/faq.html'));
+      await h.page.goBack({ waitUntil: 'load' });
+      assert.equal(await h.page.locator('#qform').isVisible(), false);
+      assert.equal((await h.event('generate_lead')).length, 0);
+      assert.equal((await h.event('form_resubmit_blocked')).length, 1);
+      assert.equal(h.posts.length, 1);
+      assert.deepEqual(h.errors, []);
+    });
+  }
+
+  test(file + ': Back to other form respects the shared lock', async t => {
+    const h = await setup(t, file, { width: 390, height: 844 });
+    const other = file === 'index.html' ? 'custom/kitchens.html' : 'index.html';
+    await h.page.goto('https://bwf.test/' + other, { waitUntil: 'load' });
+    await h.view(); await h.valid();
+    await h.page.locator('.fsub').click();
+    await h.success();
+    await h.page.goBack({ waitUntil: 'load' });
+    assert.equal(await h.page.locator('#qform').isVisible(), false);
+    assert.equal((await h.event('generate_lead')).length, 0);
+    assert.equal(h.posts.length, 1);
+    assert.deepEqual(h.errors, []);
+  });
+
+  test(file + ': direct fragment, scroll return and network retry on mobile', async t => {
+    const fragment = file === 'index.html' ? '#contact' : '#quote';
+    const h = await setup(t, file + fragment, { width: 390, height: 844 }, 'network');
+    await h.view();
+    assert.equal((await h.event('bwf_quote_click')).length, 0);
+    await h.page.evaluate(() => window.scrollTo(0, 0));
+    await h.view();
+    assert.equal((await h.event('bwf_form_view')).length, 1);
+    await h.valid();
+    await h.page.locator('.fsub').click();
+    await h.page.waitForFunction(() => (window.dataLayer || []).some(e => e[1] === 'bwf_form_error' && e[2].error_type === 'network'));
+    assert.equal((await h.event('generate_lead')).length, 0);
+    assert.equal(await h.page.locator('.fsub').isEnabled(), true);
+    h.mode('success');
+    await h.page.locator('.fsub').click();
+    await h.page.waitForFunction(() => (window.dataLayer || []).some(e => e[1] === 'generate_lead'));
+    assert.equal((await h.event('generate_lead')).length, 1);
+    assert.equal((await h.event('bwf_form_submit')).length, 2);
+    assert.equal(h.posts.length, 2);
+    assert.deepEqual(h.errors, []);
+  });
+}

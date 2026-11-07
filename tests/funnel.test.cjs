@@ -208,6 +208,34 @@ for (const file of ['index.html', 'custom/kitchens.html']) {
     assert.equal(h.event('generate_lead').length, 1);
   });
 
+  test(file + ': cached page synchronizes a newer shared lock on pageshow without replaying a lead', t => {
+    const h = setup(t, file);
+    // Model another page having submitted while this document was in BFCache.
+    h.w.localStorage.setItem('bwf_lead_sent', String(Date.now()));
+    h.w.dispatchEvent(new h.w.PageTransitionEvent('pageshow', { persisted: true }));
+    h.w.dispatchEvent(new h.w.PageTransitionEvent('pageshow', { persisted: true }));
+    assert.equal(h.form.style.display, 'none');
+    assert.equal(h.event('form_resubmit_blocked').length, 1);
+    assert.equal(h.event('form_resubmit_blocked')[0][2].block_reason, 'recent_submission_on_restore');
+    assert.equal(h.event('generate_lead').length, 0);
+    assert.equal(h.posts.length, 0);
+  });
+
+  test(file + ': history restore preserves the pending request guard', async t => {
+    let finish;
+    const h = setup(t, file, { respond: () => new Promise(resolve => { finish = resolve; }) });
+    h.valid(); h.submit(); await tick();
+    h.w.dispatchEvent(new h.w.PageTransitionEvent('pageshow', { persisted: true }));
+    h.submit(); await tick();
+    assert.equal(h.posts.length, 1);
+    assert.equal(h.event('generate_lead').length, 0);
+    finish({ ok: true, status: 200 }); await tick();
+    h.w.dispatchEvent(new h.w.PageTransitionEvent('pageshow', { persisted: true }));
+    h.submit(); await tick();
+    assert.equal(h.posts.length, 1);
+    assert.equal(h.event('generate_lead').length, 1);
+  });
+
   test(file + ': honeypot never posts or records a successful lead', async t => {
     const h = setup(t, file);
     h.valid(); h.fill('bot-field', 'bot'); h.submit(); await tick();
