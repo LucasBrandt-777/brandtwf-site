@@ -1,0 +1,16 @@
+{
+  "sourceCommit": "ab61141c387fc6af9f533896c68b0a2fb693aa98",
+  "property": "563205212",
+  "measurement": "G-21MY7L42JP",
+  "forms": "client-only mock; no real POST",
+  "localImages": "placeholders",
+  "sources": {
+    "index.html": "be57569885c2dfaee577560916911cb429316865",
+    "custom/kitchens.html": "7b67361e44366a4c66ab8cfee984b0b0e6d28887",
+    "faq.html": "b73c7ced771f7c8a2d0c1a18735629af25e91c67",
+    "reviews.html": "7d722fa1d83b53e6d688fe470981505d439458c8",
+    "bwf-funnel-v1.js": "e2d1bd799049293868b720950f6cce19b3ab83f3"
+  },
+  "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://tagmanager.google.com https://tagassistant.google.com https://cdnjs.cloudflare.com; connect-src https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://www.google.com/g/collect https://www.googletagmanager.com https://tagassistant.google.com; img-src 'self' data: https://d2xsxph8kpxj0f.cloudfront.net https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://ssl.gstatic.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com https://tagmanager.google.com; font-src https://fonts.gstatic.com data:; frame-src https://tagassistant.google.com https://www.googletagmanager.com; form-action 'none'; object-src 'none'; base-uri 'none'",
+  "deployed": false
+}

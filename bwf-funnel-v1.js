@@ -42,7 +42,7 @@
       if (typeof window.gtag !== 'function') return;
       var selected = form && form.elements.namedItem('project-type');
       var params = {
-        send_to: 'G-XZQ389ZLRW',
+        send_to: 'G-21MY7L42JP', debug_mode: true,
         transport_type: 'beacon',
         form_id: formId,
         page_type: page,
