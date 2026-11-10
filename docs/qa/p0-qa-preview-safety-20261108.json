@@ -1,0 +1,41 @@
+{
+  "started": "2026-11-09T00:17:04.892Z",
+  "transport": "OFFLINE — all external requests intercepted",
+  "checks": [
+    {
+      "file": "index.html",
+      "check": "QA destination, debug, page_location and no Netlify form detection",
+      "result": "PASS"
+    },
+    {
+      "file": "index.html",
+      "check": "HTTP/network/success mock; one lead and zero server POSTs",
+      "result": "PASS"
+    },
+    {
+      "file": "index.html",
+      "check": "foreign destinations refused; reload blocks another lead",
+      "result": "PASS"
+    },
+    {
+      "file": "custom/kitchens.html",
+      "check": "QA destination, debug, page_location and no Netlify form detection",
+      "result": "PASS"
+    },
+    {
+      "file": "custom/kitchens.html",
+      "check": "HTTP/network/success mock; one lead and zero server POSTs",
+      "result": "PASS"
+    },
+    {
+      "file": "custom/kitchens.html",
+      "check": "foreign destinations refused; reload blocks another lead",
+      "result": "PASS"
+    }
+  ],
+  "errors": [],
+  "result": "PASS",
+  "realFormPosts": 0,
+  "googleRequestsForwarded": 0,
+  "finished": "2026-11-09T00:17:20.385Z"
+}
