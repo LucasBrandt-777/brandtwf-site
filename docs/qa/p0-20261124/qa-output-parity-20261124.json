@@ -1,0 +1,84 @@
+{
+  "candidate_commit": "3fbc8e429de6e64102480747d826af7277e956b0",
+  "qa_commit": "973d9c902e9aab63d574fb93b0fe057a203b7db2",
+  "results": [
+    {
+      "path": ".gitignore",
+      "remote_sha": "228b9c2c5d4ac1f37e2ba89bebafcc4f4993886a",
+      "generated_sha": null,
+      "match": false
+    },
+    {
+      "path": "QA-MANIFEST.json",
+      "remote_sha": "235a20d2f4d5247939f643a5a626fac109646a96",
+      "generated_sha": "235a20d2f4d5247939f643a5a626fac109646a96",
+      "match": true
+    },
+    {
+      "path": "_headers",
+      "remote_sha": "06bc82cd9f5517324c77255cf420cdeeed4c319d",
+      "generated_sha": "06bc82cd9f5517324c77255cf420cdeeed4c319d",
+      "match": true
+    },
+    {
+      "path": "_redirects",
+      "remote_sha": "37d3ec6e15fe5415f75acfbd5733bb2fad2560fb",
+      "generated_sha": "37d3ec6e15fe5415f75acfbd5733bb2fad2560fb",
+      "match": true
+    },
+    {
+      "path": "bwf-funnel-v1.js",
+      "remote_sha": "f41d44ea2002e7e8883acef6ec4b0334b6b41857",
+      "generated_sha": "f41d44ea2002e7e8883acef6ec4b0334b6b41857",
+      "match": true
+    },
+    {
+      "path": "custom/kitchens.html",
+      "remote_sha": "e21bc13665a9f0b2dd7879220898b39eac22a9ee",
+      "generated_sha": "e21bc13665a9f0b2dd7879220898b39eac22a9ee",
+      "match": true
+    },
+    {
+      "path": "faq.html",
+      "remote_sha": "93daf695e8a9d885c3c28d903f45bee6c053df45",
+      "generated_sha": "93daf695e8a9d885c3c28d903f45bee6c053df45",
+      "match": true
+    },
+    {
+      "path": "index.html",
+      "remote_sha": "2ce6b40b0d990e3a6cc5fd48834ab22b57a19198",
+      "generated_sha": "2ce6b40b0d990e3a6cc5fd48834ab22b57a19198",
+      "match": true
+    },
+    {
+      "path": "qa-guard.js",
+      "remote_sha": "6c062cc410b7b4ea3ae283593d578f571477469b",
+      "generated_sha": "6c062cc410b7b4ea3ae283593d578f571477469b",
+      "match": true
+    },
+    {
+      "path": "qa-placeholder.svg",
+      "remote_sha": "a7e0b09a4e3b992aee6b076149dc807101b97e31",
+      "generated_sha": "a7e0b09a4e3b992aee6b076149dc807101b97e31",
+      "match": true
+    },
+    {
+      "path": "reviews.html",
+      "remote_sha": "a2c033fa936796c7a40ef37adee9a06ecbbd1f9a",
+      "generated_sha": "a2c033fa936796c7a40ef37adee9a06ecbbd1f9a",
+      "match": true
+    },
+    {
+      "path": "robots.txt",
+      "remote_sha": "1f53798bb4fe33c86020be7f10c44f29486fd190",
+      "generated_sha": "1f53798bb4fe33c86020be7f10c44f29486fd190",
+      "match": true
+    }
+  ],
+  "matched": 11,
+  "total": 12,
+  "missing": [
+    ".gitignore"
+  ],
+  "mismatches": []
+}

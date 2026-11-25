@@ -1,0 +1,165 @@
+{
+  "head": "3fbc8e429de6e64102480747d826af7277e956b0",
+  "files": [
+    {
+      "path": "bwf-funnel-v1.js",
+      "sha": "e2d1bd799049293868b720950f6cce19b3ab83f3",
+      "matches": true
+    },
+    {
+      "path": "bwf-publisher.html",
+      "sha": "d0a724bdf367984d4216cfda46c967c9101c1dd5",
+      "matches": true
+    },
+    {
+      "path": "custom/kitchens.html",
+      "sha": "7b67361e44366a4c66ab8cfee984b0b0e6d28887",
+      "matches": true
+    },
+    {
+      "path": "docs/P0-GA4-FUNNEL.md",
+      "sha": "796667663a18a8452c6192f017dc1d43ae91ec7f",
+      "matches": true
+    },
+    {
+      "path": "docs/P0-GA4-QA-2026-11-08.md",
+      "sha": "51b13a1ffb6e390939750d7c9728edc960d44535",
+      "matches": true
+    },
+    {
+      "path": "docs/P0-QA-DIRECT-PREVIEW-2026-11-08.md",
+      "sha": "bea366723bc9b6d88799e73d8e07dd3c607fadfb",
+      "matches": true
+    },
+    {
+      "path": "docs/P0-QA-DIRECT-RESULTS-2026-11-08.md",
+      "sha": "da307fee2402c8797f44a335a5d14e28a4af2d0a",
+      "matches": true
+    },
+    {
+      "path": "docs/P0-QA-USER-TEST-2026-11-09.md",
+      "sha": "e95f3198c3947c16846befcf8a5be1ce73b578fa",
+      "matches": true
+    },
+    {
+      "path": "docs/P0-RECEIPT-ADS-CHECK-2026-11-09.md",
+      "sha": "89b1df12443be7c318d0c8ba29ab785c573e8eb7",
+      "matches": true
+    },
+    {
+      "path": "docs/P0-RECEIPT-RECOVERY-2026-11-10.md",
+      "sha": "bdb8f0a18b9ed6b7778296a2c43b7ec0ae30ade6",
+      "matches": true
+    },
+    {
+      "path": "docs/P0-VALIDATION-2026-11-06.md",
+      "sha": "73ff314a4c29cf663827e7cd9666424dcdf84102",
+      "matches": true
+    },
+    {
+      "path": "docs/qa/p0-20261106-restore-before.txt",
+      "sha": "9b9320dfb77da5e2dfd2e264b99f0f06bbc61114",
+      "matches": true
+    },
+    {
+      "path": "docs/qa/p0-20261106-tests.txt",
+      "sha": "c5ea12facf5161e6aa401c76322d25a0f4bf47ed",
+      "matches": true
+    },
+    {
+      "path": "docs/qa/p0-ga4-debug-guard-20261108.json",
+      "sha": "f6875bb0c1c3b8ebde1763fad4bca25e434acd15",
+      "matches": true
+    },
+    {
+      "path": "docs/qa/p0-ga4-direct-transport-20261108.json",
+      "sha": "7816ca3b5c954c0535c2e28fbe364f2da0d9f6cc",
+      "matches": true
+    },
+    {
+      "path": "docs/qa/p0-ga4-live-20261108.json",
+      "sha": "d7096c7dc497d97c6180cabc37cce6468fae23c4",
+      "matches": true
+    },
+    {
+      "path": "docs/qa/p0-ga4-smoke-20261108.json",
+      "sha": "df27583dbf6c4c44e3230e89f281a5f7da4d3f68",
+      "matches": true
+    },
+    {
+      "path": "docs/qa/p0-qa-preview-safety-20261108.json",
+      "sha": "060c3c2d46cabbe2af3e15558f3fe818d43ca07d",
+      "matches": true
+    },
+    {
+      "path": "faq.html",
+      "sha": "b73c7ced771f7c8a2d0c1a18735629af25e91c67",
+      "matches": true
+    },
+    {
+      "path": "index.html",
+      "sha": "be57569885c2dfaee577560916911cb429316865",
+      "matches": true
+    },
+    {
+      "path": "main.js",
+      "sha": "a0be9afa3810c516e1e40dc4f55fee4936ad76f0",
+      "matches": true
+    },
+    {
+      "path": "netlify.toml",
+      "sha": "f1f8ff2224991d8a628afd739e55dc3dd0a1d7da",
+      "matches": true
+    },
+    {
+      "path": "reviews.html",
+      "sha": "7d722fa1d83b53e6d688fe470981505d439458c8",
+      "matches": true
+    },
+    {
+      "path": "robots.txt",
+      "sha": "7dfb3c787111604808564c27ca05c1a25737361a",
+      "matches": true
+    },
+    {
+      "path": "scripts/build-qa-preview.cjs",
+      "sha": "aea6fdb78e7626c228994de9b085991307291260",
+      "matches": true
+    },
+    {
+      "path": "scripts/ga4-live-qa.cjs",
+      "sha": "c00de3de4b75afc8df1002bb956b54af019aa820",
+      "matches": true
+    },
+    {
+      "path": "scripts/qa-preview-guard.js",
+      "sha": "6c062cc410b7b4ea3ae283593d578f571477469b",
+      "matches": true
+    },
+    {
+      "path": "sitemap.xml",
+      "sha": "843ae0e13231d4da2a71a7a3fe078596a51a68b7",
+      "matches": true
+    },
+    {
+      "path": "studio.html",
+      "sha": "4e284349bd9404b9f8361fee6d39b4b3cf617bd8",
+      "matches": true
+    },
+    {
+      "path": "tests/browser.test.cjs",
+      "sha": "7d87e9c80def07377af25097f1cd12a65e419bd0",
+      "matches": true
+    },
+    {
+      "path": "tests/funnel.test.cjs",
+      "sha": "d9a6bd32ebc983ca61ce15bcc005c026ee032f6e",
+      "matches": true
+    },
+    {
+      "path": "tests/qa-preview-safety.cjs",
+      "sha": "ce7d492716a07d3552f5c15e02a5af611ffa4552",
+      "matches": true
+    }
+  ]
+}

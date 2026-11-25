@@ -1,0 +1,45 @@
+{
+  "base": "a07d072825e790af897019507b0d2b28539ee402",
+  "head": "3fbc8e429de6e64102480747d826af7277e956b0",
+  "normalization": "Remove scripts (including JSON-LD), HTML comments, data-bwf-quote-cta attributes, collapse whitespace; preserves visible markup, CSS, fields and copy",
+  "files": [
+    {
+      "file": "index.html",
+      "baseBlob": "f6d96645b93dff93517c6baecc656621043bdd4e",
+      "normalizedCharacters": 559893,
+      "normalizedSha256": "8576ad36374da76a352be89710a05825ce6c08bb7076b0c5b2e7c8e9be3b31b2",
+      "headBlob": "be57569885c2dfaee577560916911cb429316865",
+      "headNormalizedSha256": "8576ad36374da76a352be89710a05825ce6c08bb7076b0c5b2e7c8e9be3b31b2",
+      "same": true
+    },
+    {
+      "file": "custom/kitchens.html",
+      "baseBlob": "df5c12cc48995911ba5248ce6550cda22b36b78e",
+      "normalizedCharacters": 123492,
+      "normalizedSha256": "20008f0158ba870990599b7d2d6ae18919231cfeb5b27970f7efb64ea0d40775",
+      "headBlob": "7b67361e44366a4c66ab8cfee984b0b0e6d28887",
+      "headNormalizedSha256": "20008f0158ba870990599b7d2d6ae18919231cfeb5b27970f7efb64ea0d40775",
+      "same": true
+    },
+    {
+      "file": "faq.html",
+      "baseBlob": "27a98fd316ab539ee5becc4c424096576f443511",
+      "normalizedCharacters": 9158,
+      "normalizedSha256": "4d58e1c9248ed1ac7779e3cb8085f8491393847e5e16cb751f94d80605136822",
+      "headBlob": "b73c7ced771f7c8a2d0c1a18735629af25e91c67",
+      "headNormalizedSha256": "4d58e1c9248ed1ac7779e3cb8085f8491393847e5e16cb751f94d80605136822",
+      "same": true
+    },
+    {
+      "file": "reviews.html",
+      "baseBlob": "0ad9841afca9b0b32822ec4c17b0a2e8252698b9",
+      "normalizedCharacters": 13312,
+      "normalizedSha256": "e4a6ae04a1d290a2f1a4a28af5031168d97eb6add4871983f0494d0d6d223163",
+      "headBlob": "7d722fa1d83b53e6d688fe470981505d439458c8",
+      "headNormalizedSha256": "e4a6ae04a1d290a2f1a4a28af5031168d97eb6add4871983f0494d0d6d223163",
+      "same": true
+    }
+  ],
+  "result": "PASS",
+  "checkedAt": "2026-11-25T00:55:22.538Z"
+}

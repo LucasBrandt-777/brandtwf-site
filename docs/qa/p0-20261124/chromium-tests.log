@@ -1,0 +1,24 @@
+✔ index.html: real rendering and funnel at 1365px (4533.728418ms)
+✔ index.html: real rendering and funnel at 390px (4719.535101ms)
+✔ index.html: real native validation, failure/retry, concurrent submit and cross-page lock (2932.014179ms)
+✔ custom/kitchens.html: real rendering and funnel at 1365px (3549.189135ms)
+✔ custom/kitchens.html: real rendering and funnel at 390px (4106.482103ms)
+✔ custom/kitchens.html: real native validation, failure/retry, concurrent submit and cross-page lock (2623.71626ms)
+✔ faq.html: real tag queue initialization and keyboard quote activation (86.35527ms)
+✔ reviews.html: real tag queue initialization and keyboard quote activation (95.642587ms)
+✔ index.html: Back/Forward before and after submission at 1365px (3088.491488ms)
+✔ index.html: Back/Forward before and after submission at 390px (3033.662807ms)
+✔ index.html: Back to other form respects the shared lock (1192.964174ms)
+✔ index.html: direct fragment, scroll return and network retry on mobile (5563.993964ms)
+✔ custom/kitchens.html: Back/Forward before and after submission at 1365px (1825.181995ms)
+✔ custom/kitchens.html: Back/Forward before and after submission at 390px (1827.695864ms)
+✔ custom/kitchens.html: Back to other form respects the shared lock (2834.70731ms)
+✔ custom/kitchens.html: direct fragment, scroll return and network retry on mobile (4388.127816ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 46801.021413
