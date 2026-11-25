@@ -1,0 +1,52 @@
+{
+  "sourceCommit": "3fbc8e429de6e64102480747d826af7277e956b0",
+  "verificationLocalDate": "2026-11-24",
+  "timezone": "America/New_York",
+  "candidateCodeModified": false,
+  "suites": {
+    "dom": {
+      "pass": 41,
+      "fail": 0,
+      "skipped": 0,
+      "command": "NODE_PATH=/workspace/scratch/f6ac7b7db897/p0-test-deps/node_modules node --test tests/funnel.test.cjs"
+    },
+    "chromium": {
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0,
+      "command": "NODE_PATH=/workspace/scratch/f6ac7b7db897/p0-test-deps/node_modules node --test tests/browser.test.cjs"
+    },
+    "qaPreviewSafety": {
+      "pass": 6,
+      "fail": 0,
+      "realFormPosts": 0,
+      "googleRequestsForwarded": 0,
+      "command": "NODE_PATH=/workspace/scratch/f6ac7b7db897/p0-test-deps/node_modules node tests/qa-preview-safety.cjs",
+      "note": "Run in disposable copy because original writes fixed dated evidence filenames."
+    },
+    "syntax": {
+      "pass": 8,
+      "fail": 0
+    }
+  },
+  "sourceIntegrity": {
+    "checked": 15,
+    "mismatches": 0
+  },
+  "versions": {
+    "node": "v24.22.3",
+    "jsdom": "26.1.0",
+    "gsap": "3.12.5",
+    "playwright": "1.56.1",
+    "chromium": "141.0.7390.37",
+    "webkitExecutable": "/home/agent/.cache/ms-playwright/webkit-2215/pw_run.sh",
+    "webkitAvailable": false
+  },
+  "limitations": [
+    "DOM pageshow.persisted is simulated, not a BFCache browser restoration proof.",
+    "Existing Chromium back/forward tests use reload; headless shell is not Safari/iOS.",
+    "All form and analytics traffic is intercepted; no evidence of real Netlify storage, notification or Google ingestion from these suites.",
+    "System Chromium blocked by socket() Operation not permitted.",
+    "WebKit executable not installed."
+  ]
+}

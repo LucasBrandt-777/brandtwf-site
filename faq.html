@@ -16,6 +16,12 @@
 
   <!-- ═══ Google Analytics GA4 + Google Ads ═══ -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XZQ389ZLRW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XZQ389ZLRW');
+</script>
 
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -240,7 +246,7 @@
 
 <div class="faq-cta">
   <p>Still have questions? We'd love to hear about your project.</p>
-  <a href="/#contact" class="btn-gold">Get a Free Quote</a>
+  <a data-bwf-quote-cta="page_cta" href="/#contact" class="btn-gold">Get a Free Quote</a>
 </div>
 
 <footer>
@@ -261,5 +267,6 @@ function toggleFaq(btn){
 }
 </script>
 
+<script src="/bwf-funnel-v1.js" data-bwf-page="faq"></script>
 </body>
 </html>

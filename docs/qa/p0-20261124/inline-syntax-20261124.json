@@ -1,0 +1,22 @@
+[
+  {
+    "file": "index.html",
+    "inlineScripts": 5,
+    "errors": []
+  },
+  {
+    "file": "custom/kitchens.html",
+    "inlineScripts": 3,
+    "errors": []
+  },
+  {
+    "file": "faq.html",
+    "inlineScripts": 2,
+    "errors": []
+  },
+  {
+    "file": "reviews.html",
+    "inlineScripts": 1,
+    "errors": []
+  }
+]

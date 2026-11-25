@@ -1,0 +1,42 @@
+[
+  {
+    "file": "bwf-funnel-v1.js",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "file": "main.js",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "file": "scripts/build-qa-preview.cjs",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "file": "scripts/ga4-live-qa.cjs",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "file": "scripts/qa-preview-guard.js",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "file": "tests/browser.test.cjs",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "file": "tests/funnel.test.cjs",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "file": "tests/qa-preview-safety.cjs",
+    "exit_code": 0,
+    "stderr": ""
+  }
+]
